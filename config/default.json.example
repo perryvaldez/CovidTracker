@@ -1,0 +1,4 @@
+{
+    "mongoURI": "mongodb+srv://your-user:your-pass@your.mongodb-domain.com/your-db?retryWrites=true&w=majority"
+}
+
