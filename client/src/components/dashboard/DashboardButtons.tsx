@@ -12,7 +12,7 @@ export const DashboardButtons: React.FC = () => {
           <Grid item xs={4}>
               <Box display="flex" justifyContent="center">
                 <Tooltip title="Add Social Interaction">
-                  <Button variant="contained" aria-label="Add Social Interaction">
+                  <Button variant="contained" aria-label="Add Social Interaction" className={classes.button}>
                       <img src={socialIcon} width="48" height="48" alt="Add Social Interaction" />
                   </Button>
                 </Tooltip>
@@ -21,7 +21,7 @@ export const DashboardButtons: React.FC = () => {
           <Grid item xs={4}>
               <Box display="flex" justifyContent="center">
                   <Tooltip title="Add Place Exposure">
-                    <Button variant="contained" aria-label="Add Place Exposure">
+                    <Button variant="contained" aria-label="Add Place Exposure" className={classes.button}>
                         <img src={locationWarnIcon} width="48" height="48"  alt="Add Place Exposure" />
                     </Button>
                   </Tooltip>
@@ -30,7 +30,7 @@ export const DashboardButtons: React.FC = () => {
           <Grid item xs={4}>
               <Box display="flex" justifyContent="center">
                   <Tooltip title="Reset Data">
-                    <Button variant="contained" aria-label="Reset Data">
+                    <Button variant="contained" aria-label="Reset Data" className={classes.button}>
                         <img src={resetIcon} width="48" height="48"  alt="Reset Data" />
                     </Button>
                   </Tooltip>
