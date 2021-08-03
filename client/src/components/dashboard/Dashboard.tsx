@@ -11,9 +11,11 @@ export const Dashboard: React.FC = () => {
   const classes = makeStyles(styles)();
   return (
     <Container disableGutters>
-      <Grid container spacing={2}>
+      <Grid container spacing={2} className={classes.header}>
         <Grid item xs={10}>
-          <H1 className={classes.title}>COVID Exposure Tracker Tool</H1>
+          <Box display="flex" alignItems="center" height="100%">
+            <H1 className={classes.title}>COVID Exposure Tracker Tool</H1>
+          </Box>
         </Grid>
         <Grid item xs={2}>
           <Box display="flex" justifyContent="flex-end">
