@@ -8,7 +8,7 @@ export const Dashboard: React.FC = () => {
   const classes = makeStyles(styles)();
   return (
     <Container disableGutters>
-      <H1 align="center" className={classes.root}>COVID Exposure Tracker Tool</H1>
+      <H1 align="center" className={classes.title}>COVID Exposure Tracker Tool</H1>
     </Container>
   );
 };
