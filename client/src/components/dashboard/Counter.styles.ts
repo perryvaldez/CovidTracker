@@ -1,6 +1,6 @@
 const styles = {
   container: {
-    backgroundColor: '#ff0000',
+    backgroundColor: '#bc0000',
     color: '#fff',
     width: 20,
     height: 20,
