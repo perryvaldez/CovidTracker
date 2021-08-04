@@ -6,7 +6,7 @@ const styles = {
   },
 
   button: {
-    backgroundColor: '#9ca9ff', // '#7787ff',
+    backgroundColor: '#9ca9ff',
     '&:hover': {
       backgroundColor: '#576df9',
     },

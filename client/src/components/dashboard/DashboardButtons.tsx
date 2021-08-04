@@ -1,10 +1,10 @@
 import React from 'react';
 import { Box, Grid, makeStyles } from '@material-ui/core';
+import IconButtonWithCounter from './IconButtonWithCounter';
 import socialIcon from '../../assets/images/social_36.png';
 import locationWarnIcon from '../../assets/images/location_warn_36.png';
 import resetIcon from '../../assets/images/reset_36.png';
 import styles from './DashboardButtons.styles';
-import IconButtonWithCounter from './IconButtonWithCounter';
 
 export const DashboardButtons: React.FC = () => {
     const classes = makeStyles(styles)();
