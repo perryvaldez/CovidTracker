@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { MouseEventHandler } from 'react';
 import { Button, makeStyles, Tooltip } from '@material-ui/core';
 import classnames from 'classnames';
 import Counter from './Counter';
@@ -10,22 +10,23 @@ type IconButtonWithCounterProps = {
     icon: string,
     count: number,
     hideCounter?: boolean,
+    onClick?: MouseEventHandler<HTMLButtonElement>,
 };
 
 export const IconButtonWithCounter: React.FC<IconButtonWithCounterProps> = 
-({ className, title, icon, count, hideCounter }) => {
+({ className, title, icon, count, hideCounter, onClick }) => {
     const classes = makeStyles(styles)();
     return (
         <Tooltip title={title}>
-            <Button variant="contained" aria-label={title} className={classnames(classes.button, className)}>
-            <img src={icon} alt={title} />
-            {
-              !hideCounter && (
-                <div className={classes.counterContainer}>
-                  <Counter count={count} />
-                </div>
-              )
-            }
+            <Button variant="contained" aria-label={title} className={classnames(classes.button, className)} onClick={onClick}>
+                <img src={icon} alt={title} />
+                {
+                    !hideCounter && (
+                        <div className={classes.counterContainer}>
+                        <Counter count={count} />
+                        </div>
+                    )
+                }
             </Button>
         </Tooltip>
     );
