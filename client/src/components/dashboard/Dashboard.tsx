@@ -9,17 +9,31 @@ import { DashboardAppDispatch, performDashboardFetchData } from '../../store/act
 import { useCustomSelector } from '../../lib/hooks';
 import states from '../../store/states/dashboardStates';
 import SocialInteractionDialog from '../social_interaction/SocialInteractionDialog';
+import VisitedPlaceDialog from '../visited_place/VisitedPlaceDialog';
 // import styles from './Dashboard.styles';
 
-const handleOpenSocialInteractionDialog = (setOpenSocialInteractions: any) => (e: any) => {
-  setOpenSocialInteractions(true);
+const handleOpenSocialInteractionDialog = (setOpenSocialInteraction: React.Dispatch<boolean>) => (e: any) => {
+  setOpenSocialInteraction(true);
+};
+
+const handleCloseSocialInteractionDialog = (setOpenSocialInteraction: React.Dispatch<boolean>) => (e: any) => {
+  setOpenSocialInteraction(false);
+};
+
+const handleOpenVisitedPlaceDialog = (setOpenVisitedPlace: React.Dispatch<boolean>) => (e: any) => {
+  setOpenVisitedPlace(true);
+};
+
+const handleCloseVisitedPlaceDialog = (setOpenVisitedPlace: React.Dispatch<boolean>) => (e: any) => {
+  setOpenVisitedPlace(false);
 };
 
 export const Dashboard: React.FC = () => { 
   const dashboardState = useCustomSelector(state => state.dashboard);
   const dispatch: DashboardAppDispatch = useDispatch();
 
-  const [openSocialInteractions, setOpenSocialInteractions] = useState(false);
+  const [openSocialInteraction, setOpenSocialInteraction] = useState(false);
+  const [openVisitedPlace, setOpenVisitedPlace] = useState(false);
 
   useEffect(() => {
     dispatch(performDashboardFetchData());
@@ -34,9 +48,11 @@ export const Dashboard: React.FC = () => {
         <DashboardButtons
           totalCountSocialInteractions={dashboardState.payload.totalCountSocialInteractions}
           totalCountVisitedPlaces={dashboardState.payload.totalCountVisitedPlaces}
-          openSocialInteractionsDialog={handleOpenSocialInteractionDialog(setOpenSocialInteractions)}
+          openSocialInteractionDialog={handleOpenSocialInteractionDialog(setOpenSocialInteraction)}
+          openVisitedPlaceDialog={handleOpenVisitedPlaceDialog(setOpenVisitedPlace)}
         />
-        <SocialInteractionDialog open={openSocialInteractions} onClose={() => {}} />
+        <SocialInteractionDialog open={openSocialInteraction} onClose={handleCloseSocialInteractionDialog(setOpenSocialInteraction)} />
+        <VisitedPlaceDialog open={openVisitedPlace} onClose={handleCloseVisitedPlaceDialog(setOpenVisitedPlace)} />
       </Container>
     </Loader>
   );

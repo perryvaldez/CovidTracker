@@ -9,11 +9,12 @@ import styles from './DashboardButtons.styles';
 type DashboardButtonsProps = {
   totalCountSocialInteractions: number,
   totalCountVisitedPlaces: number,
-  openSocialInteractionsDialog: (e: any) => void,
+  openSocialInteractionDialog: (e: any) => void,
+  openVisitedPlaceDialog: (e: any) => void,
 };
 
 export const DashboardButtons: React.FC<DashboardButtonsProps> = 
-  ({ totalCountSocialInteractions, totalCountVisitedPlaces, openSocialInteractionsDialog }) => {
+  ({ totalCountSocialInteractions, totalCountVisitedPlaces, openSocialInteractionDialog, openVisitedPlaceDialog }) => {
     const classes = makeStyles(styles)();
     return (
       <Grid container spacing={2} className={classes.grid}>
@@ -23,7 +24,7 @@ export const DashboardButtons: React.FC<DashboardButtonsProps> =
                   icon={socialIcon} 
                   title="Add Social Interaction"
                   count={totalCountSocialInteractions}
-                  onClick={openSocialInteractionsDialog}
+                  onClick={openSocialInteractionDialog}
                 />
               </Box>
           </Grid>
@@ -33,6 +34,7 @@ export const DashboardButtons: React.FC<DashboardButtonsProps> =
                   icon={locationWarnIcon} 
                   title="Add Place Exposure"
                   count={totalCountVisitedPlaces}
+                  onClick={openVisitedPlaceDialog}
                 />
               </Box>
           </Grid>

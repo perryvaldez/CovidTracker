@@ -1,19 +1,19 @@
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@material-ui/core';
 import React from 'react';
 
-type SocialInteractionDialogProps = {
+type VisitedPlaceDialogProps = {
   open: boolean,
   onClose: (e: any) => void,
 };
 
-export const SocialInteractionDialog: React.FC<SocialInteractionDialogProps> = 
+export const VisitedPlaceDialog: React.FC<VisitedPlaceDialogProps> = 
 ({ open, onClose }) => {
     return (
-      <Dialog open={open} onClose={onClose} aria-labelledby="id-dialog-social">
-        <DialogTitle id="id-dialog-social">Add Social Interaction</DialogTitle>
+      <Dialog open={open} onClose={onClose} aria-labelledby="id-dialog-visited">
+        <DialogTitle id="id-dialog-visited">Add Visited Place</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            <p>Social Interaction TODO...</p>
+            <p>Visited Place TODO...</p>
           </DialogContentText>
         </DialogContent>
         <DialogActions>
@@ -23,4 +23,5 @@ export const SocialInteractionDialog: React.FC<SocialInteractionDialogProps> =
     );
 };
 
-export default SocialInteractionDialog;
+export default VisitedPlaceDialog;
+
