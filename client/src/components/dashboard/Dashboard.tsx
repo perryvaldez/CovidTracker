@@ -1,15 +1,27 @@
-import React from 'react';
+import React, { useEffect }  from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import Container from '@material-ui/core/Container';
 // import { makeStyles } from '@material-ui/styles';
 import DashboardButtons from './DashboardButtons';
 import Header from './Header';
 import Loader from '../shared/Loader';
+import { DashboardAppDispatch, performDashboardFetchData } from '../../store/actions/dashboardActions';
+import { RootState } from '../../store/store';
+import states from '../../store/states/dashboardStates';
 // import styles from './Dashboard.styles';
 
 export const Dashboard: React.FC = () => { 
+  const dashboardState = useSelector((state: RootState) => state.dashboard);
+  const dispatch: DashboardAppDispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(performDashboardFetchData());
+  }, [dispatch]);
+
   // const classes = makeStyles(styles)();
+
   return (
-    <Loader isLoading={false}>
+    <Loader isLoading={dashboardState.stateName === states.START}>
       <Container disableGutters>
         <Header />
         <DashboardButtons />

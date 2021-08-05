@@ -1,21 +1,20 @@
 import { Reducer } from 'redux';
-import states from '../states/dashboardStates';
-
-export interface IDashboardState {
-  stateName: string;
-};
-
-export interface IDashboardAction {
-  type: string;
-  payload: object;
-};
-
-export const DashboardStartState: IDashboardState = {
-  stateName: states.START,
-};
+import a, { IDashboardAction } from '../actions/dashboardActions';
+import s, { DashboardStartState as startState, IDashboardState } from '../states/dashboardStates';
 
 const dashboardReducer: Reducer<IDashboardState, IDashboardAction> = 
-(state = DashboardStartState, action) => {
+(state = startState, action) => {
+  switch(state.stateName) {
+    case s.START:
+      if (action.type === a.FETCH_DATA) {
+          return {
+            ...startState,
+            stateName: s.READY,
+          };
+      }
+      break;
+  }
+
   return state;
 };
 
