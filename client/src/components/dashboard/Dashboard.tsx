@@ -24,7 +24,10 @@ export const Dashboard: React.FC = () => {
     <Loader isLoading={dashboardState.stateName === states.START}>
       <Container disableGutters>
         <Header />
-        <DashboardButtons />
+        <DashboardButtons
+          totalCountSocialInteractions={dashboardState.payload.totalCountSocialInteractions}
+          totalCountVisitedPlaces={dashboardState.payload.totalCountVisitedPlaces}
+        />
       </Container>
     </Loader>
   );
