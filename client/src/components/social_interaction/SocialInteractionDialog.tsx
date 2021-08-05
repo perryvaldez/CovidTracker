@@ -4,10 +4,11 @@ import React from 'react';
 type SocialInteractionDialogProps = {
   open: boolean,
   onClose: (e: any) => void,
+  onSave: (e: any) => void,
 };
 
 export const SocialInteractionDialog: React.FC<SocialInteractionDialogProps> = 
-({ open, onClose }) => {
+({ open, onSave, onClose }) => {
     return (
       <Dialog open={open} onClose={onClose} aria-labelledby="id-dialog-social">
         <DialogTitle id="id-dialog-social">Add Social Interaction</DialogTitle>
@@ -17,6 +18,7 @@ export const SocialInteractionDialog: React.FC<SocialInteractionDialogProps> =
           </DialogContentText>
         </DialogContent>
         <DialogActions>
+          <Button variant="contained" color="primary" onClick={onSave}>Save</Button>
           <Button variant="contained" onClick={onClose}>Cancel</Button>
         </DialogActions>
       </Dialog>

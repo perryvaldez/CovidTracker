@@ -20,11 +20,19 @@ const handleCloseSocialInteractionDialog = (setOpenSocialInteraction: React.Disp
   setOpenSocialInteraction(false);
 };
 
+const handleSaveSocialInteractionDialog = (setOpenSocialInteraction: React.Dispatch<boolean>) => (e: any) => {
+  setOpenSocialInteraction(false);
+};
+
 const handleOpenVisitedPlaceDialog = (setOpenVisitedPlace: React.Dispatch<boolean>) => (e: any) => {
   setOpenVisitedPlace(true);
 };
 
 const handleCloseVisitedPlaceDialog = (setOpenVisitedPlace: React.Dispatch<boolean>) => (e: any) => {
+  setOpenVisitedPlace(false);
+};
+
+const handleSaveVisitedPlaceDialog = (setOpenVisitedPlace: React.Dispatch<boolean>) => (e: any) => {
   setOpenVisitedPlace(false);
 };
 
@@ -51,8 +59,16 @@ export const Dashboard: React.FC = () => {
           openSocialInteractionDialog={handleOpenSocialInteractionDialog(setOpenSocialInteraction)}
           openVisitedPlaceDialog={handleOpenVisitedPlaceDialog(setOpenVisitedPlace)}
         />
-        <SocialInteractionDialog open={openSocialInteraction} onClose={handleCloseSocialInteractionDialog(setOpenSocialInteraction)} />
-        <VisitedPlaceDialog open={openVisitedPlace} onClose={handleCloseVisitedPlaceDialog(setOpenVisitedPlace)} />
+        <SocialInteractionDialog 
+          open={openSocialInteraction} 
+          onClose={handleCloseSocialInteractionDialog(setOpenSocialInteraction)}
+          onSave={handleSaveSocialInteractionDialog(setOpenSocialInteraction)}
+        />
+        <VisitedPlaceDialog
+          open={openVisitedPlace} 
+          onClose={handleCloseVisitedPlaceDialog(setOpenVisitedPlace)} 
+          onSave={handleSaveVisitedPlaceDialog(setOpenVisitedPlace)}
+        />
       </Container>
     </Loader>
   );

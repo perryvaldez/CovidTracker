@@ -4,10 +4,11 @@ import React from 'react';
 type VisitedPlaceDialogProps = {
   open: boolean,
   onClose: (e: any) => void,
+  onSave: (e: any) => void,
 };
 
 export const VisitedPlaceDialog: React.FC<VisitedPlaceDialogProps> = 
-({ open, onClose }) => {
+({ open, onSave, onClose }) => {
     return (
       <Dialog open={open} onClose={onClose} aria-labelledby="id-dialog-visited">
         <DialogTitle id="id-dialog-visited">Add Visited Place</DialogTitle>
@@ -17,6 +18,7 @@ export const VisitedPlaceDialog: React.FC<VisitedPlaceDialogProps> =
           </DialogContentText>
         </DialogContent>
         <DialogActions>
+          <Button variant="contained" color="primary" onClick={onSave}>Save</Button>
           <Button variant="contained" onClick={onClose}>Cancel</Button>
         </DialogActions>
       </Dialog>
