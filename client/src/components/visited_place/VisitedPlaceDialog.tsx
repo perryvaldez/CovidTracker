@@ -1,5 +1,5 @@
-import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@material-ui/core';
 import React from 'react';
+import AppDialog from '../shared/AppDialog';
 
 type VisitedPlaceDialogProps = {
   open: boolean,
@@ -10,18 +10,15 @@ type VisitedPlaceDialogProps = {
 export const VisitedPlaceDialog: React.FC<VisitedPlaceDialogProps> = 
 ({ open, onSave, onClose }) => {
     return (
-      <Dialog open={open} onClose={onClose} aria-labelledby="id-dialog-visited">
-        <DialogTitle id="id-dialog-visited">Add Visited Place</DialogTitle>
-        <DialogContent dividers>
-          <DialogContentText>
-            <p>Visited Place TODO...</p>
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button variant="contained" color="primary" onClick={onSave}>Save</Button>
-          <Button variant="contained" onClick={onClose}>Cancel</Button>
-        </DialogActions>
-      </Dialog>
+      <AppDialog 
+        open={open} 
+        onSave={onSave} 
+        onClose={onClose}
+        title="Add Visited Place"
+        id="id-dialog-visited"
+      >
+        <p>Visited Place TODO...</p>
+      </AppDialog>
     );
 };
 

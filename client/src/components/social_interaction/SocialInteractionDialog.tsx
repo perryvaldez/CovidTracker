@@ -1,5 +1,5 @@
-import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@material-ui/core';
 import React from 'react';
+import AppDialog from '../shared/AppDialog';
 
 type SocialInteractionDialogProps = {
   open: boolean,
@@ -10,18 +10,15 @@ type SocialInteractionDialogProps = {
 export const SocialInteractionDialog: React.FC<SocialInteractionDialogProps> = 
 ({ open, onSave, onClose }) => {
     return (
-      <Dialog open={open} onClose={onClose} aria-labelledby="id-dialog-social">
-        <DialogTitle id="id-dialog-social">Add Social Interaction</DialogTitle>
-        <DialogContent dividers>
-          <DialogContentText>
-            <p>Social Interaction TODO...</p>
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button variant="contained" color="primary" onClick={onSave}>Save</Button>
-          <Button variant="contained" onClick={onClose}>Cancel</Button>
-        </DialogActions>
-      </Dialog>
+      <AppDialog 
+        open={open} 
+        onSave={onSave} 
+        onClose={onClose}
+        title="Add Social Interaction"
+        id="id-dialog-social"
+      >
+        <p>Social Interaction TODO...</p>
+      </AppDialog>
     );
 };
 
