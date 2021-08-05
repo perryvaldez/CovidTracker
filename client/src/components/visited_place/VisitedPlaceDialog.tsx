@@ -11,13 +11,13 @@ export const VisitedPlaceDialog: React.FC<VisitedPlaceDialogProps> =
     return (
       <Dialog open={open} onClose={onClose} aria-labelledby="id-dialog-visited">
         <DialogTitle id="id-dialog-visited">Add Visited Place</DialogTitle>
-        <DialogContent>
+        <DialogContent dividers>
           <DialogContentText>
             <p>Visited Place TODO...</p>
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={onClose}>Cancel</Button>
+          <Button variant="contained" onClick={onClose}>Cancel</Button>
         </DialogActions>
       </Dialog>
     );

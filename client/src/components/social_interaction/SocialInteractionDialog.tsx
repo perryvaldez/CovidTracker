@@ -11,13 +11,13 @@ export const SocialInteractionDialog: React.FC<SocialInteractionDialogProps> =
     return (
       <Dialog open={open} onClose={onClose} aria-labelledby="id-dialog-social">
         <DialogTitle id="id-dialog-social">Add Social Interaction</DialogTitle>
-        <DialogContent>
+        <DialogContent dividers>
           <DialogContentText>
             <p>Social Interaction TODO...</p>
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={onClose}>Cancel</Button>
+          <Button variant="contained" onClick={onClose}>Cancel</Button>
         </DialogActions>
       </Dialog>
     );
