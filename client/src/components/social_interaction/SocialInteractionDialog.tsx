@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { Grid, TextField } from '@material-ui/core';
-import { KeyboardDatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
+import { KeyboardDatePicker } from '@material-ui/pickers';
 import AppDialog from '../shared/AppDialog';
-import DateFnsUtils from '@date-io/date-fns';
 
 type SocialInteractionDialogProps = {
   open: boolean,
@@ -27,28 +26,30 @@ export const SocialInteractionDialog: React.FC<SocialInteractionDialogProps> =
         id="id-dialog-social"
       >
         <form>
-          <MuiPickersUtilsProvider utils={DateFnsUtils}>
-            <Grid container spacing={2}>
-                <Grid item xs={12}>
-                <TextField required id="si-name" label="Name" />
-                </Grid>
-                <Grid item xs={12}>
-                    <KeyboardDatePicker
-                        variant="inline"
-                        format="MM/dd/yyyy"
-                        margin="normal"
-                        id="si-date"
-                        label="Date"
-                        value={selectedDate}
-                        onChange={handleDateChange}
-                        KeyboardButtonProps={{
-                        'aria-label': 'change date',
-                        }}
-                        autoOk
-                    />                
-                </Grid>
+          <Grid container spacing={2}>
+            <Grid item xs={12}>
+            <TextField required id="si-name" label="Name" />
             </Grid>
-          </MuiPickersUtilsProvider>
+            <Grid item xs={12}>
+                <KeyboardDatePicker
+                    disableToolbar
+                    disableFuture
+                    minDate={new Date(2020, 0, 1)}
+                    variant="inline"
+                    format="MM/dd/yyyy"
+                    margin="normal"
+                    id="si-date"
+                    label="Date"
+                    value={selectedDate}
+                    onChange={handleDateChange}
+                    KeyboardButtonProps={{
+                    'aria-label': 'Date',
+                    }}
+                    autoOk
+                    required
+                />                
+            </Grid>
+          </Grid>
         </form>
       </AppDialog>
     );

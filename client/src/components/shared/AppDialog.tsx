@@ -1,5 +1,7 @@
 import React from 'react';
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@material-ui/core';
+import { MuiPickersUtilsProvider } from '@material-ui/pickers';
+import DateFnsUtils from '@date-io/date-fns';
 
 type AppDialogProps = {
   open: boolean,
@@ -16,7 +18,9 @@ export const AppDialog: React.FC<AppDialogProps> =
         <DialogTitle id={id}>{title}</DialogTitle>
         <DialogContent dividers>
           <DialogContentText>
-            {children}
+            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+              {children}
+            </MuiPickersUtilsProvider>
           </DialogContentText>
         </DialogContent>
         <DialogActions>
