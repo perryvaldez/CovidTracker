@@ -10,6 +10,7 @@ import { useCustomSelector } from '../../lib/hooks';
 import states from '../../store/states/dashboardStates';
 import SocialInteractionDialog from '../social_interaction/SocialInteractionDialog';
 import VisitedPlaceDialog from '../visited_place/VisitedPlaceDialog';
+import { ISocialInteractionData, IVisitedPlacesData } from '../../lib/api';
 // import styles from './Dashboard.styles';
 
 export const Dashboard: React.FC = () => { 
@@ -33,7 +34,8 @@ export const Dashboard: React.FC = () => {
     setOpenSocialInteraction(false);
   };
 
-  const handleSaveSocialInteractionDialog = (e: any) => {
+  const handleSaveSocialInteractionDialog = (data: ISocialInteractionData) => (e: any) => {
+    console.log('Social interaction: ', { data });
     setOpenSocialInteraction(false);
   };
 
@@ -45,7 +47,8 @@ export const Dashboard: React.FC = () => {
     setOpenVisitedPlace(false);
   };
 
-  const handleSaveVisitedPlaceDialog = (e: any) => {
+  const handleSaveVisitedPlaceDialog = (data: IVisitedPlacesData) => (e: any) => {
+    console.log('Visited place: ', { data });
     setOpenVisitedPlace(false);
   };
 

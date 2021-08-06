@@ -3,11 +3,12 @@ import { Checkbox, FormControlLabel, Grid, TextField } from '@material-ui/core';
 import { KeyboardDatePicker } from '@material-ui/pickers';
 import utils from '../../lib/utils';
 import AppDialog from '../shared/AppDialog';
+import { ISocialInteractionData } from '../../lib/api';
 
 type SocialInteractionDialogProps = {
   open: boolean,
   onClose: (e: any) => void,
-  onSave: (e: any) => void,
+  onSave: (data: ISocialInteractionData) => (e: any) => void,
 };
 
 const minDate = new Date(2020, 0, 1);
@@ -102,7 +103,14 @@ export const SocialInteractionDialog: React.FC<SocialInteractionDialogProps> =
       }
 
       if(!hasErrors) {
-          onSave(e);
+          const data: ISocialInteractionData = {
+            name,
+            date: utils.toDateTimeString(selectedDate),
+            hours,
+            isSocialDistancing: socialDistance,
+          };
+
+          onSave(data)(e);
       }
     };
 

@@ -3,11 +3,12 @@ import { Checkbox, FormControlLabel, Grid, TextField } from '@material-ui/core';
 import { KeyboardDatePicker } from '@material-ui/pickers';
 import utils from '../../lib/utils';
 import AppDialog from '../shared/AppDialog';
+import { IVisitedPlacesData } from '../../lib/api';
 
 type VisitedPlaceDialogProps = {
   open: boolean,
   onClose: (e: any) => void,
-  onSave: (e: any) => void,
+  onSave: (data: IVisitedPlacesData) => (e: any) => void,
 };
 
 const minDate = new Date(2020, 0, 1);
@@ -102,7 +103,14 @@ export const VisitedPlaceDialog: React.FC<VisitedPlaceDialogProps> =
       }
 
       if(!hasErrors) {
-          onSave(e);
+          const data: IVisitedPlacesData = {
+            place,
+            date: utils.toDateTimeString(selectedDate),
+            hours,
+            isCrowded: crowded,
+          };
+
+          onSave(data)(e);
       }
     };
 

@@ -14,7 +14,12 @@ const tomorrowDate = () => {
   return new Date(tomorrowMillis);
 };
 
+const toDateTimeString = (d: Date): string => {
+  return d.toISOString();
+};
+
 export default {
   compareDates,
   tomorrowDate,
+  toDateTimeString,
 };
