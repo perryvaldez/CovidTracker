@@ -4,6 +4,8 @@ import api, { ISocialInteractionData, IVisitedPlaceData } from '../../lib/api';
 
 const dashboardActions = {
   FETCH_DATA: 'DASHBOARD_FETCH_DATA',
+  ADD_SOCIAL: 'DASHBOARD_ADD_SOCIAL',
+  FETCH_SOCIAL: 'DASHBOARD_FETCH_SOCIAL',
 };
 
 export interface IDashboardAction {
@@ -41,6 +43,7 @@ export const dashboardFetchDataAction =
 });
 
 export type DashboardAppDispatch = ThunkDispatch<IDashboardState, any, IDashboardAction>;
+
 export const performDashboardFetchData = () => 
   async (dispatch: DashboardAppDispatch) => {
     const result = await Promise.all([
@@ -57,6 +60,30 @@ export const performDashboardFetchData = () =>
       result[1],
       totalCountVisitedPlaces
     ));
+  } 
+
+export interface IDashboardAddSocialActionPayload {
+  socialInteraction: ISocialInteractionData;
+};
+
+export interface IDashboardAddSocialAction extends IDashboardAction {
+  payload: IDashboardAddSocialActionPayload;
+};
+
+export const dashboardAddSocialAction = 
+(socialInteraction: ISocialInteractionData) : IDashboardAddSocialAction => ({
+  type: dashboardActions.ADD_SOCIAL,
+  payload: {
+    socialInteraction,
+  },
+});
+
+export const performDashboardAddSocial = (data: ISocialInteractionData) => 
+  async (dispatch: DashboardAppDispatch) => {
+    const id = await api.postSocialInteraction(data);
+    data._id = id;
+
+    return dispatch(dashboardAddSocialAction(data));
   } 
 
 export default dashboardActions;

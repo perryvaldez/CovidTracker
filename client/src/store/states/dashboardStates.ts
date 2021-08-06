@@ -1,13 +1,14 @@
-import { IDashboardFetchDataActionPayload, NullDashboardFetchDataActionPayload } from "../actions/dashboardActions";
+import { IDashboardAddSocialActionPayload, IDashboardFetchDataActionPayload, NullDashboardFetchDataActionPayload } from "../actions/dashboardActions";
 
 const dashboardStates = {
   START: 'DASHBOARD_START',
   READY: 'DASHBOARD_READY',
+  OUTDATED_SOCIAL: 'DASHBOARD_OUTDATED_SOCIAL',
 };
 
 export interface IDashboardState {
   stateName: string;
-  payload: IDashboardFetchDataActionPayload;
+  payload: IDashboardFetchDataActionPayload | IDashboardAddSocialActionPayload;
 };
 
 export const DashboardStartState: IDashboardState = {

@@ -5,7 +5,7 @@ import Container from '@material-ui/core/Container';
 import DashboardButtons from './DashboardButtons';
 import Header from './Header';
 import Loader from '../shared/Loader';
-import { DashboardAppDispatch, performDashboardFetchData } from '../../store/actions/dashboardActions';
+import { DashboardAppDispatch, IDashboardFetchDataActionPayload, performDashboardAddSocial, performDashboardFetchData } from '../../store/actions/dashboardActions';
 import { useCustomSelector } from '../../lib/hooks';
 import states from '../../store/states/dashboardStates';
 import SocialInteractionDialog from '../social_interaction/SocialInteractionDialog';
@@ -35,7 +35,7 @@ export const Dashboard: React.FC = () => {
   };
 
   const handleSaveSocialInteractionDialog = (data: ISocialInteractionData) => (e: any) => {
-    console.log('Social interaction: ', { data });
+    dispatch(performDashboardAddSocial(data));
     setOpenSocialInteraction(false);
   };
 
@@ -58,8 +58,8 @@ export const Dashboard: React.FC = () => {
       <Container disableGutters>
         <Header />
         <DashboardButtons
-          totalCountSocialInteractions={dashboardState.payload.totalCountSocialInteractions}
-          totalCountVisitedPlaces={dashboardState.payload.totalCountVisitedPlaces}
+          totalCountSocialInteractions={(dashboardState.payload as IDashboardFetchDataActionPayload).totalCountSocialInteractions}
+          totalCountVisitedPlaces={(dashboardState.payload as IDashboardFetchDataActionPayload).totalCountVisitedPlaces}
           openSocialInteractionDialog={handleOpenSocialInteractionDialog}
           openVisitedPlaceDialog={handleOpenVisitedPlaceDialog}
         />
