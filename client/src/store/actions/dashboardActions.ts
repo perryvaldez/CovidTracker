@@ -1,6 +1,6 @@
 import { ThunkDispatch } from "redux-thunk";
 import { IDashboardState } from "../states/dashboardStates";
-import api, { ISocialInteractionData, IVisitedPlacesData } from '../../lib/api';
+import api, { ISocialInteractionData, IVisitedPlaceData } from '../../lib/api';
 
 const dashboardActions = {
   FETCH_DATA: 'DASHBOARD_FETCH_DATA',
@@ -13,7 +13,7 @@ export interface IDashboardAction {
 export interface IDashboardFetchDataActionPayload {
   socialInteractions: ISocialInteractionData[];
   totalCountSocialInteractions: number;
-  visitedPlaces: IVisitedPlacesData[];
+  visitedPlaces: IVisitedPlaceData[];
   totalCountVisitedPlaces: number;
 };
 
@@ -30,7 +30,7 @@ export interface IDashboardFetchDataAction extends IDashboardAction {
 
 export const dashboardFetchDataAction = 
 (socialInteractions: ISocialInteractionData[], totalCountSocialInteractions: number, 
-    visitedPlaces: IVisitedPlacesData[], totalCountVisitedPlaces: number) : IDashboardFetchDataAction => ({
+    visitedPlaces: IVisitedPlaceData[], totalCountVisitedPlaces: number) : IDashboardFetchDataAction => ({
   type: dashboardActions.FETCH_DATA,
   payload: {
     socialInteractions,

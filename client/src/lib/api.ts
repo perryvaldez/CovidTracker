@@ -9,7 +9,7 @@ export interface ISocialInteractionData {
   hours: number;
 };
 
-export interface IVisitedPlacesData {
+export interface IVisitedPlaceData {
   _id?: string;
   isCrowded: boolean;
   place: string;
@@ -35,10 +35,10 @@ async (limit: number = 0, offset: number = 0, sortBy: string[] = []): Promise<IS
 };
 
 const getVisitedPlaces = 
-async (limit: number = 0, offset: number = 0, sortBy: string[] = []): Promise<IVisitedPlacesData[]> => {
+async (limit: number = 0, offset: number = 0, sortBy: string[] = []): Promise<IVisitedPlaceData[]> => {
     const result = await axios.get('/visited-places');
     if(result.status === 200) {
-      return result.data as IVisitedPlacesData[];
+      return result.data as IVisitedPlaceData[];
     }
 
     throw new Error('Unable to fetch visited places.');
@@ -55,7 +55,7 @@ async (data: ISocialInteractionData): Promise<string> => {
 };
 
 const postVisitedPlace = 
-async (data: IVisitedPlacesData): Promise<string> => {
+async (data: IVisitedPlaceData): Promise<string> => {
     const result = await axios.post('/visited-places', data);
     if(result.status >= 200) {
         return result.data._id;
