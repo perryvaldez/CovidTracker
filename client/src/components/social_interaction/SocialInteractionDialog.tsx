@@ -28,7 +28,7 @@ export const SocialInteractionDialog: React.FC<SocialInteractionDialogProps> =
         <form>
           <Grid container spacing={2}>
             <Grid item xs={12}>
-            <TextField required id="si-name" label="Name" />
+              <TextField required id="si-name" label="Name" />
             </Grid>
             <Grid item xs={12}>
                 <KeyboardDatePicker
