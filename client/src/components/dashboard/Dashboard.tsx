@@ -12,30 +12,6 @@ import SocialInteractionDialog from '../social_interaction/SocialInteractionDial
 import VisitedPlaceDialog from '../visited_place/VisitedPlaceDialog';
 // import styles from './Dashboard.styles';
 
-const handleOpenSocialInteractionDialog = (setOpenSocialInteraction: React.Dispatch<boolean>) => (e: any) => {
-  setOpenSocialInteraction(true);
-};
-
-const handleCloseSocialInteractionDialog = (setOpenSocialInteraction: React.Dispatch<boolean>) => (e: any) => {
-  setOpenSocialInteraction(false);
-};
-
-const handleSaveSocialInteractionDialog = (setOpenSocialInteraction: React.Dispatch<boolean>) => (e: any) => {
-  setOpenSocialInteraction(false);
-};
-
-const handleOpenVisitedPlaceDialog = (setOpenVisitedPlace: React.Dispatch<boolean>) => (e: any) => {
-  setOpenVisitedPlace(true);
-};
-
-const handleCloseVisitedPlaceDialog = (setOpenVisitedPlace: React.Dispatch<boolean>) => (e: any) => {
-  setOpenVisitedPlace(false);
-};
-
-const handleSaveVisitedPlaceDialog = (setOpenVisitedPlace: React.Dispatch<boolean>) => (e: any) => {
-  setOpenVisitedPlace(false);
-};
-
 export const Dashboard: React.FC = () => { 
   const dashboardState = useCustomSelector(state => state.dashboard);
   const dispatch: DashboardAppDispatch = useDispatch();
@@ -49,6 +25,31 @@ export const Dashboard: React.FC = () => {
 
   // const classes = makeStyles(styles)();
 
+  const handleOpenSocialInteractionDialog = (e: any) => {
+    setOpenSocialInteraction(true);
+  };
+
+  const handleCloseSocialInteractionDialog = (e: any) => {
+    setOpenSocialInteraction(false);
+  };
+
+  const handleSaveSocialInteractionDialog = (e: any) => {
+    setOpenSocialInteraction(false);
+  };
+
+  const handleOpenVisitedPlaceDialog = (e: any) => {
+    setOpenVisitedPlace(true);
+  };
+
+  const handleCloseVisitedPlaceDialog = (e: any) => {
+    setOpenVisitedPlace(false);
+  };
+
+  const handleSaveVisitedPlaceDialog = (e: any) => {
+    setOpenVisitedPlace(false);
+  };
+
+
   return (
     <Loader isLoading={dashboardState.stateName === states.START}>
       <Container disableGutters>
@@ -56,18 +57,18 @@ export const Dashboard: React.FC = () => {
         <DashboardButtons
           totalCountSocialInteractions={dashboardState.payload.totalCountSocialInteractions}
           totalCountVisitedPlaces={dashboardState.payload.totalCountVisitedPlaces}
-          openSocialInteractionDialog={handleOpenSocialInteractionDialog(setOpenSocialInteraction)}
-          openVisitedPlaceDialog={handleOpenVisitedPlaceDialog(setOpenVisitedPlace)}
+          openSocialInteractionDialog={handleOpenSocialInteractionDialog}
+          openVisitedPlaceDialog={handleOpenVisitedPlaceDialog}
         />
         <SocialInteractionDialog 
           open={openSocialInteraction} 
-          onClose={handleCloseSocialInteractionDialog(setOpenSocialInteraction)}
-          onSave={handleSaveSocialInteractionDialog(setOpenSocialInteraction)}
+          onClose={handleCloseSocialInteractionDialog}
+          onSave={handleSaveSocialInteractionDialog}
         />
         <VisitedPlaceDialog
           open={openVisitedPlace} 
-          onClose={handleCloseVisitedPlaceDialog(setOpenVisitedPlace)} 
-          onSave={handleSaveVisitedPlaceDialog(setOpenVisitedPlace)}
+          onClose={handleCloseVisitedPlaceDialog} 
+          onSave={handleSaveVisitedPlaceDialog}
         />
       </Container>
     </Loader>
