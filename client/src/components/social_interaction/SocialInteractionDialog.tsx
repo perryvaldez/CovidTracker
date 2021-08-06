@@ -26,11 +26,11 @@ export const SocialInteractionDialog: React.FC<SocialInteractionDialogProps> =
     const [dateError, setDateError] = useState('');
 
     const handleDateChange = (date: any) => {
-        setSelectedDate(date);
+      setSelectedDate(utils.extractDate(date));
     };
 
     const handleNameChange = (e: any) => {
-        setName(e.target.value);
+      setName(e.target.value);
     };
 
     const handleHoursChange = (e: any) => {

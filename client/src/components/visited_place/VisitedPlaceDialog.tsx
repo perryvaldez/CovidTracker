@@ -26,11 +26,11 @@ export const VisitedPlaceDialog: React.FC<VisitedPlaceDialogProps> =
     const [dateError, setDateError] = useState('');
 
     const handleDateChange = (date: any) => {
-        setSelectedDate(date);
+      setSelectedDate(utils.extractDate(date));
     };
 
     const handlePlaceChange = (e: any) => {
-        setPlace(e.target.value);
+      setPlace(e.target.value);
     };
 
     const handleHoursChange = (e: any) => {
