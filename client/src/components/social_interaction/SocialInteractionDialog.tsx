@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Checkbox, FormControlLabel, Grid, TextField } from '@material-ui/core';
 import { KeyboardDatePicker } from '@material-ui/pickers';
+import utils from '../../lib/utils';
 import AppDialog from '../shared/AppDialog';
 
 type SocialInteractionDialogProps = {
@@ -9,12 +10,19 @@ type SocialInteractionDialogProps = {
   onSave: (e: any) => void,
 };
 
+const minDate = new Date(2020, 0, 1);
+const maxDate = utils.tomorrowDate();
+
 export const SocialInteractionDialog: React.FC<SocialInteractionDialogProps> = 
 ({ open, onSave, onClose }) => {
     const [selectedDate, setSelectedDate] = useState(new Date());
     const [name, setName] = useState('');
     const [strHours, setStrHours] = useState('');
     const [socialDistance, setSocialDistance] = useState(false);
+
+    const [nameError, setNameError] = useState('');
+    const [hoursError, setHoursError] = useState('');
+    const [dateError, setDateError] = useState('');
 
     const handleDateChange = (date: any) => {
         setSelectedDate(date);
@@ -32,10 +40,54 @@ export const SocialInteractionDialog: React.FC<SocialInteractionDialogProps> =
       setSocialDistance(e.target.checked);
     };
 
+    const handleOnSave = (e: any) => {
+      let hasErrors = false;
+
+      if(!name) {
+        setNameError('Name is required.');
+        hasErrors = hasErrors || true;
+      }
+
+      if(!strHours) {
+        setHoursError('Hours is required.');
+        hasErrors = hasErrors || true;
+      }
+
+      let hours = parseInt(strHours, 10);
+      if(isNaN(hours)) {
+        setHoursError('Invalid hours.');
+        hasErrors = hasErrors || true;
+      }
+
+      if(hours < 0) {
+        setHoursError('Hours must be greater than 0.');
+        hasErrors = hasErrors || true;
+      }
+
+      if(!selectedDate) {
+        setDateError('Date is required.');
+        hasErrors = hasErrors || true;
+      }
+
+      if(selectedDate && utils.compareDates(selectedDate, minDate) < 0) {
+        setDateError('Date must not be earlier than Jan 1, 2020.');
+        hasErrors = hasErrors || true;
+      }
+
+      if(selectedDate && utils.compareDates(selectedDate, maxDate) >= 0) {
+        setDateError('Date must not be a future date.');
+        hasErrors = hasErrors || true;
+      }
+
+      if(!hasErrors) {
+          onSave(e);
+      }
+    };
+
     return (
       <AppDialog 
         open={open} 
-        onSave={onSave} 
+        onSave={handleOnSave} 
         onClose={onClose}
         title="Add Social Interaction"
         id="id-dialog-social"
@@ -45,6 +97,8 @@ export const SocialInteractionDialog: React.FC<SocialInteractionDialogProps> =
             <Grid item xs={12} sm={6}>
               <TextField 
                 required 
+                error={!!nameError}
+                helperText={nameError}
                 id="si-name" 
                 name="name" 
                 label="Name" 
@@ -56,7 +110,8 @@ export const SocialInteractionDialog: React.FC<SocialInteractionDialogProps> =
                 <KeyboardDatePicker
                     disableToolbar
                     disableFuture
-                    minDate={new Date(2020, 0, 1)}
+                    error={!!dateError}
+                    helperText={dateError}
                     variant="inline"
                     format="MM/dd/yyyy"
                     margin="normal"
@@ -75,6 +130,8 @@ export const SocialInteractionDialog: React.FC<SocialInteractionDialogProps> =
             <Grid item xs={12} sm={6}>
               <TextField 
                 required 
+                error={!!hoursError}
+                helperText={hoursError}
                 id="si-hours" 
                 name="hours" 
                 label="Hours" 
