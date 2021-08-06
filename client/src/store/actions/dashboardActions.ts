@@ -86,4 +86,40 @@ export const performDashboardAddSocial = (data: ISocialInteractionData) =>
     return dispatch(dashboardAddSocialAction(data));
   } 
 
+export interface IDashboardFetchSocialActionPayload {
+  socialInteractions: ISocialInteractionData[];
+  totalCountSocialInteractions: number;
+};
+
+export interface IDashboardFetchSocialAction extends IDashboardAction {
+  payload: IDashboardFetchSocialActionPayload;
+};
+
+export const dashboardFetchSocialAction = 
+(socialInteractions: ISocialInteractionData[], totalCountSocialInteractions: number) : IDashboardFetchSocialAction => ({
+  type: dashboardActions.FETCH_SOCIAL,
+  payload: {
+    socialInteractions,
+    totalCountSocialInteractions,
+  },
+});
+
+export const performDashboardFetchSocialData = () => 
+  async (dispatch: DashboardAppDispatch) => {
+    const result = await Promise.all([
+      api.getSocialInteractions(),
+      // api.getVisitedPlaces(),
+    ]);
+
+    const totalCountSocialInteractions = result[0].length; // TODO
+    // const totalCountVisitedPlaces = result[1].length; // TODO
+
+    return dispatch(dashboardFetchSocialAction(
+      result[0], 
+      totalCountSocialInteractions // ,
+      // result[1],
+      // totalCountVisitedPlaces
+    ));
+  } 
+
 export default dashboardActions;

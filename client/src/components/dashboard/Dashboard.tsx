@@ -5,7 +5,7 @@ import Container from '@material-ui/core/Container';
 import DashboardButtons from './DashboardButtons';
 import Header from './Header';
 import Loader from '../shared/Loader';
-import { DashboardAppDispatch, IDashboardFetchDataActionPayload, performDashboardAddSocial, performDashboardFetchData } from '../../store/actions/dashboardActions';
+import { DashboardAppDispatch, IDashboardFetchDataActionPayload, performDashboardAddSocial, performDashboardFetchData, performDashboardFetchSocialData } from '../../store/actions/dashboardActions';
 import { useCustomSelector } from '../../lib/hooks';
 import states from '../../store/states/dashboardStates';
 import SocialInteractionDialog from '../social_interaction/SocialInteractionDialog';
@@ -21,8 +21,13 @@ export const Dashboard: React.FC = () => {
   const [openVisitedPlace, setOpenVisitedPlace] = useState(false);
 
   useEffect(() => {
-    dispatch(performDashboardFetchData());
-  }, [dispatch]);
+    console.log('Beginning: ', { dashboardState });
+    if(dashboardState.stateName === states.START) {
+      dispatch(performDashboardFetchData());
+    } else if (dashboardState.stateName === states.OUTDATED_SOCIAL) {
+      dispatch(performDashboardFetchSocialData());
+    }
+  }, [dispatch, dashboardState]);
 
   // const classes = makeStyles(styles)();
 

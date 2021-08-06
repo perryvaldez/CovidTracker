@@ -1,5 +1,5 @@
 import { Reducer } from 'redux';
-import a, { IDashboardAction, IDashboardAddSocialAction, IDashboardFetchDataAction } from '../actions/dashboardActions';
+import a, { IDashboardAction, IDashboardAddSocialAction, IDashboardFetchDataAction, IDashboardFetchSocialAction } from '../actions/dashboardActions';
 import s, { DashboardStartState as startState, IDashboardState } from '../states/dashboardStates';
 
 const dashboardReducer: Reducer<IDashboardState, IDashboardAction> = 
@@ -25,6 +25,18 @@ const dashboardReducer: Reducer<IDashboardState, IDashboardAction> =
             ...startState,
             stateName: s.OUTDATED_SOCIAL,
             payload: { ...addSocialAction.payload },
+          };
+      }
+      break;
+
+    case s.OUTDATED_SOCIAL:
+      if (action.type === a.FETCH_SOCIAL) {
+          const fetchSocialAction = action as IDashboardFetchSocialAction;
+
+          return {
+            ...startState,
+            stateName: s.READY,
+            payload: { ...fetchSocialAction.payload },
           };
       }
       break;
