@@ -44,8 +44,30 @@ async (limit: number = 0, offset: number = 0, sortBy: string[] = []): Promise<IV
     throw new Error('Unable to fetch visited places.');
 };
 
+const postSocialInteraction = 
+async (data: ISocialInteractionData): Promise<string> => {
+    const result = await axios.post('/social-interactions', data);
+    if(result.status >= 200) {
+        return result.data._id;
+    }
+
+    throw new Error('Unable to post social interaction.');
+};
+
+const postVisitedPlace = 
+async (data: IVisitedPlacesData): Promise<string> => {
+    const result = await axios.post('/visited-places', data);
+    if(result.status >= 200) {
+        return result.data._id;
+    }
+
+    throw new Error('Unable to post visited place.');
+};
+
 export default {
   getSocialInteractions,
   getVisitedPlaces,
+  postSocialInteraction,
+  postVisitedPlace,
 };
 
