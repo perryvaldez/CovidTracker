@@ -43,40 +43,62 @@ export const SocialInteractionDialog: React.FC<SocialInteractionDialogProps> =
     const handleOnSave = (e: any) => {
       let hasErrors = false;
 
+      let hasNameError = false;
       if(!name) {
         setNameError('Name is required.');
+        hasNameError = hasNameError || true;
         hasErrors = hasErrors || true;
       }
 
+      if(!hasNameError) {
+        setNameError('');
+      }
+
+      let hasHoursError = false;
       if(!strHours) {
         setHoursError('Hours is required.');
+        hasHoursError = hasHoursError || true;
         hasErrors = hasErrors || true;
       }
 
       let hours = parseInt(strHours, 10);
       if(isNaN(hours)) {
         setHoursError('Invalid hours.');
+        hasHoursError = hasHoursError || true;
         hasErrors = hasErrors || true;
       }
 
       if(hours < 0) {
         setHoursError('Hours must be greater than 0.');
+        hasHoursError = hasHoursError || true;
         hasErrors = hasErrors || true;
       }
 
+      if(!hasHoursError) {
+        setHoursError('');
+      }
+
+      let hasDateError = false;
       if(!selectedDate) {
         setDateError('Date is required.');
+        hasDateError = hasDateError || true;
         hasErrors = hasErrors || true;
       }
 
       if(selectedDate && utils.compareDates(selectedDate, minDate) < 0) {
         setDateError('Date must not be earlier than Jan 1, 2020.');
+        hasDateError = hasDateError || true;
         hasErrors = hasErrors || true;
       }
 
       if(selectedDate && utils.compareDates(selectedDate, maxDate) >= 0) {
         setDateError('Date must not be a future date.');
+        hasDateError = hasDateError || true;
         hasErrors = hasErrors || true;
+      }
+
+      if(!hasDateError) {
+        setDateError('');
       }
 
       if(!hasErrors) {
@@ -84,11 +106,23 @@ export const SocialInteractionDialog: React.FC<SocialInteractionDialogProps> =
       }
     };
 
+    const handleOnClose = (e: any) => {
+      setSelectedDate(new Date());
+      setName('');
+      setStrHours('');
+      setSocialDistance(false);
+      setNameError('');
+      setHoursError('');
+      setDateError('');
+
+      onClose(e);
+    };
+
     return (
       <AppDialog 
         open={open} 
         onSave={handleOnSave} 
-        onClose={onClose}
+        onClose={handleOnClose}
         title="Add Social Interaction"
         id="id-dialog-social"
       >
