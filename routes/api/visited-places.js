@@ -16,9 +16,21 @@ router.get("/", async (req, res) => {
   }
 });
 
+// @route   GET api/visited-places/count
+// @desc    Get all visited places/count
+router.get("/count", async (req, res) => {
+  try {
+    const count = await VisitedPlace.find({}).countDocuments();
+    res.json(count);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server Error");
+  }
+});
+
 // @route   GET api/visited-places/:id
 // @desc    Get visited place by Id
-router.get("/:id", async (req, res) => {
+router.get("/:id([0-9a-f]+)", async (req, res) => {
   try {
     const visitedPlace = await VisitedPlace.findById(req.params.id);
 
