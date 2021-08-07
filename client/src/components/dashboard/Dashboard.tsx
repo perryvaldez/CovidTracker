@@ -2,15 +2,22 @@ import React, { useEffect, useState }  from 'react';
 import { useDispatch } from 'react-redux';
 import Container from '@material-ui/core/Container';
 // import { makeStyles } from '@material-ui/styles';
+import { ISocialInteractionData, IVisitedPlaceData } from '../../lib/api';
+import { useCustomSelector } from '../../lib/hooks';
 import DashboardButtons from './DashboardButtons';
 import Header from './Header';
 import Loader from '../shared/Loader';
-import { DashboardAppDispatch, IDashboardFetchDataActionPayload, performDashboardAddSocial, performDashboardFetchData, performDashboardFetchSocialData } from '../../store/actions/dashboardActions';
-import { useCustomSelector } from '../../lib/hooks';
+import { 
+  DashboardAppDispatch, 
+  performDashboardAddSocial, 
+  performDashboardAddVisited, 
+  performDashboardFetchData, 
+  performDashboardFetchSocialData, 
+  performDashboardFetchVisitedData,
+} from '../../store/actions/dashboardActions';
 import states from '../../store/states/dashboardStates';
 import SocialInteractionDialog from '../social_interaction/SocialInteractionDialog';
 import VisitedPlaceDialog from '../visited_place/VisitedPlaceDialog';
-import { ISocialInteractionData, IVisitedPlaceData } from '../../lib/api';
 // import styles from './Dashboard.styles';
 
 export const Dashboard: React.FC = () => { 
@@ -25,6 +32,8 @@ export const Dashboard: React.FC = () => {
       dispatch(performDashboardFetchData());
     } else if (dashboardState.stateName === states.OUTDATED_SOCIAL) {
       dispatch(performDashboardFetchSocialData());
+    } else if (dashboardState.stateName === states.OUTDATED_VISITED) {
+      dispatch(performDashboardFetchVisitedData());
     }
   }, [dispatch, dashboardState]);
 
@@ -52,7 +61,7 @@ export const Dashboard: React.FC = () => {
   };
 
   const handleSaveVisitedPlaceDialog = (data: IVisitedPlaceData) => (e: any) => {
-    console.log('Visited place: ', { data });
+    dispatch(performDashboardAddVisited(data));
     setOpenVisitedPlace(false);
   };
 
@@ -62,8 +71,8 @@ export const Dashboard: React.FC = () => {
       <Container disableGutters>
         <Header />
         <DashboardButtons
-          totalCountSocialInteractions={(dashboardState.payload as IDashboardFetchDataActionPayload).totalCountSocialInteractions}
-          totalCountVisitedPlaces={(dashboardState.payload as IDashboardFetchDataActionPayload).totalCountVisitedPlaces}
+          totalCountSocialInteractions={dashboardState.payload.totalCountSocialInteractions}
+          totalCountVisitedPlaces={dashboardState.payload.totalCountVisitedPlaces}
           openSocialInteractionDialog={handleOpenSocialInteractionDialog}
           openVisitedPlaceDialog={handleOpenVisitedPlaceDialog}
         />

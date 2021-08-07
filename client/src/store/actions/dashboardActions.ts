@@ -6,6 +6,8 @@ const dashboardActions = {
   FETCH_DATA: 'DASHBOARD_FETCH_DATA',
   ADD_SOCIAL: 'DASHBOARD_ADD_SOCIAL',
   FETCH_SOCIAL: 'DASHBOARD_FETCH_SOCIAL',
+  ADD_VISITED: 'DASHBOARD_ADD_VISITED',
+  FETCH_VISITED: 'DASHBOARD_FETCH_VISITED',
 };
 
 export interface IDashboardAction {
@@ -112,6 +114,59 @@ export const performDashboardFetchSocialData = () =>
     return dispatch(dashboardFetchSocialAction(
       result, 
       totalCountSocialInteractions
+    ));
+  } 
+
+export interface IDashboardAddVisitedActionPayload {
+  visitedPlace: IVisitedPlaceData;
+};
+
+export interface IDashboardAddVisitedAction extends IDashboardAction {
+  payload: IDashboardAddVisitedActionPayload;
+};
+
+export const dashboardAddVisitedAction = 
+(visitedPlace: IVisitedPlaceData) : IDashboardAddVisitedAction => ({
+  type: dashboardActions.ADD_VISITED,
+  payload: {
+    visitedPlace,
+  },
+});
+
+export const performDashboardAddVisited = (data: IVisitedPlaceData) => 
+  async (dispatch: DashboardAppDispatch) => {
+    const id = await api.postVisitedPlace(data);
+    data._id = id;
+
+    return dispatch(dashboardAddVisitedAction(data));
+  } 
+
+export interface IDashboardFetchVisitedActionPayload {
+  visitedPlaces: IVisitedPlaceData[];
+  totalCountVisitedPlaces: number;
+};
+
+export interface IDashboardFetchVisitedAction extends IDashboardAction {
+  payload: IDashboardFetchVisitedActionPayload;
+};
+
+export const dashboardFetchVisitedAction = 
+(visitedPlaces: IVisitedPlaceData[], totalCountVisitedPlaces: number) : IDashboardFetchVisitedAction => ({
+  type: dashboardActions.FETCH_VISITED,
+  payload: {
+    visitedPlaces,
+    totalCountVisitedPlaces,
+  },
+});
+
+export const performDashboardFetchVisitedData = () => 
+  async (dispatch: DashboardAppDispatch) => {
+    const result = await api.getVisitedPlaces();
+    const totalCountVisitedPlaces = result.length; // TODO
+
+    return dispatch(dashboardFetchVisitedAction(
+      result, 
+      totalCountVisitedPlaces,
     ));
   } 
 

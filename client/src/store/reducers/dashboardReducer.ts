@@ -1,5 +1,5 @@
 import { Reducer } from 'redux';
-import a, { IDashboardAction, IDashboardAddSocialAction, IDashboardFetchDataAction, IDashboardFetchSocialAction } from '../actions/dashboardActions';
+import a, { IDashboardAction, IDashboardAddSocialAction, IDashboardAddVisitedAction, IDashboardFetchDataAction, IDashboardFetchSocialAction, IDashboardFetchVisitedAction } from '../actions/dashboardActions';
 import s, { DashboardStartState as startState, IDashboardState } from '../states/dashboardStates';
 
 const dashboardReducer: Reducer<IDashboardState, IDashboardAction> = 
@@ -27,6 +27,16 @@ const dashboardReducer: Reducer<IDashboardState, IDashboardAction> =
             payload: { ...state.payload, ...addSocialAction.payload },
           };
       }
+
+      if (action.type === a.ADD_VISITED) {
+          const addVisitedAction = action as IDashboardAddVisitedAction;
+
+          return {
+            ...state,
+            stateName: s.OUTDATED_VISITED,
+            payload: { ...state.payload, ...addVisitedAction.payload },
+          };
+      }
       break;
 
     case s.OUTDATED_SOCIAL:
@@ -37,6 +47,18 @@ const dashboardReducer: Reducer<IDashboardState, IDashboardAction> =
             ...state,
             stateName: s.READY,
             payload: { ...state.payload, ...fetchSocialAction.payload },
+          };
+      }
+      break;
+
+    case s.OUTDATED_VISITED:
+      if (action.type === a.FETCH_VISITED) {
+          const fetchVisitedAction = action as IDashboardFetchVisitedAction;
+
+          return {
+            ...state,
+            stateName: s.READY,
+            payload: { ...state.payload, ...fetchVisitedAction.payload },
           };
       }
       break;

@@ -4,6 +4,7 @@ const dashboardStates = {
   START: 'DASHBOARD_START',
   READY: 'DASHBOARD_READY',
   OUTDATED_SOCIAL: 'DASHBOARD_OUTDATED_SOCIAL',
+  OUTDATED_VISITED: 'DASHBOARD_OUTDATED_VISITED',
 };
 
 export interface IDashboardPayload {
