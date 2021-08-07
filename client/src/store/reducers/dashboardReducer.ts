@@ -10,9 +10,9 @@ const dashboardReducer: Reducer<IDashboardState, IDashboardAction> =
           const fetchAction = action as IDashboardFetchDataAction;
 
           return {
-            ...startState,
+            ...state,
             stateName: s.READY,
-            payload: { ...fetchAction.payload },
+            payload: { ...state.payload, ...fetchAction.payload },
           };
       }
       break;
@@ -22,9 +22,9 @@ const dashboardReducer: Reducer<IDashboardState, IDashboardAction> =
           const addSocialAction = action as IDashboardAddSocialAction;
 
           return {
-            ...startState,
+            ...state,
             stateName: s.OUTDATED_SOCIAL,
-            payload: { ...addSocialAction.payload },
+            payload: { ...state.payload, ...addSocialAction.payload },
           };
       }
       break;
@@ -34,9 +34,9 @@ const dashboardReducer: Reducer<IDashboardState, IDashboardAction> =
           const fetchSocialAction = action as IDashboardFetchSocialAction;
 
           return {
-            ...startState,
+            ...state,
             stateName: s.READY,
-            payload: { ...fetchSocialAction.payload },
+            payload: { ...state.payload, ...fetchSocialAction.payload },
           };
       }
       break;

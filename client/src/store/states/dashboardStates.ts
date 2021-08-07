@@ -1,4 +1,4 @@
-import { IDashboardAddSocialActionPayload, IDashboardFetchDataActionPayload, IDashboardFetchSocialActionPayload, NullDashboardFetchDataActionPayload } from "../actions/dashboardActions";
+import { ISocialInteractionData, IVisitedPlaceData } from "../../lib/api";
 
 const dashboardStates = {
   START: 'DASHBOARD_START',
@@ -6,14 +6,30 @@ const dashboardStates = {
   OUTDATED_SOCIAL: 'DASHBOARD_OUTDATED_SOCIAL',
 };
 
+export interface IDashboardPayload {
+  socialInteraction?: ISocialInteractionData;
+  socialInteractions: ISocialInteractionData[];
+  totalCountSocialInteractions: number;
+  visitedPlace?: IVisitedPlaceData;
+  visitedPlaces: IVisitedPlaceData[];
+  totalCountVisitedPlaces: number;
+};
+
 export interface IDashboardState {
   stateName: string;
-  payload: IDashboardFetchDataActionPayload | IDashboardAddSocialActionPayload | IDashboardFetchSocialActionPayload;
+  payload: IDashboardPayload;
+};
+
+export const NullDashboardPayload = {
+  socialInteractions: [],
+  totalCountSocialInteractions: 0,
+  visitedPlaces: [],
+  totalCountVisitedPlaces: 0,
 };
 
 export const DashboardStartState: IDashboardState = {
   stateName: dashboardStates.START,
-  payload: NullDashboardFetchDataActionPayload,
+  payload: NullDashboardPayload,
 };
 
 export default dashboardStates;
