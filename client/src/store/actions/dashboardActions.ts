@@ -33,14 +33,14 @@ export interface IDashboardFetchDataAction extends IDashboardAction {
 };
 
 export const dashboardFetchDataAction = 
-(socialInteractions: ISocialInteractionData[], totalCountSocialInteractions: number, 
-    visitedPlaces: IVisitedPlaceData[], totalCountVisitedPlaces: number) : IDashboardFetchDataAction => ({
+(totalCountSocialInteractions: number, totalCountVisitedPlaces: number, 
+  socialInteractions: ISocialInteractionData[], visitedPlaces: IVisitedPlaceData[]) : IDashboardFetchDataAction => ({
   type: dashboardActions.FETCH_DATA,
   payload: {
-    socialInteractions,
     totalCountSocialInteractions,
-    visitedPlaces,
     totalCountVisitedPlaces,
+    socialInteractions,
+    visitedPlaces,
   },
 });
 
@@ -49,18 +49,19 @@ export type DashboardAppDispatch = ThunkDispatch<IDashboardState, any, IDashboar
 export const performDashboardFetchData = () => 
   async (dispatch: DashboardAppDispatch) => {
     const result = await Promise.all([
-      api.getSocialInteractions(),
-      api.getVisitedPlaces(),
+      api.countSocialInteractions(),
+      api.countVisitedPlaces(),
+      api.getSocialInteractions(), // TODO: Paginate this, or fetch only 14 days' data
+      api.getVisitedPlaces(), // TODO: Paginate this, or fetch only 14 days' data
     ]);
 
-    const totalCountSocialInteractions = result[0].length; // TODO
-    const totalCountVisitedPlaces = result[1].length; // TODO
+    const [totalCountSocialInteractions, totalCountVisitedPlaces, socialInteractions, visitedPlaces] = result;
 
     return dispatch(dashboardFetchDataAction(
-      result[0], 
       totalCountSocialInteractions,
-      result[1],
-      totalCountVisitedPlaces
+      totalCountVisitedPlaces,
+      socialInteractions,
+      visitedPlaces
     ));
   } 
 
@@ -98,7 +99,7 @@ export interface IDashboardFetchSocialAction extends IDashboardAction {
 };
 
 export const dashboardFetchSocialAction = 
-(socialInteractions: ISocialInteractionData[], totalCountSocialInteractions: number) : IDashboardFetchSocialAction => ({
+(totalCountSocialInteractions: number, socialInteractions: ISocialInteractionData[]) : IDashboardFetchSocialAction => ({
   type: dashboardActions.FETCH_SOCIAL,
   payload: {
     socialInteractions,
@@ -108,12 +109,16 @@ export const dashboardFetchSocialAction =
 
 export const performDashboardFetchSocialData = () => 
   async (dispatch: DashboardAppDispatch) => {
-    const result = await api.getSocialInteractions();
-    const totalCountSocialInteractions = result.length; // TODO
+    const result = await Promise.all([
+      api.countSocialInteractions(),
+      api.getSocialInteractions(), // TODO: Paginate this, or fetch only 14 days' data
+    ]);
+
+    const [count, socialInteractions] = result;
 
     return dispatch(dashboardFetchSocialAction(
-      result, 
-      totalCountSocialInteractions
+      count,
+      socialInteractions
     ));
   } 
 
@@ -151,7 +156,7 @@ export interface IDashboardFetchVisitedAction extends IDashboardAction {
 };
 
 export const dashboardFetchVisitedAction = 
-(visitedPlaces: IVisitedPlaceData[], totalCountVisitedPlaces: number) : IDashboardFetchVisitedAction => ({
+(totalCountVisitedPlaces: number, visitedPlaces: IVisitedPlaceData[]) : IDashboardFetchVisitedAction => ({
   type: dashboardActions.FETCH_VISITED,
   payload: {
     visitedPlaces,
@@ -161,12 +166,16 @@ export const dashboardFetchVisitedAction =
 
 export const performDashboardFetchVisitedData = () => 
   async (dispatch: DashboardAppDispatch) => {
-    const result = await api.getVisitedPlaces();
-    const totalCountVisitedPlaces = result.length; // TODO
+    const result = await Promise.all([
+      api.countVisitedPlaces(),
+      api.getVisitedPlaces(), // TODO: Paginate this, or fetch only 14 days' data
+    ]);
+
+    const [count, visitedPlaces] = result;
 
     return dispatch(dashboardFetchVisitedAction(
-      result, 
-      totalCountVisitedPlaces,
+      count,
+      visitedPlaces
     ));
   } 
 

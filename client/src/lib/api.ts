@@ -34,6 +34,17 @@ async (limit: number = 0, offset: number = 0, sortBy: string[] = []): Promise<IS
     throw new Error('Unable to fetch social interactions.');
 };
 
+const countSocialInteractions = 
+async (): Promise<number> => {
+    console.log('countSocialInteractions: called...');
+    const result = await axios.get('/social-interactions/count');
+    if(result.status === 200) {
+      return result.data as number;
+    }
+
+    throw new Error('Unable to count social interactions.');
+};
+
 const getVisitedPlaces = 
 async (limit: number = 0, offset: number = 0, sortBy: string[] = []): Promise<IVisitedPlaceData[]> => {
     const result = await axios.get('/visited-places');
@@ -42,6 +53,17 @@ async (limit: number = 0, offset: number = 0, sortBy: string[] = []): Promise<IV
     }
 
     throw new Error('Unable to fetch visited places.');
+};
+
+const countVisitedPlaces = 
+async (): Promise<number> => {
+    console.log('countVisitedPlaces: called...');
+    const result = await axios.get('/visited-places/count');
+    if(result.status === 200) {
+      return result.data as number;
+    }
+
+    throw new Error('Unable to count visited places.');
 };
 
 const postSocialInteraction = 
@@ -66,7 +88,9 @@ async (data: IVisitedPlaceData): Promise<string> => {
 
 export default {
   getSocialInteractions,
+  countSocialInteractions,
   getVisitedPlaces,
+  countVisitedPlaces,
   postSocialInteraction,
   postVisitedPlace,
 };
