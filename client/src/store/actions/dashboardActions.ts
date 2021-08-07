@@ -106,19 +106,12 @@ export const dashboardFetchSocialAction =
 
 export const performDashboardFetchSocialData = () => 
   async (dispatch: DashboardAppDispatch) => {
-    const result = await Promise.all([
-      api.getSocialInteractions(),
-      // api.getVisitedPlaces(),
-    ]);
-
-    const totalCountSocialInteractions = result[0].length; // TODO
-    // const totalCountVisitedPlaces = result[1].length; // TODO
+    const result = await api.getSocialInteractions();
+    const totalCountSocialInteractions = result.length; // TODO
 
     return dispatch(dashboardFetchSocialAction(
-      result[0], 
-      totalCountSocialInteractions // ,
-      // result[1],
-      // totalCountVisitedPlaces
+      result, 
+      totalCountSocialInteractions
     ));
   } 
 

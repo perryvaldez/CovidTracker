@@ -21,7 +21,6 @@ export const Dashboard: React.FC = () => {
   const [openVisitedPlace, setOpenVisitedPlace] = useState(false);
 
   useEffect(() => {
-    console.log('Beginning: ', { dashboardState });
     if(dashboardState.stateName === states.START) {
       dispatch(performDashboardFetchData());
     } else if (dashboardState.stateName === states.OUTDATED_SOCIAL) {
