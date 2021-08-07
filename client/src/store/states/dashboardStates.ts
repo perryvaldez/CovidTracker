@@ -10,9 +10,11 @@ const dashboardStates = {
 export interface IDashboardPayload {
   socialInteraction?: ISocialInteractionData;
   socialInteractions: ISocialInteractionData[];
+  dashboardSocialInteractions: ISocialInteractionData[];  // Up to 14 days of latest data only
   totalCountSocialInteractions: number;
   visitedPlace?: IVisitedPlaceData;
   visitedPlaces: IVisitedPlaceData[];
+  dashboardVisitedPlaces: IVisitedPlaceData[];  // Up to 14 days of latest data only
   totalCountVisitedPlaces: number;
 };
 
@@ -23,8 +25,10 @@ export interface IDashboardState {
 
 export const NullDashboardPayload = {
   socialInteractions: [],
+  dashboardSocialInteractions: [],
   totalCountSocialInteractions: 0,
   visitedPlaces: [],
+  dashboardVisitedPlaces: [],
   totalCountVisitedPlaces: 0,
 };
 
