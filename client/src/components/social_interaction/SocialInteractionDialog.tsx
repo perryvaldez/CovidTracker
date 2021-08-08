@@ -11,8 +11,9 @@ type SocialInteractionDialogProps = {
   onSave: (data: ISocialInteractionData) => (e: any) => void,
 };
 
+const currentDate = utils.currentDate();
 const minDate = new Date(2020, 0, 1);
-const maxDate = utils.tomorrowDate();
+const maxDate = utils.tomorrowDate(currentDate);
 
 export const SocialInteractionDialog: React.FC<SocialInteractionDialogProps> = 
 ({ open, onSave, onClose }) => {

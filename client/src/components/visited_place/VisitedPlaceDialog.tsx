@@ -11,8 +11,9 @@ type VisitedPlaceDialogProps = {
   onSave: (data: IVisitedPlaceData) => (e: any) => void,
 };
 
+const currentDate = utils.currentDate();
 const minDate = new Date(2020, 0, 1);
-const maxDate = utils.tomorrowDate();
+const maxDate = utils.tomorrowDate(currentDate);
 
 export const VisitedPlaceDialog: React.FC<VisitedPlaceDialogProps> = 
 ({ open, onSave, onClose }) => {
