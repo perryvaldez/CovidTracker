@@ -19,6 +19,7 @@ import {
 import states from '../../store/states/dashboardStates';
 import SocialInteractionDialog from '../social_interaction/SocialInteractionDialog';
 import VisitedPlaceDialog from '../visited_place/VisitedPlaceDialog';
+import ChartsSection from './ChartsSection';
 // import styles from './Dashboard.styles';
 
 export const Dashboard: React.FC = () => { 
@@ -93,6 +94,9 @@ export const Dashboard: React.FC = () => {
           onClose={handleCloseVisitedPlaceDialog} 
           onSave={handleSaveVisitedPlaceDialog}
         />
+
+        <ChartsSection />
+
       </Container>
     </Loader>
   );
