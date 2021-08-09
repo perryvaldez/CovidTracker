@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const { check, validationResult } = require("express-validator");
+const utils = require("./lib/utils");
 
 const SocialInteraction = require("../../models/SocialInteraction");
 
@@ -8,7 +9,8 @@ const SocialInteraction = require("../../models/SocialInteraction");
 // @desc    Get all social interactions
 router.get("/", async (req, res) => {
   try {
-    const socialInteractions = await SocialInteraction.find().sort({
+    const socialInteractions = await SocialInteraction.find(
+      utils.makeFilter(req.query)).sort({
       date: -1,
     });
     res.json(socialInteractions);
@@ -22,7 +24,7 @@ router.get("/", async (req, res) => {
 // @desc    Count all social interactions
 router.get("/count", async (req, res) => {
   try {
-    const count = await SocialInteraction.find({}).countDocuments();
+    const count = await SocialInteraction.find(utils.makeFilter(req.query)).countDocuments();
     res.json(count);
   } catch (err) {
     console.error(err.message);

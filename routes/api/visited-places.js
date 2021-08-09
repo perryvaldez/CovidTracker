@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const { check, validationResult } = require("express-validator");
+const utils = require("./lib/utils");
 
 const VisitedPlace = require("../../models/VisitedPlace");
 
@@ -8,7 +9,10 @@ const VisitedPlace = require("../../models/VisitedPlace");
 // @desc    Get all visited places
 router.get("/", async (req, res) => {
   try {
-    const visitedPlaces = await VisitedPlace.find().sort({ date: -1 });
+    const visitedPlaces = await VisitedPlace.find(
+      utils.makeFilter(req.query)).sort({ 
+      date: -1 
+    });
     res.json(visitedPlaces);
   } catch (err) {
     console.error(err.message);
@@ -20,7 +24,7 @@ router.get("/", async (req, res) => {
 // @desc    Get all visited places/count
 router.get("/count", async (req, res) => {
   try {
-    const count = await VisitedPlace.find({}).countDocuments();
+    const count = await VisitedPlace.find(utils.makeFilter(req.query)).countDocuments();
     res.json(count);
   } catch (err) {
     console.error(err.message);
