@@ -6,16 +6,18 @@ const extractDate = (d: Date): Date => new Date(d.getFullYear(), d.getMonth(), d
 
 const currentDate = (): Date => extractDate(new Date());
 
-const tomorrowDate = (currentDate: Date) => {
-  const date = currentDate; // Current date and time
-  date.setHours(0);
-  date.setMinutes(0);
-  date.setSeconds(0);
-  date.setMilliseconds(0);
+const minTime = (d: Date) => extractDate(d);
 
+const tomorrowDate = (d: Date) => {
+  const date = extractDate(d);
   const tomorrowMillis = date.getTime() + 24 * 60 * 60 * 1000;
 
   return new Date(tomorrowMillis);
+};
+
+const maxTime = (d: Date) => {
+  const td = tomorrowDate(d);
+  return new Date(td.getTime() - 1);
 };
 
 const toDateTimeString = (d: Date): string => {
@@ -28,4 +30,6 @@ export default {
   toDateTimeString,
   extractDate,
   currentDate,
+  minTime,
+  maxTime,
 };

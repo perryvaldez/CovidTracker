@@ -36,7 +36,6 @@ async (limit: number = 0, offset: number = 0, sortBy: string[] = []): Promise<IS
 
 const countSocialInteractions = 
 async (): Promise<number> => {
-    console.log('countSocialInteractions: called...');
     const result = await axios.get('/social-interactions/count');
     if(result.status === 200) {
       return result.data as number;
@@ -57,7 +56,6 @@ async (limit: number = 0, offset: number = 0, sortBy: string[] = []): Promise<IV
 
 const countVisitedPlaces = 
 async (): Promise<number> => {
-    console.log('countVisitedPlaces: called...');
     const result = await axios.get('/visited-places/count');
     if(result.status === 200) {
       return result.data as number;
