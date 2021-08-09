@@ -17,7 +17,7 @@ const maxDate = utils.tomorrowDate(currentDate);
 
 export const SocialInteractionDialog: React.FC<SocialInteractionDialogProps> = 
 ({ open, onSave, onClose }) => {
-    const [selectedDate, setSelectedDate] = useState(new Date());
+    const [selectedDate, setSelectedDate] = useState(currentDate);
     const [name, setName] = useState('');
     const [strHours, setStrHours] = useState('');
     const [socialDistance, setSocialDistance] = useState(false);
@@ -116,7 +116,7 @@ export const SocialInteractionDialog: React.FC<SocialInteractionDialogProps> =
     };
 
     const handleOnClose = (e: any) => {
-      setSelectedDate(new Date());
+      setSelectedDate(currentDate);
       setName('');
       setStrHours('');
       setSocialDistance(false);

@@ -17,7 +17,7 @@ const maxDate = utils.tomorrowDate(currentDate);
 
 export const VisitedPlaceDialog: React.FC<VisitedPlaceDialogProps> = 
 ({ open, onSave, onClose }) => {
-    const [selectedDate, setSelectedDate] = useState(new Date());
+    const [selectedDate, setSelectedDate] = useState(currentDate);
     const [place, setPlace] = useState('');
     const [strHours, setStrHours] = useState('');
     const [crowded, setCrowded] = useState(false);
@@ -116,7 +116,7 @@ export const VisitedPlaceDialog: React.FC<VisitedPlaceDialogProps> =
     };
 
     const handleOnClose = (e: any) => {
-      setSelectedDate(new Date());
+      setSelectedDate(currentDate);
       setPlace('');
       setStrHours('');
       setCrowded(false);
