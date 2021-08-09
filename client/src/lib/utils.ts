@@ -6,6 +6,9 @@ const dateAddDays = (d: Date, days: number): Date => new Date(d.getTime() + days
 
 const extractDate = (d: Date): Date => new Date(d.getFullYear(), d.getMonth(), d.getDate());
 
+const monthsArr = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+const toShortDate = (d: Date) => `${monthsArr[d.getMonth()]} ${d.getDate()}`;
+
 const currentDate = (): Date => extractDate(new Date());
 
 const minTime = (d: Date) => extractDate(d);
@@ -32,6 +35,7 @@ export default {
   tomorrowDate,
   toDateTimeString,
   extractDate,
+  toShortDate,
   currentDate,
   minTime,
   maxTime,
