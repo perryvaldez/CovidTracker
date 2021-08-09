@@ -2,6 +2,7 @@ import React from 'react';
 import { Box, Grid, makeStyles } from '@material-ui/core';
 import ChartVisitedPlaces from './ChartVisitedPlaces';
 import styles from './ChartsSection.styles';
+import ChartSocialInteractions from './ChartSocialInteractions';
 
 export const ChartsSection = () => {
   const classes = makeStyles(styles)();
@@ -11,6 +12,11 @@ export const ChartsSection = () => {
       <Grid item xs={12} sm={6}>
         <Box display="flex" flexDirection="row" justifyContent="center" width="320">
           <ChartVisitedPlaces />
+        </Box>
+      </Grid>
+      <Grid item xs={12} sm={6}>
+        <Box display="flex" flexDirection="row" justifyContent="center" width="320">
+          <ChartSocialInteractions />
         </Box>
       </Grid>
     </Grid>
