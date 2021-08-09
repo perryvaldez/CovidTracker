@@ -31,15 +31,18 @@ export const Dashboard: React.FC = () => {
   const currentDate = utils.currentDate();
   const currentDateMaxTimeString = utils.toDateTimeString(utils.maxTime(currentDate));
 
+  const last7DaysDate = utils.dateAddDays(currentDate, -7);
+  const last7DaysMinTimeString = utils.toDateTimeString(utils.minTime(last7DaysDate));
+
   useEffect(() => {
     if(dashboardState.stateName === states.START) {
-      dispatch(performDashboardFetchData({ to: currentDateMaxTimeString }));
+      dispatch(performDashboardFetchData({ to: currentDateMaxTimeString, from: last7DaysMinTimeString }));
     } else if (dashboardState.stateName === states.OUTDATED_SOCIAL) {
-      dispatch(performDashboardFetchSocialData({ to: currentDateMaxTimeString }));
+      dispatch(performDashboardFetchSocialData({ to: currentDateMaxTimeString, from: last7DaysMinTimeString }));
     } else if (dashboardState.stateName === states.OUTDATED_VISITED) {
-      dispatch(performDashboardFetchVisitedData({ to: currentDateMaxTimeString }));
+      dispatch(performDashboardFetchVisitedData({ to: currentDateMaxTimeString, from: last7DaysMinTimeString }));
     }
-  }, [dispatch, dashboardState, currentDateMaxTimeString]);
+  }, [dispatch, dashboardState, last7DaysMinTimeString, currentDateMaxTimeString]);
 
   // const classes = makeStyles(styles)();
 

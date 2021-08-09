@@ -49,8 +49,8 @@ export type DashboardAppDispatch = ThunkDispatch<IDashboardState, any, IDashboar
 export const performDashboardFetchData = (filter: FilterType = {}) => 
   async (dispatch: DashboardAppDispatch) => {
     const result = await Promise.all([
-      api.countSocialInteractions(filter),
-      api.countVisitedPlaces(filter),
+      api.countSocialInteractions({ to: filter.to }),
+      api.countVisitedPlaces({ to: filter.to }),
       api.getSocialInteractions(filter), // TODO: Paginate this, or fetch only 14 days' data
       api.getVisitedPlaces(filter), // TODO: Paginate this, or fetch only 14 days' data
     ]);
