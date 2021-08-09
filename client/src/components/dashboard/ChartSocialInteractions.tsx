@@ -1,27 +1,13 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { Box, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
 import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from 'recharts';
 import H2 from '../markup/H2';
 import styles from './ChartSocialInteractions.styles';
-import { Link } from 'react-router-dom';
+import { ChartProps } from '../../lib/charting';
 
-type DataItem = {
-  date: string,
-  count: number,
-};
-
-export const ChartSocialInteractions = () => {
-  const data: DataItem[] = [
-    { date: 'Jun 20', count: 2 },
-    { date: 'Jun 21', count: 4 },
-    { date: 'Jun 22', count: 3 },
-    { date: 'Jun 23', count: 1 },
-    { date: 'Jun 24', count: 3 },
-    { date: 'Jun 25', count: 5 },
-    { date: 'Jun 26', count: 2 },
-  ];
-
+export const ChartSocialInteractions: React.FC<ChartProps> = ({ data }) => {
   const classes = makeStyles(styles)();
 
   return (
