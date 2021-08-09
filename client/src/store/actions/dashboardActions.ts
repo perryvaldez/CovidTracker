@@ -1,6 +1,6 @@
 import { ThunkDispatch } from "redux-thunk";
 import { IDashboardState } from "../states/dashboardStates";
-import api, { ISocialInteractionData, IVisitedPlaceData } from '../../lib/api';
+import api, { FilterType, ISocialInteractionData, IVisitedPlaceData } from '../../lib/api';
 
 const dashboardActions = {
   FETCH_DATA: 'DASHBOARD_FETCH_DATA',
@@ -46,13 +46,13 @@ export const dashboardFetchDataAction =
 
 export type DashboardAppDispatch = ThunkDispatch<IDashboardState, any, IDashboardAction>;
 
-export const performDashboardFetchData = () => 
+export const performDashboardFetchData = (filter: FilterType = {}) => 
   async (dispatch: DashboardAppDispatch) => {
     const result = await Promise.all([
-      api.countSocialInteractions(),
-      api.countVisitedPlaces(),
-      api.getSocialInteractions(), // TODO: Paginate this, or fetch only 14 days' data
-      api.getVisitedPlaces(), // TODO: Paginate this, or fetch only 14 days' data
+      api.countSocialInteractions(filter),
+      api.countVisitedPlaces(filter),
+      api.getSocialInteractions(filter), // TODO: Paginate this, or fetch only 14 days' data
+      api.getVisitedPlaces(filter), // TODO: Paginate this, or fetch only 14 days' data
     ]);
 
     const [totalCountSocialInteractions, totalCountVisitedPlaces, socialInteractions, visitedPlaces] = result;
@@ -107,11 +107,11 @@ export const dashboardFetchSocialAction =
   },
 });
 
-export const performDashboardFetchSocialData = () => 
+export const performDashboardFetchSocialData = (filter: FilterType = {}) => 
   async (dispatch: DashboardAppDispatch) => {
     const result = await Promise.all([
-      api.countSocialInteractions(),
-      api.getSocialInteractions(), // TODO: Paginate this, or fetch only 14 days' data
+      api.countSocialInteractions(filter),
+      api.getSocialInteractions(filter), // TODO: Paginate this, or fetch only 14 days' data
     ]);
 
     const [count, socialInteractions] = result;
@@ -164,11 +164,11 @@ export const dashboardFetchVisitedAction =
   },
 });
 
-export const performDashboardFetchVisitedData = () => 
+export const performDashboardFetchVisitedData = (filter: FilterType = {}) => 
   async (dispatch: DashboardAppDispatch) => {
     const result = await Promise.all([
-      api.countVisitedPlaces(),
-      api.getVisitedPlaces(), // TODO: Paginate this, or fetch only 14 days' data
+      api.countVisitedPlaces(filter),
+      api.getVisitedPlaces(filter), // TODO: Paginate this, or fetch only 14 days' data
     ]);
 
     const [count, visitedPlaces] = result;

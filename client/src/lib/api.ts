@@ -24,9 +24,31 @@ axios.defaults.headers.put['Content-Type'] = 'application/json';
 axios.defaults.headers.patch['Content-Type'] = 'application/json';
 axios.defaults.headers.delete['Content-Type'] = 'application/json';
 
+export type FilterType = {
+  [key: string]: any,
+  from?: string,
+  to?: string,
+};
+
+const makeQueryParams = (filter: FilterType) => {
+  const uparms = new URLSearchParams();
+
+  for(let key in filter) {
+    uparms.append(key, filter[key]);
+  }
+
+  let qs = uparms.toString();
+  if(qs) {
+    qs = `?${qs}`;
+  }
+
+  return qs;
+};
+
 const getSocialInteractions = 
-async (limit: number = 0, offset: number = 0, sortBy: string[] = []): Promise<ISocialInteractionData[]> => {
-    const result = await axios.get('/social-interactions');
+async (filter: FilterType = {}, limit: number = 0, offset: number = 0, sortBy: string[] = []): Promise<ISocialInteractionData[]> => {
+    const params = makeQueryParams(filter);
+    const result = await axios.get(`/social-interactions${params}`);
     if(result.status === 200) {
       return result.data as ISocialInteractionData[];
     }
@@ -35,8 +57,9 @@ async (limit: number = 0, offset: number = 0, sortBy: string[] = []): Promise<IS
 };
 
 const countSocialInteractions = 
-async (): Promise<number> => {
-    const result = await axios.get('/social-interactions/count');
+async (filter: FilterType = {}): Promise<number> => {
+    const params = makeQueryParams(filter);
+    const result = await axios.get(`/social-interactions/count${params}`);
     if(result.status === 200) {
       return result.data as number;
     }
@@ -45,8 +68,9 @@ async (): Promise<number> => {
 };
 
 const getVisitedPlaces = 
-async (limit: number = 0, offset: number = 0, sortBy: string[] = []): Promise<IVisitedPlaceData[]> => {
-    const result = await axios.get('/visited-places');
+async (filter: FilterType = {}, limit: number = 0, offset: number = 0, sortBy: string[] = []): Promise<IVisitedPlaceData[]> => {
+    const params = makeQueryParams(filter);
+    const result = await axios.get(`/visited-places${params}`);
     if(result.status === 200) {
       return result.data as IVisitedPlaceData[];
     }
@@ -55,8 +79,9 @@ async (limit: number = 0, offset: number = 0, sortBy: string[] = []): Promise<IV
 };
 
 const countVisitedPlaces = 
-async (): Promise<number> => {
-    const result = await axios.get('/visited-places/count');
+async (filter: FilterType = {}): Promise<number> => {
+    const params = makeQueryParams(filter);
+    const result = await axios.get(`/visited-places/count${params}`);
     if(result.status === 200) {
       return result.data as number;
     }

@@ -4,6 +4,7 @@ import Container from '@material-ui/core/Container';
 // import { makeStyles } from '@material-ui/styles';
 import { ISocialInteractionData, IVisitedPlaceData } from '../../lib/api';
 import { useCustomSelector } from '../../lib/hooks';
+import utils from '../../lib/utils';
 import DashboardButtons from './DashboardButtons';
 import Header from './Header';
 import Loader from '../shared/Loader';
@@ -27,15 +28,18 @@ export const Dashboard: React.FC = () => {
   const [openSocialInteraction, setOpenSocialInteraction] = useState(false);
   const [openVisitedPlace, setOpenVisitedPlace] = useState(false);
 
+  const currentDate = utils.currentDate();
+  const currentDateMaxTimeString = utils.toDateTimeString(utils.maxTime(currentDate));
+
   useEffect(() => {
     if(dashboardState.stateName === states.START) {
-      dispatch(performDashboardFetchData());
+      dispatch(performDashboardFetchData({ to: currentDateMaxTimeString }));
     } else if (dashboardState.stateName === states.OUTDATED_SOCIAL) {
-      dispatch(performDashboardFetchSocialData());
+      dispatch(performDashboardFetchSocialData({ to: currentDateMaxTimeString }));
     } else if (dashboardState.stateName === states.OUTDATED_VISITED) {
-      dispatch(performDashboardFetchVisitedData());
+      dispatch(performDashboardFetchVisitedData({ to: currentDateMaxTimeString }));
     }
-  }, [dispatch, dashboardState]);
+  }, [dispatch, dashboardState, currentDateMaxTimeString]);
 
   // const classes = makeStyles(styles)();
 
