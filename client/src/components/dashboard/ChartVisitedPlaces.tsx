@@ -22,7 +22,7 @@ export const ChartVisitedPlaces: React.FC<ChartProps> = ({ data }) => {
         <H2 className={classes.title}>Recent Visited Places</H2>
         <div className={classes.link}><Link to="/visited">View All</Link></div>
       </Box>
-      <BarChart width={300} height={200} data={data} margin={{ left: 0, right: 0 }}>
+      <BarChart width={300} height={180} data={data} margin={{ left: 0, right: 0 }}>
         <CartesianGrid strokeDasharray="4 2" />
         <XAxis dataKey="date" padding={{ left: 8, right: 8 }} />
         <YAxis dataKey="count" allowDecimals={false}>

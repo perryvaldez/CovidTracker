@@ -1,6 +1,6 @@
 const styles = {
   grid: {
-    marginTop: 8,
+    marginTop: 16,
   },
 };
 

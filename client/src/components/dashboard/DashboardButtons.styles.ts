@@ -1,6 +1,6 @@
 const styles = {
   grid: {
-    width: 360,
+    width: 340,
     marginLeft: 'auto',
     marginRight: 'auto',
   },
