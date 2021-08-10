@@ -1,6 +1,6 @@
 import React, { useEffect, useState }  from 'react';
 import { useDispatch } from 'react-redux';
-import Container from '@material-ui/core/Container';
+import { Container, Popover, Typography } from '@material-ui/core';
 // import { makeStyles } from '@material-ui/styles';
 import { ISocialInteractionData, IVisitedPlaceData } from '../../lib/api';
 import { useCustomSelector } from '../../lib/hooks';
@@ -28,6 +28,8 @@ export const Dashboard: React.FC = () => {
 
   const [openSocialInteraction, setOpenSocialInteraction] = useState(false);
   const [openVisitedPlace, setOpenVisitedPlace] = useState(false);
+  const [openNotification, setOpenNotification] = useState(false);
+  const [anchorEl, setAnchorEl] = useState(null);
 
   const currentDate = utils.currentDate();
   const currentDateMaxTimeString = utils.toDateTimeString(utils.maxTime(currentDate));
@@ -73,11 +75,31 @@ export const Dashboard: React.FC = () => {
     setOpenVisitedPlace(false);
   };
 
-
+  const handleClickedNotification = (e: any) => {
+    setAnchorEl(e.currentTarget);
+    setOpenNotification(true);
+  };
+  
+  const handleNotificationClose = (e: any) => {
+    setOpenNotification(false);
+  };
+  
   return (
     <Loader isLoading={dashboardState.stateName === states.START}>
       <Container disableGutters>
-        <Header />
+        <Header onClickedNotification={handleClickedNotification} />
+        <Popover
+          id="notification-popover"
+          open={openNotification}
+          onClose={handleNotificationClose}
+          anchorEl={anchorEl}
+          anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+          transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+        >
+          <Typography variant="body1" component="div">
+            <p>Hello, World!</p>
+          </Typography>
+        </Popover>
         <DashboardButtons
           totalCountSocialInteractions={dashboardState.payload.totalCountSocialInteractions}
           totalCountVisitedPlaces={dashboardState.payload.totalCountVisitedPlaces}
