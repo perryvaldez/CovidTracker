@@ -4,6 +4,10 @@ const styles = {
         width: 28,
         height: 28,
     },
+    notificationButton: {
+        margin: 0,
+        padding: 0,
+    },
 };
 
 export default styles;
