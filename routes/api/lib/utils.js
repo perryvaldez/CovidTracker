@@ -1,6 +1,8 @@
 const fieldMappings = {
-  to: 'date',
-  from: 'date'
+  to: 'date', // ISO 8601 date string
+  from: 'date', // ISO 8601 date string
+  distanced: 'isSocialDistancing', // Either '1' if true, or '0' if false
+  crowded: 'isCrowded', // Either '1' if true, or '0' if false
 };
 
 const makeFilter = (queryParams) => {
@@ -20,7 +22,15 @@ const makeFilter = (queryParams) => {
       }
 
       if(q === 'to') {
-        parms.date.push({ '$lte': queryParams[q] });  
+        parms[key].push({ '$lte': queryParams[q] });  
+      }
+
+      if(q === 'distanced') {
+        parms[key].push({ '$eq': (queryParams[q] === '1') });  
+      }
+
+      if(q === 'crowded') {
+        parms[key].push({ '$eq': (queryParams[q] === '1') });  
       }
     }
   }
