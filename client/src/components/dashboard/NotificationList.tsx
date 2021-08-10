@@ -1,34 +1,30 @@
 import React from 'react';
-import { List, ListItem, ListItemText, makeStyles } from '@material-ui/core';
-import ErrorIcon from '@material-ui/icons/Error';
-import InfoIcon from '@material-ui/icons/Info';
-import { ListItemIcon } from '@material-ui/core';
+import { List, makeStyles, useMediaQuery } from '@material-ui/core';
 import styles from './NotificationList.styles';
+import NotificationListItem from './NotificationListItem';
 
 export const NotificationList = () => {
   const classes = makeStyles(styles)();
 
+  const isSmallWidthOrWider = useMediaQuery('(min-width: 600px)');
+
+  let [width, height] = [300, 300];
+  if(isSmallWidthOrWider) {
+    width = 600;
+    height = 180;
+  }
+
   return (
-    <div className={classes.container}>
+    <div className={classes.container} style={{ width, height }}>
       <List>
-        <ListItem>
-          <ListItemIcon>
-            <ErrorIcon className={classes.icon} />
-          </ListItemIcon>
-          <ListItemText>
+        <NotificationListItem type="error">
             You did not practice social distancing for the last 14 days.
             Stay at home and maintain 1-2 meters away from other people.
-          </ListItemText>
-        </ListItem>
-        <ListItem>
-          <ListItemIcon>
-            <InfoIcon className={classes.icon} />
-          </ListItemIcon>
-          <ListItemText>
+        </NotificationListItem>
+        <NotificationListItem type="info">
             You have been exposed to a crowded place for the last 14 days.
             Try to avoid crowded places to minimize your exposure risk.
-          </ListItemText>
-        </ListItem>
+        </NotificationListItem>
       </List>
     </div>
   );
