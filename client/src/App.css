@@ -1,0 +1,15 @@
+html {
+  height: 100vh;
+}
+
+body {
+  background-color: #d1dfff;
+  height: 100vh;
+  margin-left: 0;
+  margin-right: 0;
+  padding: 0;
+}
+
+#root {
+  height: 100vh;
+}
