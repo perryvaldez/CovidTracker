@@ -9,8 +9,8 @@ import ChartSocialInteractions from './ChartSocialInteractions';
 export const ChartsSection: React.FC = () => {
   const dashboardState = useCustomSelector(state => state.dashboard);
 
-  const socialData = charting.extractData(dashboardState.payload.socialInteractions);
-  const visitedData = charting.extractData(dashboardState.payload.visitedPlaces);
+  const socialData = charting.extractData(dashboardState.payload.socialInteractions, 7);
+  const visitedData = charting.extractData(dashboardState.payload.visitedPlaces, 7);
 
   const classes = makeStyles(styles)();
 

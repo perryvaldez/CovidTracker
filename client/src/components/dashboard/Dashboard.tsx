@@ -32,7 +32,7 @@ export const Dashboard: React.FC = () => {
   const currentDate = utils.currentDate();
   const currentDateMaxTimeString = utils.toDateTimeString(utils.maxTime(currentDate));
 
-  const last7DaysDate = utils.dateAddDays(currentDate, -7);
+  const last7DaysDate = utils.dateAddDays(currentDate, -7 + 1);
   const last7DaysMinTimeString = utils.toDateTimeString(utils.minTime(last7DaysDate));
 
   useEffect(() => {

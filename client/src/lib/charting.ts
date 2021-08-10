@@ -11,17 +11,21 @@ export type ChartProps = {
 };
 
 type DateCountEntryType = {[key: string]: any};
-const extractData = (arr: ISocialInteractionData[] | IVisitedPlaceData[] = []): DataItem[] => {
+const extractData = (arr: ISocialInteractionData[] | IVisitedPlaceData[] = [], lastDays: number): DataItem[] => {
   const entries: DateCountEntryType = {};
+  const currentDate = utils.currentDate();
+
+  for(let days = 0; days < lastDays; days += 1) {
+    const date = utils.extractDate(utils.dateAddDays(currentDate, -days)).toISOString();
+    entries[date] = 0;
+  }
 
   for(let i in arr) {
     const d = utils.extractDate(new Date(arr[i].date)).toISOString();
 
-    if(!entries[d]) {
-      entries[d] = 0;
+    if(typeof(entries[d]) === 'number') {
+      ++entries[d];
     }
-
-    ++entries[d];
   }
 
   const keys = Object.keys(entries);
