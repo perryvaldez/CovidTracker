@@ -25,12 +25,12 @@ export const ChartsSection: React.FC = () => {
   return (
     <Grid container spacing={2} className={classes.grid}>
       <Grid item xs={12} sm={6}>
-        <Box display="flex" flexDirection="row" justifyContent="center" width={width + 10}>
+        <Box display="flex" flexDirection="row" justifyContent="center">
           <ChartVisitedPlaces data={visitedData} width={width} height={height} />
         </Box>
       </Grid>
       <Grid item xs={12} sm={6}>
-        <Box display="flex" flexDirection="row" justifyContent="center" width={width + 10}>
+        <Box display="flex" flexDirection="row" justifyContent="center">
           <ChartSocialInteractions data={socialData} width={width} height={height} />
         </Box>
       </Grid>
