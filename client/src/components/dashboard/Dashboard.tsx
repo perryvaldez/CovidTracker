@@ -5,9 +5,6 @@ import { Container, Popover, Typography } from '@material-ui/core';
 import { ISocialInteractionData, IVisitedPlaceData } from '../../lib/api';
 import { useCustomSelector } from '../../lib/hooks';
 import utils from '../../lib/utils';
-import DashboardButtons from './DashboardButtons';
-import Header from './Header';
-import Loader from '../shared/Loader';
 import { 
   DashboardAppDispatch, 
   performDashboardAddSocial, 
@@ -17,9 +14,13 @@ import {
   performDashboardFetchVisitedData,
 } from '../../store/actions/dashboardActions';
 import states from '../../store/states/dashboardStates';
+import DashboardButtons from './DashboardButtons';
+import Header from './Header';
+import Loader from '../shared/Loader';
 import SocialInteractionDialog from '../social_interaction/SocialInteractionDialog';
 import VisitedPlaceDialog from '../visited_place/VisitedPlaceDialog';
 import ChartsSection from './ChartsSection';
+import NotificationList from './NotificationList';
 // import styles from './Dashboard.styles';
 
 export const Dashboard: React.FC = () => { 
@@ -97,7 +98,7 @@ export const Dashboard: React.FC = () => {
           transformOrigin={{ vertical: 'top', horizontal: 'right' }}
         >
           <Typography variant="body1" component="div">
-            <p>Hello, World!</p>
+            <NotificationList />
           </Typography>
         </Popover>
         <DashboardButtons
