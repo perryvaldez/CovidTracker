@@ -12,7 +12,7 @@ type DataItem = {
   count: number,
 };
 
-export const ChartVisitedPlaces: React.FC<ChartProps> = ({ data }) => {
+export const ChartVisitedPlaces: React.FC<ChartProps> = ({ data, width, height }) => {
   const classes = makeStyles(styles)();
 
   return (
@@ -22,9 +22,9 @@ export const ChartVisitedPlaces: React.FC<ChartProps> = ({ data }) => {
         <H2 className={classes.title}>Recent Visited Places</H2>
         <div className={classes.link}><Link to="/visited">View All</Link></div>
       </Box>
-      <BarChart width={300} height={180} data={data} margin={{ left: 0, right: 0 }}>
+      <BarChart width={width} height={height} data={data} margin={{ left: 0, right: 0 }}>
         <CartesianGrid strokeDasharray="4 2" />
-        <XAxis dataKey="date" padding={{ left: 8, right: 8 }} />
+        <XAxis dataKey="date" padding={{ left: 10, right: 10 }} />
         <YAxis dataKey="count" allowDecimals={false}>
           <Label value="No. of Visited Places" angle={-90} dx={-20} />
         </YAxis>

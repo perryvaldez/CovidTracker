@@ -8,6 +8,8 @@ export type DataItem = {
 
 export type ChartProps = {
   data: DataItem[],
+  width: number,
+  height: number,
 };
 
 type DateCountEntryType = {[key: string]: any};
