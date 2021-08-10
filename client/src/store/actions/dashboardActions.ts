@@ -1,3 +1,4 @@
+import { useDispatch } from "react-redux";
 import { ThunkDispatch } from "redux-thunk";
 import { IDashboardState } from "../states/dashboardStates";
 import api, { FilterType, ISocialInteractionData, IVisitedPlaceData } from '../../lib/api';
@@ -32,6 +33,9 @@ export interface IDashboardFetchDataAction extends IDashboardAction {
   payload: IDashboardFetchDataActionPayload;
 };
 
+export type DashboardAppDispatch = ThunkDispatch<IDashboardState, any, IDashboardAction>;
+export const useDashboardDispatch = (): DashboardAppDispatch => useDispatch();
+
 export const dashboardFetchDataAction = 
 (totalCountSocialInteractions: number, totalCountVisitedPlaces: number, 
   socialInteractions: ISocialInteractionData[], visitedPlaces: IVisitedPlaceData[]) : IDashboardFetchDataAction => ({
@@ -43,8 +47,6 @@ export const dashboardFetchDataAction =
     visitedPlaces,
   },
 });
-
-export type DashboardAppDispatch = ThunkDispatch<IDashboardState, any, IDashboardAction>;
 
 export const performDashboardFetchData = (filter: FilterType = {}) => 
   async (dispatch: DashboardAppDispatch) => {
