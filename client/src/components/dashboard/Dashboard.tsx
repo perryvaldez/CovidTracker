@@ -1,19 +1,20 @@
 import React, { useEffect, useState }  from 'react';
-import { useDispatch } from 'react-redux';
 import { Container, Popover, Typography } from '@material-ui/core';
 // import { makeStyles } from '@material-ui/styles';
 import { ISocialInteractionData, IVisitedPlaceData } from '../../lib/api';
 import { useCustomSelector } from '../../lib/hooks';
 import utils from '../../lib/utils';
 import { 
-  DashboardAppDispatch, 
   performDashboardAddSocial, 
   performDashboardAddVisited, 
   performDashboardFetchData, 
   performDashboardFetchSocialData, 
   performDashboardFetchVisitedData,
+  useDashboardDispatch,
 } from '../../store/actions/dashboardActions';
-import states from '../../store/states/dashboardStates';
+import { performNotificationFetchData, useNotificationDispatch } from '../../store/actions/notificationActions';
+import dashboardStates from '../../store/states/dashboardStates';
+import notificationStates from '../../store/states/notificationStates';
 import DashboardButtons from './DashboardButtons';
 import Header from './Header';
 import Loader from '../shared/Loader';
@@ -25,7 +26,10 @@ import NotificationList from './NotificationList';
 
 export const Dashboard: React.FC = () => { 
   const dashboardState = useCustomSelector(state => state.dashboard);
-  const dispatch: DashboardAppDispatch = useDispatch();
+  const notificationState = useCustomSelector(state => state.notification);
+
+  const dashboardDispatch = useDashboardDispatch();
+  const notificationDispatch = useNotificationDispatch();
 
   const [openSocialInteraction, setOpenSocialInteraction] = useState(false);
   const [openVisitedPlace, setOpenVisitedPlace] = useState(false);
@@ -38,15 +42,28 @@ export const Dashboard: React.FC = () => {
   const last7DaysDate = utils.dateAddDays(currentDate, -7 + 1);
   const last7DaysMinTimeString = utils.toDateTimeString(utils.minTime(last7DaysDate));
 
+  const last14DaysDate = utils.dateAddDays(currentDate, -14 + 1);
+  const last14DaysMinTimeString = utils.toDateTimeString(utils.minTime(last14DaysDate));
+
   useEffect(() => {
-    if(dashboardState.stateName === states.START) {
-      dispatch(performDashboardFetchData({ to: currentDateMaxTimeString, from: last7DaysMinTimeString }));
-    } else if (dashboardState.stateName === states.OUTDATED_SOCIAL) {
-      dispatch(performDashboardFetchSocialData({ to: currentDateMaxTimeString, from: last7DaysMinTimeString }));
-    } else if (dashboardState.stateName === states.OUTDATED_VISITED) {
-      dispatch(performDashboardFetchVisitedData({ to: currentDateMaxTimeString, from: last7DaysMinTimeString }));
+    if(dashboardState.stateName === dashboardStates.START) {
+      dashboardDispatch(performDashboardFetchData({ to: currentDateMaxTimeString, from: last7DaysMinTimeString }));
+    } else if (dashboardState.stateName === dashboardStates.OUTDATED_SOCIAL) {
+      dashboardDispatch(performDashboardFetchSocialData({ to: currentDateMaxTimeString, from: last7DaysMinTimeString }));
+    } else if (dashboardState.stateName === dashboardStates.OUTDATED_VISITED) {
+      dashboardDispatch(performDashboardFetchVisitedData({ to: currentDateMaxTimeString, from: last7DaysMinTimeString }));
     }
-  }, [dispatch, dashboardState, last7DaysMinTimeString, currentDateMaxTimeString]);
+
+    if(notificationState.stateName === notificationStates.START) {
+      notificationDispatch(performNotificationFetchData({
+        to: currentDateMaxTimeString, from: last14DaysMinTimeString, 
+      }));
+    }
+
+  }, [
+    dashboardDispatch, notificationDispatch, dashboardState, last7DaysMinTimeString, 
+    last14DaysMinTimeString, currentDateMaxTimeString, notificationState,
+  ]);
 
   // const classes = makeStyles(styles)();
 
@@ -59,7 +76,7 @@ export const Dashboard: React.FC = () => {
   };
 
   const handleSaveSocialInteractionDialog = (data: ISocialInteractionData) => (e: any) => {
-    dispatch(performDashboardAddSocial(data));
+    dashboardDispatch(performDashboardAddSocial(data));
     setOpenSocialInteraction(false);
   };
 
@@ -72,7 +89,7 @@ export const Dashboard: React.FC = () => {
   };
 
   const handleSaveVisitedPlaceDialog = (data: IVisitedPlaceData) => (e: any) => {
-    dispatch(performDashboardAddVisited(data));
+    dashboardDispatch(performDashboardAddVisited(data));
     setOpenVisitedPlace(false);
   };
 
@@ -86,7 +103,7 @@ export const Dashboard: React.FC = () => {
   };
   
   return (
-    <Loader isLoading={dashboardState.stateName === states.START}>
+    <Loader isLoading={dashboardState.stateName === dashboardStates.START}>
       <Container disableGutters>
         <Header onClickedNotification={handleClickedNotification} />
         <Popover
