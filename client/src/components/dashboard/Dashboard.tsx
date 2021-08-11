@@ -1,6 +1,5 @@
 import React, { useEffect, useState }  from 'react';
-import { Container, Popover, Typography } from '@material-ui/core';
-// import { makeStyles } from '@material-ui/styles';
+import { Container, makeStyles, Popover, Typography } from '@material-ui/core';
 import { ISocialInteractionData, IVisitedPlaceData } from '../../lib/api';
 import { useCustomSelector } from '../../lib/hooks';
 import utils from '../../lib/utils';
@@ -22,7 +21,7 @@ import SocialInteractionDialog from '../social_interaction/SocialInteractionDial
 import VisitedPlaceDialog from '../visited_place/VisitedPlaceDialog';
 import ChartsSection from './ChartsSection';
 import NotificationList from './NotificationList';
-// import styles from './Dashboard.styles';
+import styles from './Dashboard.styles';
 
 export const Dashboard: React.FC = () => { 
   const dashboardState = useCustomSelector(state => state.dashboard);
@@ -65,7 +64,7 @@ export const Dashboard: React.FC = () => {
     last14DaysMinTimeString, currentDateMaxTimeString, notificationState,
   ]);
 
-  // const classes = makeStyles(styles)();
+  const classes = makeStyles(styles)();
 
   const handleOpenSocialInteractionDialog = (e: any) => {
     setOpenSocialInteraction(true);
