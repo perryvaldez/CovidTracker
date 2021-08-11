@@ -1,6 +1,7 @@
 const styles = {
   item: {
     display: 'flex',
+    width: '100%',
     marginLeft: 8,
     marginRight: 8,
     padding: 8,
