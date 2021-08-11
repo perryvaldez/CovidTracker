@@ -1,11 +1,12 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import { makeStyles } from '@material-ui/styles';
-import './App.css';
+import { Container, makeStyles } from '@material-ui/core';
 import Dashboard from './components/dashboard/Dashboard';
+import VisitedPlaces from './components/visited_place/VisitedPlaces';
+import SocialInteractions from './components/social_interaction/SocialInteractions';
 import NotFound from './components/misc/NotFound';
+import './App.css';
 import styles from './App.styles';
-import { Container } from '@material-ui/core';
 
 const App = () => {
   const classes = makeStyles(styles)();
@@ -15,10 +16,16 @@ const App = () => {
       <Router>
         <Switch>
           <Route exact path="/">
-          <Dashboard />
+            <Dashboard />
+          </Route>
+          <Route exact path="/visited">
+            <VisitedPlaces />
+          </Route>
+          <Route exact path="/social">
+            <SocialInteractions />
           </Route>
           <Route path="*">
-          <NotFound />
+            <NotFound />
           </Route>
         </Switch>
       </Router>
