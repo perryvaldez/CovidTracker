@@ -1,3 +1,16 @@
+import config from '../config.json';
+
+const currentDate = (): Date => {
+  const c = config as any;
+  let d = new Date();
+
+  if(c.currentDate) {
+    d = new Date(c.currentDate);
+  }
+
+  return extractDate(d);
+}
+
 const compareDates = (a: Date, b: Date): number => {
   return (a.getTime() - b.getTime());
 };
@@ -8,8 +21,6 @@ const extractDate = (d: Date): Date => new Date(d.getFullYear(), d.getMonth(), d
 
 const monthsArr = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 const toShortDate = (d: Date) => `${monthsArr[d.getMonth()]} ${d.getDate()}`;
-
-const currentDate = (): Date => extractDate(new Date());
 
 const minTime = (d: Date) => extractDate(d);
 
