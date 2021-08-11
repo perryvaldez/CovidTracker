@@ -4,8 +4,6 @@ import s, { INotificationState, NotificationStartState as startState } from '../
 
 const notificationReducer: Reducer<INotificationState, INotificationAction> =
 (state = startState, action) => {
-  console.log('notificationReducer: ', { state, action });
-
   switch(state.stateName) {
     case s.START:
       if (action.type === a.FETCH_DATA) {
