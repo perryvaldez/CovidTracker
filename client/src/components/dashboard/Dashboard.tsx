@@ -103,7 +103,7 @@ export const Dashboard: React.FC = () => {
   
   return (
     <Loader isLoading={dashboardState.stateName === dashboardStates.START}>
-      <Container disableGutters>
+      <Container disableGutters className={classes.container}>
         <Header onClickedNotification={handleClickedNotification} />
         <Popover
           id="notification-popover"

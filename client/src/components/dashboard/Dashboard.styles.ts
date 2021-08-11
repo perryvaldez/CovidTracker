@@ -1,4 +1,6 @@
-const styles = {};
+const styles = {
+  container: {},
+};
 
 export default styles;
 
