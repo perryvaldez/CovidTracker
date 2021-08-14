@@ -12,9 +12,14 @@ export interface IDataTableColumns {
   [key: string]: IDataTableColumnDefinition;
 };
 
+export interface IDataTableRow {
+  [key: string]: any;
+};
+
 export type DataTableProps = {
   columns: IDataTableColumns,
   keyColumn?: string,
+  data: IDataTableRow[],
 };
 
 export const DataTable: React.FC<DataTableProps> = ({ columns }) => {
