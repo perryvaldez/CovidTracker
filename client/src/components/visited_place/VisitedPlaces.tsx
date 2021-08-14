@@ -21,6 +21,21 @@ export const VisitedPlaces: React.FC = () => {
     isCrowded: { title: 'Crowded?' },
   };
 
+  const data = [
+    {
+      place: 'Church',
+      date: '6/27/2021',
+      hours: 1,
+      isCrowded: 'No',
+    },
+    {
+      place: 'Wet Market',
+      date: '6/28/2021',
+      hours: 3,
+      isCrowded: 'Yes',
+    },
+  ];
+
   return (
     <Loader isLoading={false}>
       <Container disableGutters className={classes.container}>
