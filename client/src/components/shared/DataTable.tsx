@@ -5,6 +5,7 @@ import styles from './DataTable.styles';
 export interface IDataTableColumnDefinition {
   title?: string;
   index?: number;
+  type?: string;
 };
 
 export interface IDataTableColumns {
