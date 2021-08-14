@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Checkbox, Container, FormControlLabel, Grid, makeStyles } from '@material-ui/core';
 import Loader from '../shared/Loader';
 import PageHeader from '../shared/PageHeader';
-import DataTable from '../shared/DataTable';
+import DataTable, { IDataTableColumns } from '../shared/DataTable';
 import styles from './VisitedPlaces.styles';
 
 export const VisitedPlaces: React.FC = () => {
@@ -12,6 +12,13 @@ export const VisitedPlaces: React.FC = () => {
 
   const handleChangeDisplayLast14 = (e: any) => {
     setDisplayLast14(e.target.checked);
+  };
+
+  const columns: IDataTableColumns = {
+    place: { title: 'Place' },
+    date: { title: 'Date' },
+    hours: { title: 'Hours' },
+    isCrowded: { title: 'Crowded?' },
   };
 
   return (
@@ -32,7 +39,7 @@ export const VisitedPlaces: React.FC = () => {
                   />                  
               </Grid>
               <Grid item xs={12}>
-                <DataTable />
+                <DataTable columns={columns} />
               </Grid>
             </Grid>
           </form>

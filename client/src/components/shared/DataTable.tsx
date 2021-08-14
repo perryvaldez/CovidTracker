@@ -2,43 +2,55 @@ import React from 'react';
 import { makeStyles,Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@material-ui/core';
 import styles from './DataTable.styles';
 
-export const DataTable: React.FC = () => {
+export interface IDataTableColumnDefinition {
+  title?: string;
+};
+
+export interface IDataTableColumns {
+  [key: string]: IDataTableColumnDefinition;
+};
+
+export type DataTableProps = {
+  columns: IDataTableColumns,
+  keyColumn?: string,
+};
+
+export const DataTable: React.FC<DataTableProps> = ({ columns }) => {
   const classes = makeStyles(styles)();
 
   return (
     <TableContainer >
         <Table classes={{ root: classes.table }} size="small" padding="none" aria-label="Visited Places List">
         <TableHead>
-            <TableRow>
-            <TableCell>Place</TableCell>
-            <TableCell>Date</TableCell>
-            <TableCell>Hours</TableCell>
-            <TableCell>Crowded?</TableCell>
+          <TableRow>
+            {
+              Object.keys(columns).map((col) => (<TableCell key={col}>{columns[col].title}</TableCell>))
+            }
             <TableCell>Action</TableCell>
-            </TableRow>                       
+          </TableRow>                       
         </TableHead>
         <TableBody>
-            <TableRow>
+          <TableRow>
             <TableCell>Church</TableCell>
             <TableCell>6/27/2021</TableCell>
             <TableCell>1</TableCell>
             <TableCell>No</TableCell>
             <TableCell>[Edit] [Delete]</TableCell>
-            </TableRow>                       
+          </TableRow>                       
             <TableRow className={classes.alertRow}>
             <TableCell>Wet Market</TableCell>
             <TableCell>6/28/2021</TableCell>
             <TableCell>3</TableCell>
             <TableCell>Yes</TableCell>
             <TableCell>[Edit] [Delete]</TableCell>
-            </TableRow>                       
-            <TableRow>
+          </TableRow>                       
+          <TableRow>
             <TableCell>Grocery</TableCell>
             <TableCell>6/29/2021</TableCell>
             <TableCell>2</TableCell>
             <TableCell>No</TableCell>
             <TableCell>[Edit] [Delete]</TableCell>
-            </TableRow>                       
+          </TableRow>                       
         </TableBody>
         </Table>
     </TableContainer>
