@@ -54,7 +54,7 @@ export const VisitedPlaces: React.FC = () => {
                   />                  
               </Grid>
               <Grid item xs={12}>
-                <DataTable columns={columns} />
+                <DataTable columns={columns} data={data} />
               </Grid>
             </Grid>
           </form>
