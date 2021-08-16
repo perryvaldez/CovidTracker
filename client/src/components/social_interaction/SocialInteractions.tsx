@@ -45,7 +45,7 @@ export const SocialInteractions: React.FC = () => {
 
   const highlightRowIf = { 
     '#ededed': (row: IDataTableRow, index: number) => (index % 2 !== 0),
-    '#ffdce1': (row: IDataTableRow) => (row.isSocialDistancing === 'Yes'),
+    '#ffdce1': (row: IDataTableRow) => (row.isSocialDistancing === 'No'),
   };
 
   const pageState = useCustomSelector(state => state.socialInteractions);
