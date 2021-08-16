@@ -1,18 +1,28 @@
 import React, { useEffect, useState } from 'react';
 import { Checkbox, Container, FormControlLabel, Grid, makeStyles } from '@material-ui/core';
 import { useCustomSelector } from '../../lib/hooks';
+import utils from '../../lib/utils';
 import visitedPlacesStates from '../../store/states/visitedPlacesStates';
-import { performVisitedPlacesFetchData, useVisitedPlacesDispatch } from '../../store/actions/visitedPlacesActions';
+import { performVisitedPlacesChangePage, performVisitedPlacesFetchData, useVisitedPlacesDispatch } from '../../store/actions/visitedPlacesActions';
 import Loader from '../shared/Loader';
 import PageHeader from '../shared/PageHeader';
 import DataTable, { IDataTableColumns, IDataTableRow } from '../shared/DataTable';
 import styles from './VisitedPlaces.styles';
+
+type GridData = {
+  _id: number,
+  place: string,
+  date: string,
+  hours: number,
+  isCrowded: 'Yes' | 'No',
+};
 
 export const VisitedPlaces: React.FC = () => {
   const classes = makeStyles(styles)();
 
   const [displayLast14, setDisplayLast14] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
+  const [offset, setOffset] = useState(0);
 
   const rowsPerPage = 10;
 
@@ -21,8 +31,9 @@ export const VisitedPlaces: React.FC = () => {
   };
 
   const handlePageChange = (e: any, page: number) => {
-    // TODO
-    setCurrentPage(page);
+      setOffset((page - 1) * rowsPerPage);
+      setCurrentPage(page);
+      dispatch(performVisitedPlacesChangePage());
   };
 
   const columns: IDataTableColumns = {
@@ -32,53 +43,6 @@ export const VisitedPlaces: React.FC = () => {
     isCrowded: { title: 'Crowded?', type: 'string', index: 4 },
   };
 
-  const data = [
-    {
-      _id: 6,
-      place: 'Church',
-      date: '6/27/2021',
-      hours: 1,
-      isCrowded: 'No',
-    },
-    {
-      _id: 7,
-      place: 'Wet Market',
-      date: '6/28/2021',
-      hours: 3,
-      isCrowded: 'Yes',
-    },
-    {
-      _id: 8,
-      place: 'Office',
-      date: '6/29/2021',
-      hours: 8,
-      isCrowded: 'No',
-    },
-    {
-      _id: 9,
-      place: 'Park',
-      date: '6/30/2021',
-      hours: 2,
-      isCrowded: 'No',
-    },
-    {
-      _id: 10,
-      place: 'Grocery',
-      date: '7/01/2021',
-      hours: 2,
-      isCrowded: 'No',
-    },
-    {
-      _id: 11,
-      place: 'Church',
-      date: '7/02/2021',
-      hours: 1,
-      isCrowded: 'No',
-    },
-  ];
-
-  const totalRows = data.length;
-
   const highlightRowIf = { 
     '#ededed': (row: IDataTableRow, index: number) => (index % 2 !== 0),
     '#ffdce1': (row: IDataTableRow) => (row.isCrowded === 'Yes'),
@@ -87,11 +51,32 @@ export const VisitedPlaces: React.FC = () => {
   const pageState = useCustomSelector(state => state.visitedPlaces);
   const dispatch = useVisitedPlacesDispatch();
 
+  const currentDate = utils.currentDate();
+  const currentDateMaxTimeString = utils.toDateTimeString(utils.maxTime(currentDate));
+
+  const totalRows = pageState.payload.totalCount;
+
+  const data = pageState.payload.data.map((item) => {
+    const ret: GridData = {
+      _id: item._id,
+      place: item.place,
+      hours: item.hours,
+      isCrowded: item.isCrowded ? 'Yes' : 'No',
+      date: utils.toShortDate(new Date(item.date)),
+    };
+
+    return ret;
+  });
+
   useEffect(() => {
     if(pageState.stateName === visitedPlacesStates.START) {
-      dispatch(performVisitedPlacesFetchData({}));
+      dispatch(performVisitedPlacesFetchData({ to: currentDateMaxTimeString }, rowsPerPage, offset));
     }
-  }, [pageState, dispatch]);
+
+    if(pageState.stateName === visitedPlacesStates.OUTDATED_DATA) {
+      dispatch(performVisitedPlacesFetchData({ to: currentDateMaxTimeString }, rowsPerPage, offset));
+    }
+  }, [pageState, dispatch, currentDateMaxTimeString, rowsPerPage, offset]);
 
   return (
     <Loader isLoading={false}>

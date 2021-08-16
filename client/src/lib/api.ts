@@ -30,11 +30,19 @@ export type FilterType = {
   to?: string,
 };
 
-const makeQueryParams = (filter: FilterType) => {
+const makeQueryParams = (filter: FilterType, limit?: number, offset?: number) => {
   const uparms = new URLSearchParams();
 
   for(let key in filter) {
     uparms.append(key, filter[key]);
+  }
+
+  if(typeof(limit) !== 'undefined') {
+    uparms.append('limit', `${limit}`);
+  }
+
+  if(typeof(offset) !== 'undefined') {
+    uparms.append('offset', `${offset}`);
   }
 
   let qs = uparms.toString();
@@ -47,7 +55,7 @@ const makeQueryParams = (filter: FilterType) => {
 
 const getSocialInteractions = 
 async (filter: FilterType = {}, limit: number = 0, offset: number = 0, sortBy: string[] = []): Promise<ISocialInteractionData[]> => {
-    const params = makeQueryParams(filter);
+    const params = makeQueryParams(filter, limit, offset);
     const result = await axios.get(`/social-interactions${params}`);
     if(result.status === 200) {
       return result.data as ISocialInteractionData[];
@@ -69,7 +77,7 @@ async (filter: FilterType = {}): Promise<number> => {
 
 const getVisitedPlaces = 
 async (filter: FilterType = {}, limit: number = 0, offset: number = 0, sortBy: string[] = []): Promise<IVisitedPlaceData[]> => {
-    const params = makeQueryParams(filter);
+    const params = makeQueryParams(filter, limit, offset);
     const result = await axios.get(`/visited-places${params}`);
     if(result.status === 200) {
       return result.data as IVisitedPlaceData[];

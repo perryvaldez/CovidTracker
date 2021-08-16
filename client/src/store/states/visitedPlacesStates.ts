@@ -1,6 +1,7 @@
 const visitedPlacesStates = {
   START: 'VISITED_PLACES_START',
   READY: 'VISITED_PLACES_READY',
+  OUTDATED_DATA: 'VISITED_PLACES_OUTDATED_DATA',
 };
 
 export interface IVisitedPlacesPayload {
