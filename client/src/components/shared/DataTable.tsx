@@ -25,9 +25,13 @@ export type DataTableProps = {
   rowKey?: string,
   data: IDataTableRow[],
   highlightRowIf?: IDataTableRowPredicateFn,
+  totalRows?: number,
+  rowsPerPage?: number,
+  page?: number,
+  onPageChange?: (e: any, page: number) => void,
 };
 
-export const DataTable: React.FC<DataTableProps> = ({ columns, data, rowKey, highlightRowIf }) => {
+export const DataTable: React.FC<DataTableProps> = ({ columns, data, rowKey, highlightRowIf, totalRows, rowsPerPage, page, onPageChange }) => {
   const classes = makeStyles(styles)();
 
   const sortedColumns = Object.keys(columns);
@@ -73,18 +77,22 @@ export const DataTable: React.FC<DataTableProps> = ({ columns, data, rowKey, hig
                 })
             }
         </TableBody>
-        <TableFooter>
-          <TableRow>
-            <TablePagination 
-              rowsPerPageOptions={[10]}
-              count={100}
-              rowsPerPage={10}
-              page={0}
-              onPageChange={(e: any, page: number)=>{}}
-              className={classes.pagination}
-            />
-          </TableRow>
-        </TableFooter>
+        {
+            typeof(rowsPerPage) === 'number' && (rowsPerPage > 1) && (
+              <TableFooter>
+                <TableRow>
+                  <TablePagination 
+                    rowsPerPageOptions={[rowsPerPage]}
+                    count={totalRows || 0}
+                    rowsPerPage={rowsPerPage || 0}
+                    page={typeof(page) === 'number' && page > 1 ? page - 1 : 1}
+                    onPageChange={(e, page) => { onPageChange && onPageChange(e, page);  }}
+                    className={classes.pagination}
+                  />
+                </TableRow>
+              </TableFooter>
+            )
+        }
       </Table>
     </TableContainer>
   );
