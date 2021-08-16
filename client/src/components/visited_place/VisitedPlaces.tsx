@@ -9,6 +9,7 @@ export const VisitedPlaces: React.FC = () => {
   const classes = makeStyles(styles)();
 
   const [displayLast14, setDisplayLast14] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
 
   const rowsPerPage = 10;
 
@@ -97,6 +98,8 @@ export const VisitedPlaces: React.FC = () => {
                   rowKey="_id" 
                   highlightRowIf={highlightRowIf}
                   rowsPerPage={rowsPerPage}
+                  page={currentPage}
+                  totalRows={data.length}
                 />
               </Grid>
             </Grid>

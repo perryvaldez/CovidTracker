@@ -40,6 +40,14 @@ export const DataTable: React.FC<DataTableProps> = ({ columns, data, rowKey, hig
     (a, b) => (columns[a].index || 0) - (columns[b].index || 0)
   );
 
+  const count = totalRows || 0;
+  const rowsPerPageCount = rowsPerPage || 0;
+
+  let pageNum = 0;
+  if(typeof(page) === 'number' && page > 1) {
+    pageNum = page - 1;
+  }
+
   return (
     <TableContainer >
       <Table classes={{ root: classes.table }} size="small" padding="none" aria-label="Visited Places List">
@@ -82,10 +90,10 @@ export const DataTable: React.FC<DataTableProps> = ({ columns, data, rowKey, hig
               <TableFooter>
                 <TableRow>
                   <TablePagination 
-                    rowsPerPageOptions={[rowsPerPage]}
-                    count={totalRows || 0}
-                    rowsPerPage={rowsPerPage || 0}
-                    page={typeof(page) === 'number' && page > 1 ? page - 1 : 1}
+                    rowsPerPageOptions={[rowsPerPageCount]}
+                    count={count}
+                    rowsPerPage={rowsPerPageCount}
+                    page={pageNum}
                     onPageChange={(e, page) => { onPageChange && onPageChange(e, page);  }}
                     className={classes.pagination}
                   />
