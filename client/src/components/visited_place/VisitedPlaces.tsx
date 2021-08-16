@@ -1,5 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Checkbox, Container, FormControlLabel, Grid, makeStyles } from '@material-ui/core';
+import { useCustomSelector } from '../../lib/hooks';
+import visitedPlacesStates from '../../store/states/visitedPlacesStates';
+import { performVisitedPlacesFetchData, useVisitedPlacesDispatch } from '../../store/actions/visitedPlacesActions';
 import Loader from '../shared/Loader';
 import PageHeader from '../shared/PageHeader';
 import DataTable, { IDataTableColumns, IDataTableRow } from '../shared/DataTable';
@@ -11,7 +14,7 @@ export const VisitedPlaces: React.FC = () => {
   const [displayLast14, setDisplayLast14] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
 
-  const rowsPerPage = 3;
+  const rowsPerPage = 10;
 
   const handleChangeDisplayLast14 = (e: any) => {
     setDisplayLast14(e.target.checked);
@@ -80,6 +83,15 @@ export const VisitedPlaces: React.FC = () => {
     '#ededed': (row: IDataTableRow, index: number) => (index % 2 !== 0),
     '#ffdce1': (row: IDataTableRow) => (row.isCrowded === 'Yes'),
   };
+
+  const pageState = useCustomSelector(state => state.visitedPlaces);
+  const dispatch = useVisitedPlacesDispatch();
+
+  useEffect(() => {
+    if(pageState.stateName === visitedPlacesStates.START) {
+      dispatch(performVisitedPlacesFetchData({}));
+    }
+  }, [pageState, dispatch]);
 
   return (
     <Loader isLoading={false}>
