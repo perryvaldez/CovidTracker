@@ -9,8 +9,13 @@ const styles = {
       backgroundColor: '#c5e4ff',
     },
   },
-  alertRow: {
-    backgroundColor: '#ffdce1',
+  pagination: {
+    '& .MuiTablePagination-toolbar': {
+      minHeight: 0,
+    },
+    '& .MuiIconButton-root': {
+      padding: 2,
+    },
   },
 };
 

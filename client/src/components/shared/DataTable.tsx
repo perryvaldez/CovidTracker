@@ -1,5 +1,5 @@
 import React from 'react';
-import { makeStyles,Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@material-ui/core';
+import { makeStyles,Table, TableBody, TableCell, TableContainer, TableFooter, TableHead, TablePagination, TableRow } from '@material-ui/core';
 import styles from './DataTable.styles';
 
 export interface IDataTableColumnDefinition {
@@ -73,6 +73,18 @@ export const DataTable: React.FC<DataTableProps> = ({ columns, data, rowKey, hig
                 })
             }
         </TableBody>
+        <TableFooter>
+          <TableRow>
+            <TablePagination 
+              rowsPerPageOptions={[10]}
+              count={100}
+              rowsPerPage={10}
+              page={0}
+              onPageChange={(e: any, page: number)=>{}}
+              className={classes.pagination}
+            />
+          </TableRow>
+        </TableFooter>
       </Table>
     </TableContainer>
   );
