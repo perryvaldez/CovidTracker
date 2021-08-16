@@ -16,13 +16,18 @@ export interface IDataTableRow {
   [key: string]: any;
 };
 
+export interface IDataTableRowPredicateFn {
+  [key: string]: (row: IDataTableRow, index: number) => boolean;
+};
+
 export type DataTableProps = {
   columns: IDataTableColumns,
   rowKey?: string,
   data: IDataTableRow[],
+  highlightRowIf?: IDataTableRowPredicateFn,
 };
 
-export const DataTable: React.FC<DataTableProps> = ({ columns, data, rowKey }) => {
+export const DataTable: React.FC<DataTableProps> = ({ columns, data, rowKey, highlightRowIf }) => {
   const classes = makeStyles(styles)();
 
   const sortedColumns = Object.keys(columns);
@@ -45,8 +50,18 @@ export const DataTable: React.FC<DataTableProps> = ({ columns, data, rowKey }) =
         <TableBody>
             {
                 data.map((row, index) => { 
+                  const optProps: {[key: string]: any} = {};
+
+                  if(highlightRowIf) {
+                    Object.keys(highlightRowIf).forEach((colorKey) => {
+                      if(highlightRowIf[colorKey](row, index)) {
+                        optProps.style = { backgroundColor: colorKey };
+                      }
+                    });
+                  }
+
                   return (
-                    <TableRow key={rowKey ? row[rowKey] : index}>
+                    <TableRow key={rowKey ? row[rowKey] : index} {...optProps}>
                       {
                         sortedColumns.map((col) => {
                           return (<TableCell key={col}>{row[col]}</TableCell>); 

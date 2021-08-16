@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Checkbox, Container, FormControlLabel, Grid, makeStyles } from '@material-ui/core';
 import Loader from '../shared/Loader';
 import PageHeader from '../shared/PageHeader';
-import DataTable, { IDataTableColumns } from '../shared/DataTable';
+import DataTable, { IDataTableColumns, IDataTableRow } from '../shared/DataTable';
 import styles from './VisitedPlaces.styles';
 
 export const VisitedPlaces: React.FC = () => {
@@ -43,7 +43,33 @@ export const VisitedPlaces: React.FC = () => {
       hours: 8,
       isCrowded: 'No',
     },
+    {
+      _id: 9,
+      place: 'Park',
+      date: '6/30/2021',
+      hours: 2,
+      isCrowded: 'No',
+    },
+    {
+      _id: 10,
+      place: 'Grocery',
+      date: '7/01/2021',
+      hours: 2,
+      isCrowded: 'No',
+    },
+    {
+      _id: 11,
+      place: 'Church',
+      date: '7/02/2021',
+      hours: 1,
+      isCrowded: 'No',
+    },
   ];
+
+  const highlightRowIf = { 
+    '#ededed': (row: IDataTableRow, index: number) => (index % 2 !== 0),
+    '#ffdce1': (row: IDataTableRow) => (row.isCrowded === 'Yes'),
+  };
 
   return (
     <Loader isLoading={false}>
@@ -63,7 +89,7 @@ export const VisitedPlaces: React.FC = () => {
                   />                  
               </Grid>
               <Grid item xs={12}>
-                <DataTable columns={columns} data={data} rowKey="_id" />
+                <DataTable columns={columns} data={data} rowKey="_id" highlightRowIf={highlightRowIf} />
               </Grid>
             </Grid>
           </form>
