@@ -25,7 +25,11 @@ export type DataTableProps = {
 export const DataTable: React.FC<DataTableProps> = ({ columns, data, rowKey }) => {
   const classes = makeStyles(styles)();
 
-  const sortedColumns = Object.keys(columns);  // TODO
+  const sortedColumns = Object.keys(columns);
+
+  sortedColumns.sort(
+    (a, b) => (columns[a].index || 0) - (columns[b].index || 0)
+  );
 
   return (
     <TableContainer >
@@ -42,7 +46,7 @@ export const DataTable: React.FC<DataTableProps> = ({ columns, data, rowKey }) =
             {
                 data.map((row, index) => { 
                   return (
-                    <TableRow key={rowKey ? row[rowKey] : index} className={`row-${rowKey ? row[rowKey] : 'no-key'}`}>
+                    <TableRow key={rowKey ? row[rowKey] : index}>
                       {
                         sortedColumns.map((col) => {
                           return (<TableCell key={col}>{row[col]}</TableCell>); 
