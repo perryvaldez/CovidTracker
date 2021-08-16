@@ -94,7 +94,7 @@ export const DataTable: React.FC<DataTableProps> = ({ columns, data, rowKey, hig
                     count={count}
                     rowsPerPage={rowsPerPageCount}
                     page={pageNum}
-                    onPageChange={(e, page) => { onPageChange && onPageChange(e, page);  }}
+                    onPageChange={(e, page) => { onPageChange && onPageChange(e, page + 1);  }}
                     className={classes.pagination}
                   />
                 </TableRow>

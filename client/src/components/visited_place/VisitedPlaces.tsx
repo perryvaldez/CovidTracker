@@ -17,6 +17,10 @@ export const VisitedPlaces: React.FC = () => {
     setDisplayLast14(e.target.checked);
   };
 
+  const handlePageChange = (e: any, page: number) => {
+    console.log('Page changed: ', { e, page });
+  };
+
   const columns: IDataTableColumns = {
     place: { title: 'Place', type: 'string', index: 1 },
     date: { title: 'Date', type: 'string', index: 2 },
@@ -69,6 +73,8 @@ export const VisitedPlaces: React.FC = () => {
     },
   ];
 
+  const totalRows = data.length;
+
   const highlightRowIf = { 
     '#ededed': (row: IDataTableRow, index: number) => (index % 2 !== 0),
     '#ffdce1': (row: IDataTableRow) => (row.isCrowded === 'Yes'),
@@ -99,7 +105,8 @@ export const VisitedPlaces: React.FC = () => {
                   highlightRowIf={highlightRowIf}
                   rowsPerPage={rowsPerPage}
                   page={currentPage}
-                  totalRows={data.length}
+                  totalRows={totalRows}
+                  onPageChange={handlePageChange}
                 />
               </Grid>
             </Grid>
