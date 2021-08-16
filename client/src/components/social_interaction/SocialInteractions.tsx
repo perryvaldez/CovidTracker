@@ -27,7 +27,10 @@ export const SocialInteractions: React.FC = () => {
   const rowsPerPage = 10;
 
   const handleChangeDisplayLast14 = (e: any) => {
+    setOffset(0);
+    setCurrentPage(1)   
     setDisplayLast14(e.target.checked);
+    dispatch(performSocialInteractionsChangePage());
   };
 
   const handlePageChange = (e: any, page: number) => {
@@ -54,6 +57,9 @@ export const SocialInteractions: React.FC = () => {
   const currentDate = utils.currentDate();
   const currentDateMaxTimeString = utils.toDateTimeString(utils.maxTime(currentDate));
 
+  const last14DaysDate = utils.dateAddDays(currentDate, -14 + 1);
+  const last14DaysMinTimeString = utils.toDateTimeString(utils.minTime(last14DaysDate));
+
   const totalRows = pageState.payload.totalCount;
 
   const data = pageState.payload.data.map((item) => {
@@ -69,14 +75,19 @@ export const SocialInteractions: React.FC = () => {
   });
 
   useEffect(() => {
+    const filter: {[key: string]: any} = { to: currentDateMaxTimeString };
+    if (displayLast14) {
+      filter.from = last14DaysMinTimeString;
+    }
+
     if(pageState.stateName === socialInteractionsStates.START) {
-      dispatch(performSocialInteractionsFetchData({ to: currentDateMaxTimeString }, rowsPerPage, offset));
+      dispatch(performSocialInteractionsFetchData(filter, rowsPerPage, offset));
     }
 
     if(pageState.stateName === socialInteractionsStates.OUTDATED_DATA) {
-      dispatch(performSocialInteractionsFetchData({ to: currentDateMaxTimeString }, rowsPerPage, offset));
+      dispatch(performSocialInteractionsFetchData(filter, rowsPerPage, offset));
     }
-  }, [pageState, dispatch, currentDateMaxTimeString, rowsPerPage, offset]);
+  }, [pageState, dispatch, currentDateMaxTimeString, last14DaysMinTimeString, displayLast14, rowsPerPage, offset]);
 
   return (
     <Loader isLoading={false}>
