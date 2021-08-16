@@ -34,6 +34,12 @@ export const VisitedPlaces: React.FC = () => {
       hours: 3,
       isCrowded: 'Yes',
     },
+    {
+      place: 'Office',
+      date: '6/29/2021',
+      hours: 8,
+      isCrowded: 'No',
+    },
   ];
 
   return (

@@ -22,12 +22,12 @@ export type DataTableProps = {
   data: IDataTableRow[],
 };
 
-export const DataTable: React.FC<DataTableProps> = ({ columns }) => {
+export const DataTable: React.FC<DataTableProps> = ({ columns, data }) => {
   const classes = makeStyles(styles)();
 
   return (
     <TableContainer >
-        <Table classes={{ root: classes.table }} size="small" padding="none" aria-label="Visited Places List">
+      <Table classes={{ root: classes.table }} size="small" padding="none" aria-label="Visited Places List">
         <TableHead>
           <TableRow>
             {
@@ -37,29 +37,22 @@ export const DataTable: React.FC<DataTableProps> = ({ columns }) => {
           </TableRow>                       
         </TableHead>
         <TableBody>
-          <TableRow>
-            <TableCell>Church</TableCell>
-            <TableCell>6/27/2021</TableCell>
-            <TableCell>1</TableCell>
-            <TableCell>No</TableCell>
-            <TableCell>[Edit] [Delete]</TableCell>
-          </TableRow>                       
-            <TableRow className={classes.alertRow}>
-            <TableCell>Wet Market</TableCell>
-            <TableCell>6/28/2021</TableCell>
-            <TableCell>3</TableCell>
-            <TableCell>Yes</TableCell>
-            <TableCell>[Edit] [Delete]</TableCell>
-          </TableRow>                       
-          <TableRow>
-            <TableCell>Grocery</TableCell>
-            <TableCell>6/29/2021</TableCell>
-            <TableCell>2</TableCell>
-            <TableCell>No</TableCell>
-            <TableCell>[Edit] [Delete]</TableCell>
-          </TableRow>                       
+            {
+                data.map((row, index) => { 
+                  return (
+                    <TableRow key={index}>
+                      {
+                        Object.keys(row).map((colKey) => { 
+                          return (<TableCell key={colKey}>{row[colKey]}</TableCell>); 
+                        })
+                      }
+                      <TableCell>[Edit] [Delete]</TableCell>
+                    </TableRow>
+                  );
+                })
+            }
         </TableBody>
-        </Table>
+      </Table>
     </TableContainer>
   );
 };
