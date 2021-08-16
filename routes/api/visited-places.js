@@ -9,10 +9,22 @@ const VisitedPlace = require("../../models/VisitedPlace");
 // @desc    Get all visited places
 router.get("/", async (req, res) => {
   try {
-    const visitedPlaces = await VisitedPlace.find(
-      utils.makeFilter(req.query)).sort({ 
-      date: -1 
-    });
+    const { limit, offset } = utils.getPagination(req.query);
+
+    let visitedPlaces = [];
+
+    if(limit < 1) {
+      visitedPlaces = await VisitedPlace.find(
+        utils.makeFilter(req.query)).sort({ 
+        date: -1 
+      });
+    } else {
+      visitedPlaces = await VisitedPlace.find(
+        utils.makeFilter(req.query)).limit(limit).skip(offset).sort({ 
+        date: -1 
+      });
+    }
+
     res.json(visitedPlaces);
   } catch (err) {
     console.error(err.message);

@@ -50,7 +50,28 @@ const makeFilter = (queryParams) => {
   return filter;
 };
 
+const getPagination = (queryParams) => {
+  const paginationFields = {
+    limit: 0,
+    offset: 0,
+  };
+
+
+  for(let q in queryParams) {
+    if(Object.keys(paginationFields).includes(q)) {
+      const num = +queryParams[q];
+
+      if(typeof(num) === 'number' && !isNaN(num)) {
+        paginationFields[q] = num;
+      }
+    }
+  }
+
+  return paginationFields;
+};
+
 module.exports = {
   makeFilter,
+  getPagination,
 };
 
