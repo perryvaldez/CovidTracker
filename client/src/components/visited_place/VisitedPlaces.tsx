@@ -11,14 +11,15 @@ export const VisitedPlaces: React.FC = () => {
   const [displayLast14, setDisplayLast14] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
 
-  const rowsPerPage = 10;
+  const rowsPerPage = 3;
 
   const handleChangeDisplayLast14 = (e: any) => {
     setDisplayLast14(e.target.checked);
   };
 
   const handlePageChange = (e: any, page: number) => {
-    console.log('Page changed: ', { e, page });
+    // TODO
+    setCurrentPage(page);
   };
 
   const columns: IDataTableColumns = {
