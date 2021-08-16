@@ -10,6 +10,8 @@ export const VisitedPlaces: React.FC = () => {
 
   const [displayLast14, setDisplayLast14] = useState(false);
 
+  const rowsPerPage = 10;
+
   const handleChangeDisplayLast14 = (e: any) => {
     setDisplayLast14(e.target.checked);
   };
@@ -89,7 +91,13 @@ export const VisitedPlaces: React.FC = () => {
                   />                  
               </Grid>
               <Grid item xs={12}>
-                <DataTable columns={columns} data={data} rowKey="_id" highlightRowIf={highlightRowIf} />
+                <DataTable 
+                  columns={columns} 
+                  data={data} 
+                  rowKey="_id" 
+                  highlightRowIf={highlightRowIf}
+                  rowsPerPage={rowsPerPage}
+                />
               </Grid>
             </Grid>
           </form>
