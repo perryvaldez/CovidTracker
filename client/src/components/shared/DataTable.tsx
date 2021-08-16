@@ -5,7 +5,7 @@ import styles from './DataTable.styles';
 export interface IDataTableColumnDefinition {
   title?: string;
   index?: number;
-  type?: string;
+  type?: 'string' | 'number' | 'boolean';
 };
 
 export interface IDataTableColumns {
@@ -18,12 +18,14 @@ export interface IDataTableRow {
 
 export type DataTableProps = {
   columns: IDataTableColumns,
-  keyColumn?: string,
+  rowKey?: string,
   data: IDataTableRow[],
 };
 
-export const DataTable: React.FC<DataTableProps> = ({ columns, data }) => {
+export const DataTable: React.FC<DataTableProps> = ({ columns, data, rowKey }) => {
   const classes = makeStyles(styles)();
+
+  const sortedColumns = Object.keys(columns);  // TODO
 
   return (
     <TableContainer >
@@ -31,7 +33,7 @@ export const DataTable: React.FC<DataTableProps> = ({ columns, data }) => {
         <TableHead>
           <TableRow>
             {
-              Object.keys(columns).map((col) => (<TableCell key={col}>{columns[col].title}</TableCell>))
+              sortedColumns.map((col) => (<TableCell key={col}>{columns[col].title}</TableCell>))
             }
             <TableCell>Action</TableCell>
           </TableRow>                       
@@ -40,10 +42,10 @@ export const DataTable: React.FC<DataTableProps> = ({ columns, data }) => {
             {
                 data.map((row, index) => { 
                   return (
-                    <TableRow key={index}>
+                    <TableRow key={rowKey ? row[rowKey] : index} className={`row-${rowKey ? row[rowKey] : 'no-key'}`}>
                       {
-                        Object.keys(row).map((colKey) => { 
-                          return (<TableCell key={colKey}>{row[colKey]}</TableCell>); 
+                        sortedColumns.map((col) => {
+                          return (<TableCell key={col}>{row[col]}</TableCell>); 
                         })
                       }
                       <TableCell>[Edit] [Delete]</TableCell>

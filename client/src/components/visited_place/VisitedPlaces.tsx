@@ -15,26 +15,29 @@ export const VisitedPlaces: React.FC = () => {
   };
 
   const columns: IDataTableColumns = {
-    place: { title: 'Place' },
-    date: { title: 'Date' },
-    hours: { title: 'Hours' },
-    isCrowded: { title: 'Crowded?' },
+    place: { title: 'Place', type: 'string', index: 1 },
+    date: { title: 'Date', type: 'string', index: 2 },
+    hours: { title: 'Hours', type: 'number', index: 3 },
+    isCrowded: { title: 'Crowded?', type: 'string', index: 4 },
   };
 
   const data = [
     {
+      _id: 6,
       place: 'Church',
       date: '6/27/2021',
       hours: 1,
       isCrowded: 'No',
     },
     {
+      _id: 7,
       place: 'Wet Market',
       date: '6/28/2021',
       hours: 3,
       isCrowded: 'Yes',
     },
     {
+      _id: 8,
       place: 'Office',
       date: '6/29/2021',
       hours: 8,
@@ -60,7 +63,7 @@ export const VisitedPlaces: React.FC = () => {
                   />                  
               </Grid>
               <Grid item xs={12}>
-                <DataTable columns={columns} data={data} />
+                <DataTable columns={columns} data={data} rowKey="_id" />
               </Grid>
             </Grid>
           </form>
