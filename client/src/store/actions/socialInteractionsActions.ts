@@ -36,9 +36,14 @@ export const socialInteractionsFetchDataAction =
 
 export const performSocialInteractionsFetchData = (filter: FilterType = {}, limit = 0, offset = 0) => 
   async (dispatch: SocialInteractionsAppDispatch) => {
+    const countFilter: {[key: string]: any } = { to: filter.to };
+    if(filter.from) {
+      countFilter.from = filter.from;
+    }
+
     const result = await Promise.all([
       api.getSocialInteractions(filter, limit, offset),
-      api.countSocialInteractions({ to: filter.to }),
+      api.countSocialInteractions(countFilter),
     ]);
 
     const [data, totalCount] = result;

@@ -36,9 +36,14 @@ export const visitedPlacesFetchDataAction =
 
 export const performVisitedPlacesFetchData = (filter: FilterType = {}, limit = 0, offset = 0) => 
   async (dispatch: VisitedPlacesAppDispatch) => {
+    const countFilter: {[key: string]: any } = { to: filter.to };
+    if(filter.from) {
+      countFilter.from = filter.from;
+    }
+
     const result = await Promise.all([
       api.getVisitedPlaces(filter, limit, offset),
-      api.countVisitedPlaces({ to: filter.to }),
+      api.countVisitedPlaces(countFilter),
     ]);
 
     const [data, totalCount] = result;
