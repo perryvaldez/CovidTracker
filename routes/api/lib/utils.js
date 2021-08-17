@@ -5,6 +5,10 @@ const fieldMappings = {
   crowded: 'isCrowded', // Either '1' if true, or '0' if false
 };
 
+const ops = [
+  'prefix',  // Format: prefix={field}:{searchValue}
+];
+
 const makeFilter = (queryParams) => {
   const filter = {};
   const parms = {};
@@ -31,6 +35,26 @@ const makeFilter = (queryParams) => {
 
       if(q === 'crowded') {
         parms[key].push({ '$eq': (queryParams[q] === '1') });  
+      }
+    } else if (ops.includes(q)) {
+      if(q === 'prefix') {
+        const val = queryParams[q];
+        const match = val.match(/^([^:]+):(.*)/);
+
+        if(match !== null) {
+          const key = match[1];
+
+          // Escape also all regex special characters
+          const searchVal = (match[2] || '').replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+
+          const regex = new RegExp(`^${searchVal}`, 'i');
+
+          if(!parms[key]) {
+            parms[key] = [];
+          }
+
+          parms[key].push({ '$regex': regex });
+        }
       }
     }
   }
