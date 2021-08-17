@@ -16,13 +16,15 @@ router.get("/", async (req, res) => {
     if(limit < 1) {
       visitedPlaces = await VisitedPlace.find(
         utils.makeFilter(req.query)).sort({ 
-        date: -1 
+        date: -1,
+        _id: -1, 
       });
     } else {
       visitedPlaces = await VisitedPlace.find(
-        utils.makeFilter(req.query)).limit(limit).skip(offset).sort({ 
-        date: -1 
-      });
+        utils.makeFilter(req.query)).sort({ 
+        date: -1,
+        _id: -1, 
+      }).limit(limit).skip(offset);
     }
 
     res.json(visitedPlaces);

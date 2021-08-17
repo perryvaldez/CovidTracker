@@ -17,12 +17,14 @@ router.get("/", async (req, res) => {
       socialInteractions = await SocialInteraction.find(
         utils.makeFilter(req.query)).sort({
         date: -1,
+        _id: -1,
       });
     } else {
       socialInteractions = await SocialInteraction.find(
-        utils.makeFilter(req.query)).limit(limit).skip(offset).sort({
+        utils.makeFilter(req.query)).sort({
         date: -1,
-      });
+        _id: -1,
+      }).limit(limit).skip(offset);
     }
     
     res.json(socialInteractions);
