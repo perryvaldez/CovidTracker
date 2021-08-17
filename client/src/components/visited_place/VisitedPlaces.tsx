@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Checkbox, Container, FormControlLabel, Grid, makeStyles } from '@material-ui/core';
+import { Button, Checkbox, Container, FormControlLabel, Grid, makeStyles } from '@material-ui/core';
 import { useCustomSelector } from '../../lib/hooks';
 import utils from '../../lib/utils';
 import visitedPlacesStates from '../../store/states/visitedPlacesStates';
@@ -117,6 +117,9 @@ export const VisitedPlaces: React.FC = () => {
                   totalRows={totalRows}
                   onPageChange={handlePageChange}
                 />
+              </Grid>
+              <Grid item xs={12}>
+                  <Button variant="contained" color="primary">Add Visited Place</Button>
               </Grid>
             </Grid>
           </form>
