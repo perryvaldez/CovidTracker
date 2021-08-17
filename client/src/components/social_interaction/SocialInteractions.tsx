@@ -2,11 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { Button, Checkbox, Container, FormControlLabel, Grid, makeStyles } from '@material-ui/core';
 import { useCustomSelector } from '../../lib/hooks';
 import utils from '../../lib/utils';
+import { ISocialInteractionData } from '../../lib/api';
 import socialInteractionsStates from '../../store/states/socialInteractionsStates';
-import { performSocialInteractionsChangePage, performSocialInteractionsFetchData, useSocialInteractionsDispatch } from '../../store/actions/socialInteractionsActions';
+import { performSocialInteractionsAddData, performSocialInteractionsChangePage, performSocialInteractionsFetchData, useSocialInteractionsDispatch } from '../../store/actions/socialInteractionsActions';
 import Loader from '../shared/Loader';
 import PageHeader from '../shared/PageHeader';
 import DataTable, { IDataTableColumns, IDataTableRow } from '../shared/DataTable';
+import SocialInteractionDialog from './SocialInteractionDialog';
 import styles from './SocialInteractions.styles';
 
 type GridData = {
@@ -20,9 +22,14 @@ type GridData = {
 export const SocialInteractions: React.FC = () => {
   const classes = makeStyles(styles)();
 
+  const pageState = useCustomSelector(state => state.socialInteractions);
+  const dispatch = useSocialInteractionsDispatch();
+
   const [displayLast14, setDisplayLast14] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [offset, setOffset] = useState(0);
+
+  const [openDialog, setOpenDialog] = useState(false);
 
   const rowsPerPage = 10;
 
@@ -39,6 +46,21 @@ export const SocialInteractions: React.FC = () => {
       dispatch(performSocialInteractionsChangePage());
   };
 
+  const handleOpenDialog = (e: any) => {
+    setOpenDialog(true);
+  };
+
+  const handleCloseDialog = (e: any) => {
+    setOpenDialog(false);
+  }
+
+  const handleSaveDialog = (data: ISocialInteractionData) => (e: any) => {
+    setOffset(0);
+    setCurrentPage(1)   
+    dispatch(performSocialInteractionsAddData(data));
+    setOpenDialog(false);
+  };
+
   const columns: IDataTableColumns = {
     name: { title: 'Person', type: 'string', index: 1 },
     date: { title: 'Date', type: 'string', index: 2 },
@@ -51,8 +73,6 @@ export const SocialInteractions: React.FC = () => {
     '#ffdce1': (row: IDataTableRow) => (row.isSocialDistancing === 'No'),
   };
 
-  const pageState = useCustomSelector(state => state.socialInteractions);
-  const dispatch = useSocialInteractionsDispatch();
 
   const currentDate = utils.currentDate();
   const currentDateMaxTimeString = utils.toDateTimeString(utils.maxTime(currentDate));
@@ -93,7 +113,7 @@ export const SocialInteractions: React.FC = () => {
     <Loader isLoading={false}>
       <Container disableGutters className={classes.container}>
         <PageHeader text="Social Interactions List" className={classes.header} />
-          <form>
+        <form>
             <Grid container spacing={2}>
               <Grid item xs={12}>
                   <FormControlLabel
@@ -119,10 +139,15 @@ export const SocialInteractions: React.FC = () => {
                 />
               </Grid>
               <Grid item xs={12}>
-                  <Button variant="contained" color="primary">Add Social Interaction</Button>
+                  <Button variant="contained" color="primary" onClick={handleOpenDialog}>Add Social Interaction</Button>
               </Grid>
             </Grid>
-          </form>
+        </form>
+        <SocialInteractionDialog 
+          open={openDialog} 
+          onClose={handleCloseDialog}
+          onSave={handleSaveDialog}
+        />
       </Container>
     </Loader>
   );

@@ -1,5 +1,5 @@
 import { Reducer } from 'redux';
-import a, { IVisitedPlacesAction, IVisitedPlacesChangePageAction, IVisitedPlacesFetchDataAction } from '../actions/visitedPlacesActions';
+import a, { IVisitedPlacesAction, IVisitedPlacesAddDataAction, IVisitedPlacesChangePageAction, IVisitedPlacesFetchDataAction } from '../actions/visitedPlacesActions';
 import s, { IVisitedPlacesState, VisitedPlacesStartState as startState } from '../states/visitedPlacesStates';
 
 const visitedPlacesReducer: Reducer<IVisitedPlacesState, IVisitedPlacesAction> =
@@ -38,6 +38,16 @@ const visitedPlacesReducer: Reducer<IVisitedPlacesState, IVisitedPlacesAction> =
             stateName: s.OUTDATED_DATA,
             payload: { ...state.payload, ...fetchAction.payload },
           };
+      }
+
+      if (action.type === a.ADD_DATA) {
+        const fetchAction = action as IVisitedPlacesAddDataAction;
+
+        return {
+          ...state,
+          stateName: s.OUTDATED_DATA,
+          payload: { ...state.payload, ...fetchAction.payload },
+        };
       }
       break;
   }

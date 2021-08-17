@@ -1,12 +1,13 @@
 import { useDispatch } from 'react-redux';
 import { ThunkDispatch } from 'redux-thunk';
-import api, { FilterType } from '../../lib/api';
+import api, { FilterType, ISocialInteractionData } from '../../lib/api';
 import { ISocialInteractionsState } from '../states/socialInteractionsStates';
 
 
 const socialInteractionsActions = {
   FETCH_DATA: 'SOCIAL_INTERACTIONS_FETCH_DATA',
   CHANGE_PAGE: 'SOCIAL_INTERACTIONS_CHANGE_PAGE',
+  ADD_DATA: 'SOCIAL_INTERACTIONS_ADD_DATA',
 };
 
 export interface ISocialInteractionsAction {
@@ -71,6 +72,30 @@ export const performSocialInteractionsChangePage = () =>
     return(dispatch(socialInteractionsChangePageAction()));
   };
 
+///
+
+export interface ISocialInteractionsAddDataActionPayload {
+  socialInteraction: ISocialInteractionData;
+};
+
+export interface ISocialInteractionsAddDataAction extends ISocialInteractionsAction {
+  payload: ISocialInteractionsAddDataActionPayload;
+};
+
+export const socialInteractionsAddDataAction = 
+(socialInteraction: ISocialInteractionData) => ({
+  type: socialInteractionsActions.ADD_DATA,
+  payload: {
+    socialInteraction,
+  },
+});
+
+export const performSocialInteractionsAddData = (data: ISocialInteractionData) => 
+  async (dispatch: SocialInteractionsAppDispatch) => {
+    const id = await api.postSocialInteraction(data);
+    data._id = id;
+
+    return(dispatch(socialInteractionsAddDataAction(data)));
+  };
+
 export default socialInteractionsActions;
-
-
