@@ -51,8 +51,7 @@ const makeFilter = (queryParams) => {
         if(match !== null) {
           const key = match[1];
 
-          // Escape also all regex special characters
-          const searchVal = (match[2] || '').replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+          const searchVal = escapeRegexChars(match[2]);
 
           const regex = new RegExp(`^${searchVal}`, 'i');
 
