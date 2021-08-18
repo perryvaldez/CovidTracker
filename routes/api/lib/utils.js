@@ -9,6 +9,13 @@ const ops = [
   'prefix',  // Format: prefix={field}:{searchValue}
 ];
 
+const aggParams = [
+  'name',
+  'prefix',
+];
+
+const escapeRegexChars = (s = '') => s.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+
 const makeFilter = (queryParams) => {
   const filter = {};
   const parms = {};
@@ -94,8 +101,41 @@ const getPagination = (queryParams) => {
   return paginationFields;
 };
 
+const makeAggregate = async (model, queryParams) => {
+  let fieldName = '';
+  let prefix = '';
+
+  for(let q in queryParams) {
+    if(aggParams.includes(q)) {
+      if (q === 'name') {
+        fieldName = queryParams[q];
+      }
+
+      if (q === 'prefix') {
+        prefix = queryParams[q];
+      }
+    }
+  }
+
+  if(!fieldName) {
+    throw new Error('Missing parameter "name"');
+  }
+
+  const pipeLine = [];
+
+  if(prefix) {
+    const regex = new RegExp(`^${escapeRegexChars(prefix)}`, 'i');
+    pipeLine.push({ $match: { [fieldName]: { $regex: regex } } });
+  }
+
+  pipeLine.push({ $group: { _id: `$${fieldName}` } });
+
+  return model.aggregate(pipeLine).sort({ _id: 1 });
+};
+
 module.exports = {
   makeFilter,
   getPagination,
+  makeAggregate,
 };
 

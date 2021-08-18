@@ -46,6 +46,18 @@ router.get("/count", async (req, res) => {
   }
 });
 
+// @route   GET api/social-interactions/field
+// @desc    Get all values of the named field
+router.get("/field", async (req, res) => {
+  try {
+    const result = await utils.makeAggregate(SocialInteraction, req.query);
+    res.json(result.map((item) => item._id));
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server Error");
+  }
+});
+
 // @route   GET api/social-interactions/:id
 // @desc    Get social interaction by Id
 router.get("/:id([0-9a-f]+)", async (req, res) => {

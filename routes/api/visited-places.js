@@ -46,6 +46,18 @@ router.get("/count", async (req, res) => {
   }
 });
 
+// @route   GET api/visited-places/field
+// @desc    Get all visited places/field
+router.get("/field", async (req, res) => {
+  try {
+    const result = await utils.makeAggregate(VisitedPlace, req.query);
+    res.json(result.map((item) => item._id));
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server Error");
+  }
+});
+
 // @route   GET api/visited-places/:id
 // @desc    Get visited place by Id
 router.get("/:id([0-9a-f]+)", async (req, res) => {
