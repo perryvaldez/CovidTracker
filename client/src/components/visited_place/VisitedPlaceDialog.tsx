@@ -136,15 +136,19 @@ export const VisitedPlaceDialog: React.FC<VisitedPlaceDialogProps> =
           const suggestions = await api.getVisitedPlacesAvailablePlaces( reason === 'input' ? value : '');
           setAutoSuggestOptions(suggestions);
         });
+      } else if(reason === 'reset') {
+        setPlace(value);
       }
     };
 
     useEffect(() => {
-      utils.runAsync(async () => {
-        const suggestions = await api.getVisitedPlacesAvailablePlaces();
-        setAutoSuggestOptions(suggestions);
-      });
-    }, []);
+      if(open) {
+        utils.runAsync(async () => {
+          const suggestions = await api.getVisitedPlacesAvailablePlaces();
+          setAutoSuggestOptions(suggestions);
+        });
+      }
+    }, [open]);
 
     return (
       <AppDialog 

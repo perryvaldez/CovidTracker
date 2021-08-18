@@ -137,15 +137,19 @@ export const SocialInteractionDialog: React.FC<SocialInteractionDialogProps> =
             const suggestions = await api.getSocialInteractionsAvailableNames( reason === 'input' ? value : '');
             setAutoSuggestOptions(suggestions);
           });
+        } else if(reason === 'reset') {
+          setName(value);
         }
       };
   
     useEffect(() => {
-      utils.runAsync(async () => {
-        const suggestions = await api.getSocialInteractionsAvailableNames();
-        setAutoSuggestOptions(suggestions);
-      });
-    }, []);
+      if(open) {
+        utils.runAsync(async () => {
+          const suggestions = await api.getSocialInteractionsAvailableNames();
+          setAutoSuggestOptions(suggestions);
+        });
+      }
+    }, [open]);
 
     return (
       <AppDialog 
