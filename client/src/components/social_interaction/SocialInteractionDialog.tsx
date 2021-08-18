@@ -134,7 +134,7 @@ export const SocialInteractionDialog: React.FC<SocialInteractionDialogProps> =
     const handleAutoCompleteInputChange = (event: any, value: string, reason: string) => {
         if(reason === 'input' || reason === 'clear') {
           utils.runAsync(async () => {
-            const suggestions = await api.getSocialInteractionsvailableNames( reason === 'input' ? value : '');
+            const suggestions = await api.getSocialInteractionsAvailableNames( reason === 'input' ? value : '');
             setAutoSuggestOptions(suggestions);
           });
         }
@@ -142,7 +142,7 @@ export const SocialInteractionDialog: React.FC<SocialInteractionDialogProps> =
   
     useEffect(() => {
       utils.runAsync(async () => {
-        const suggestions = await api.getSocialInteractionsvailableNames();
+        const suggestions = await api.getSocialInteractionsAvailableNames();
         setAutoSuggestOptions(suggestions);
       });
     }, []);

@@ -75,7 +75,7 @@ async (filter: FilterType = {}): Promise<number> => {
     throw new Error('Unable to count social interactions.');
 };
 
-const getSocialInteractionsvailableNames = 
+const getSocialInteractionsAvailableNames = 
 async (prefix: string = ''): Promise<string[]> => {
     const params = `name=name&prefix=${encodeURIComponent(prefix)}`;
     const result = await axios.get(`/social-interactions/field?${params}`);
@@ -142,7 +142,7 @@ async (data: IVisitedPlaceData): Promise<string> => {
 export default {
   getSocialInteractions,
   countSocialInteractions,
-  getSocialInteractionsvailableNames,
+  getSocialInteractionsAvailableNames,
   getVisitedPlaces,
   countVisitedPlaces,
   getVisitedPlacesAvailablePlaces,
