@@ -75,6 +75,17 @@ async (filter: FilterType = {}): Promise<number> => {
     throw new Error('Unable to count social interactions.');
 };
 
+const getSocialInteractionsvailableNames = 
+async (prefix: string = ''): Promise<string[]> => {
+    const params = `name=name&prefix=${encodeURIComponent(prefix)}`;
+    const result = await axios.get(`/social-interactions/field?${params}`);
+    if(result.status === 200) {
+      return result.data as string[];
+    }
+
+    throw new Error('Unable to fetch available social interaction names.');
+};
+
 const getVisitedPlaces = 
 async (filter: FilterType = {}, limit: number = 0, offset: number = 0, sortBy: string[] = []): Promise<IVisitedPlaceData[]> => {
     const params = makeQueryParams(filter, limit, offset);
@@ -95,6 +106,17 @@ async (filter: FilterType = {}): Promise<number> => {
     }
 
     throw new Error('Unable to count visited places.');
+};
+
+const getVisitedPlacesAvailablePlaces = 
+async (prefix: string = ''): Promise<string[]> => {
+    const params = `name=place&prefix=${encodeURIComponent(prefix)}`;
+    const result = await axios.get(`/visited-places/field?${params}`);
+    if(result.status === 200) {
+      return result.data as string[];
+    }
+
+    throw new Error('Unable to fetch available visited places.');
 };
 
 const postSocialInteraction = 
@@ -120,8 +142,10 @@ async (data: IVisitedPlaceData): Promise<string> => {
 export default {
   getSocialInteractions,
   countSocialInteractions,
+  getSocialInteractionsvailableNames,
   getVisitedPlaces,
   countVisitedPlaces,
+  getVisitedPlacesAvailablePlaces,
   postSocialInteraction,
   postVisitedPlace,
 };

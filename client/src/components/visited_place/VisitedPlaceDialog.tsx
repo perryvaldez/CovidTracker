@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Checkbox, FormControlLabel, Grid, TextField } from '@material-ui/core';
 import { KeyboardDatePicker } from '@material-ui/pickers';
+import { Autocomplete } from '@material-ui/lab';
 import utils from '../../lib/utils';
+import api, { IVisitedPlaceData } from '../../lib/api';
 import AppDialog from '../shared/AppDialog';
-import { IVisitedPlaceData } from '../../lib/api';
 
 type VisitedPlaceDialogProps = {
   open: boolean,
@@ -25,6 +26,8 @@ export const VisitedPlaceDialog: React.FC<VisitedPlaceDialogProps> =
     const [placeError, setPlaceError] = useState('');
     const [hoursError, setHoursError] = useState('');
     const [dateError, setDateError] = useState('');
+
+    const [autoSuggestOptions, setAutoSuggestOptions] = useState([] as string[]);
 
     const handleDateChange = (date: any) => {
       setSelectedDate(utils.extractDate(date));
@@ -127,6 +130,22 @@ export const VisitedPlaceDialog: React.FC<VisitedPlaceDialogProps> =
       onClose(e);
     };
 
+    const handleAutoCompleteInputChange = (event: any, value: string, reason: string) => {
+      if(reason === 'input' || reason === 'clear') {
+        utils.runAsync(async () => {
+          const suggestions = await api.getVisitedPlacesAvailablePlaces( reason === 'input' ? value : '');
+          setAutoSuggestOptions(suggestions);
+        });
+      }
+    };
+
+    useEffect(() => {
+      utils.runAsync(async () => {
+        const suggestions = await api.getVisitedPlacesAvailablePlaces();
+        setAutoSuggestOptions(suggestions);
+      });
+    }, []);
+
     return (
       <AppDialog 
         open={open} 
@@ -138,16 +157,26 @@ export const VisitedPlaceDialog: React.FC<VisitedPlaceDialogProps> =
         <form>
           <Grid container spacing={2}>
             <Grid item xs={12} sm={6}>
-              <TextField 
-                required 
-                error={!!placeError}
-                helperText={placeError}
-                id="si-place" 
-                name="place" 
-                label="Place" 
-                value={place}
-                onChange={handlePlaceChange} 
-            />
+              <Autocomplete 
+                freeSolo
+                options={autoSuggestOptions}
+                filterOptions={(x) => x}
+                onInputChange={handleAutoCompleteInputChange}
+                renderInput={(params) => (
+                  <TextField 
+                    {...params}
+                    required 
+                    error={!!placeError}
+                    helperText={placeError}
+                    id="si-place" 
+                    name="place" 
+                    label="Place" 
+                    value={place}
+                    onChange={handlePlaceChange} 
+                  />
+                )}
+              
+              />
             </Grid>
             <Grid item xs={12} sm={6}>
                 <KeyboardDatePicker

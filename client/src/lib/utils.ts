@@ -40,6 +40,11 @@ const toDateTimeString = (d: Date): string => {
   return d.toISOString();
 };
 
+const waitFor = (promise: Promise<any>) => ((async () => await promise)());
+
+type asyncFn = () => Promise<any>;
+const runAsync = (func: asyncFn) => { waitFor(func()); };
+
 export default {
   compareDates,
   dateAddDays,
@@ -50,4 +55,6 @@ export default {
   currentDate,
   minTime,
   maxTime,
+  waitFor,
+  runAsync,
 };

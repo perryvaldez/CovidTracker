@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Checkbox, FormControlLabel, Grid, TextField } from '@material-ui/core';
 import { KeyboardDatePicker } from '@material-ui/pickers';
+import { Autocomplete } from '@material-ui/lab';
 import utils from '../../lib/utils';
+import api, { ISocialInteractionData } from '../../lib/api';
 import AppDialog from '../shared/AppDialog';
-import { ISocialInteractionData } from '../../lib/api';
 
 type SocialInteractionDialogProps = {
   open: boolean,
@@ -25,6 +26,9 @@ export const SocialInteractionDialog: React.FC<SocialInteractionDialogProps> =
     const [nameError, setNameError] = useState('');
     const [hoursError, setHoursError] = useState('');
     const [dateError, setDateError] = useState('');
+
+    const [autoSuggestOptions, setAutoSuggestOptions] = useState([] as string[]);
+
 
     const handleDateChange = (date: any) => {
       setSelectedDate(utils.extractDate(date));
@@ -127,6 +131,22 @@ export const SocialInteractionDialog: React.FC<SocialInteractionDialogProps> =
       onClose(e);
     };
 
+    const handleAutoCompleteInputChange = (event: any, value: string, reason: string) => {
+        if(reason === 'input' || reason === 'clear') {
+          utils.runAsync(async () => {
+            const suggestions = await api.getSocialInteractionsvailableNames( reason === 'input' ? value : '');
+            setAutoSuggestOptions(suggestions);
+          });
+        }
+      };
+  
+    useEffect(() => {
+      utils.runAsync(async () => {
+        const suggestions = await api.getSocialInteractionsvailableNames();
+        setAutoSuggestOptions(suggestions);
+      });
+    }, []);
+
     return (
       <AppDialog 
         open={open} 
@@ -138,16 +158,25 @@ export const SocialInteractionDialog: React.FC<SocialInteractionDialogProps> =
         <form>
           <Grid container spacing={2}>
             <Grid item xs={12} sm={6}>
-              <TextField 
-                required 
-                error={!!nameError}
-                helperText={nameError}
-                id="si-name" 
-                name="name" 
-                label="Name" 
-                value={name}
-                onChange={handleNameChange} 
-            />
+            <Autocomplete 
+                freeSolo
+                options={autoSuggestOptions}
+                filterOptions={(x) => x}
+                onInputChange={handleAutoCompleteInputChange}
+                renderInput={(params) => (
+                  <TextField 
+                      {...params}
+                      required 
+                      error={!!nameError}
+                      helperText={nameError}
+                      id="si-name" 
+                      name="name" 
+                      label="Name" 
+                      value={name}
+                      onChange={handleNameChange} 
+                  />
+                )}
+            />               
             </Grid>
             <Grid item xs={12} sm={6}>
                 <KeyboardDatePicker
