@@ -10,6 +10,7 @@ import {
   TablePagination, 
   TableRow,
 } from '@material-ui/core';
+import { PageMode } from '../../lib/page';
 import DataTablePageControls, { DataTablePageControlsProps } from './DataTablePageControls';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -43,11 +44,12 @@ export type DataTableProps = {
   rowsPerPage?: number,
   page?: number,
   disabledPageControls?: boolean,
+  pageMode?: PageMode,
   onPageChange?: (e: any, page: number) => void,
 };
 
 export const DataTable: React.FC<DataTableProps> = 
-({ columns, data, rowKey, highlightRowIf, totalRows, rowsPerPage, page, disabledPageControls, onPageChange }) => {
+({ columns, data, rowKey, highlightRowIf, totalRows, rowsPerPage, page, disabledPageControls, pageMode, onPageChange }) => {
   const classes = makeStyles(styles)();
 
   const sortedColumns = Object.keys(columns);
@@ -64,7 +66,7 @@ export const DataTable: React.FC<DataTableProps> =
     pageNum = page - 1;
   }
 
-  const pageControls = (props: DataTablePageControlsProps) => (<DataTablePageControls {...props} disabled={disabledPageControls} />);
+  const pageControls = (props: DataTablePageControlsProps) => (<DataTablePageControls {...props} disabled={disabledPageControls || (pageMode && (pageMode !== PageMode.VIEW))} />);
 
   return (
     <TableContainer >

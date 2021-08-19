@@ -139,7 +139,7 @@ export const SocialInteractions: React.FC = () => {
                     rowsPerPage={rowsPerPage}
                     page={currentPage}
                     totalRows={totalRows}
-                    disabledPageControls={(pageMode !== PageMode.VIEW)}                    
+                    pageMode={pageMode}
                     onPageChange={handlePageChange}
                   />
                 </Loader>
