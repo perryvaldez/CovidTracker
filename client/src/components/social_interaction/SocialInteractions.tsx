@@ -5,7 +5,6 @@ import utils from '../../lib/utils';
 import { ISocialInteractionData } from '../../lib/api';
 import socialInteractionsStates from '../../store/states/socialInteractionsStates';
 import { performSocialInteractionsAddData, performSocialInteractionsChangePage, performSocialInteractionsFetchData, useSocialInteractionsDispatch } from '../../store/actions/socialInteractionsActions';
-import Loader from '../shared/Loader';
 import PageHeader from '../shared/PageHeader';
 import DataTable, { IDataTableColumns, IDataTableRow } from '../shared/DataTable';
 import SocialInteractionDialog from './SocialInteractionDialog';
@@ -110,7 +109,6 @@ export const SocialInteractions: React.FC = () => {
   }, [pageState, dispatch, currentDateMaxTimeString, last14DaysMinTimeString, displayLast14, rowsPerPage, offset]);
 
   return (
-    <Loader isLoading={false}>
       <Container disableGutters className={classes.container}>
         <PageHeader text="Social Interactions List" className={classes.header} />
         <form>
@@ -149,7 +147,6 @@ export const SocialInteractions: React.FC = () => {
           onSave={handleSaveDialog}
         />
       </Container>
-    </Loader>
   );
 };
 

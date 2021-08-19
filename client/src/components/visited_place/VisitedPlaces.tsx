@@ -5,7 +5,6 @@ import utils from '../../lib/utils';
 import { IVisitedPlaceData } from '../../lib/api';
 import visitedPlacesStates from '../../store/states/visitedPlacesStates';
 import { performVisitedPlacesAddData, performVisitedPlacesChangePage, performVisitedPlacesFetchData, useVisitedPlacesDispatch } from '../../store/actions/visitedPlacesActions';
-import Loader from '../shared/Loader';
 import PageHeader from '../shared/PageHeader';
 import DataTable, { IDataTableColumns, IDataTableRow } from '../shared/DataTable';
 import VisitedPlaceDialog from './VisitedPlaceDialog';
@@ -109,7 +108,6 @@ export const VisitedPlaces: React.FC = () => {
   }, [pageState, dispatch, currentDateMaxTimeString, last14DaysMinTimeString, displayLast14, rowsPerPage, offset]);
 
   return (
-    <Loader isLoading={false}>
       <Container disableGutters className={classes.container}>
         <PageHeader text="Visited Places List" className={classes.header} />
         <form>
@@ -148,7 +146,6 @@ export const VisitedPlaces: React.FC = () => {
           onSave={handleSaveDialog}
         />         
       </Container>
-    </Loader>
   );
 };
 
