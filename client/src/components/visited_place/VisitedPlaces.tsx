@@ -26,7 +26,7 @@ export const VisitedPlaces: React.FC = () => {
   const pageState = useCustomSelector(state => state.visitedPlaces);
   const dispatch = useVisitedPlacesDispatch();
 
-  const [pageMode /*, setPageMode */] = useState(PageMode.EDIT);
+  const [pageMode /*, setPageMode */] = useState(PageMode.VIEW);
 
   const [displayLast14, setDisplayLast14] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
