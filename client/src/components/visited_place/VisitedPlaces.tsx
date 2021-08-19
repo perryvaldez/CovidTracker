@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Checkbox, Container, FormControlLabel, Grid, makeStyles } from '@material-ui/core';
 import { useCustomSelector } from '../../lib/hooks';
+import { PageMode } from '../../lib/page';
 import utils from '../../lib/utils';
 import { IVisitedPlaceData } from '../../lib/api';
 import visitedPlacesStates from '../../store/states/visitedPlacesStates';
@@ -25,7 +26,7 @@ export const VisitedPlaces: React.FC = () => {
   const pageState = useCustomSelector(state => state.visitedPlaces);
   const dispatch = useVisitedPlacesDispatch();
 
-  const [pageDisabled /*, setPageDisabled */] = useState(false);
+  const [pageMode /*, setPageMode */] = useState(PageMode.VIEW);
 
   const [displayLast14, setDisplayLast14] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
@@ -122,7 +123,7 @@ export const VisitedPlaces: React.FC = () => {
                         checked={displayLast14} 
                         onChange={handleChangeDisplayLast14} 
                         name="last14" 
-                        disabled={pageDisabled}
+                        disabled={pageMode !== PageMode.VIEW}
                       />}
                     label="Display records within last 14 days"
                   />                  
@@ -137,13 +138,13 @@ export const VisitedPlaces: React.FC = () => {
                     rowsPerPage={rowsPerPage}
                     page={currentPage}
                     totalRows={totalRows}
-                    disabledPageControls={pageDisabled}
+                    disabledPageControls={(pageMode !== PageMode.VIEW)}
                     onPageChange={handlePageChange}
                   />
                 </Loader>
               </Grid>
               <Grid item xs={12}>
-                  <Button variant="contained" color="primary" onClick={handleOpenDialog} disabled={pageDisabled}>Add Visited Place</Button>
+                  <Button variant="contained" color="primary" onClick={handleOpenDialog} disabled={pageMode !== PageMode.VIEW}>Add Visited Place</Button>
               </Grid>
             </Grid>
         </form>
