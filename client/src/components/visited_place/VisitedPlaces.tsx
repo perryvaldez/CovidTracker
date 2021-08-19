@@ -5,6 +5,7 @@ import utils from '../../lib/utils';
 import { IVisitedPlaceData } from '../../lib/api';
 import visitedPlacesStates from '../../store/states/visitedPlacesStates';
 import { performVisitedPlacesAddData, performVisitedPlacesChangePage, performVisitedPlacesFetchData, useVisitedPlacesDispatch } from '../../store/actions/visitedPlacesActions';
+import Loader from '../shared/Loader';
 import PageHeader from '../shared/PageHeader';
 import DataTable, { IDataTableColumns, IDataTableRow } from '../shared/DataTable';
 import VisitedPlaceDialog from './VisitedPlaceDialog';
@@ -124,16 +125,18 @@ export const VisitedPlaces: React.FC = () => {
                   />                  
               </Grid>
               <Grid item xs={12}>
-                <DataTable 
-                  columns={columns} 
-                  data={data} 
-                  rowKey="_id" 
-                  highlightRowIf={highlightRowIf}
-                  rowsPerPage={rowsPerPage}
-                  page={currentPage}
-                  totalRows={totalRows}
-                  onPageChange={handlePageChange}
-                />
+                <Loader isLoading={pageState.stateName !== visitedPlacesStates.READY} withWrapper>
+                  <DataTable 
+                    columns={columns} 
+                    data={data} 
+                    rowKey="_id" 
+                    highlightRowIf={highlightRowIf}
+                    rowsPerPage={rowsPerPage}
+                    page={currentPage}
+                    totalRows={totalRows}
+                    onPageChange={handlePageChange}
+                  />
+                </Loader>
               </Grid>
               <Grid item xs={12}>
                   <Button variant="contained" color="primary" onClick={handleOpenDialog}>Add Visited Place</Button>
