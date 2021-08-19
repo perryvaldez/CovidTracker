@@ -77,9 +77,9 @@ export const SocialInteractions: React.FC = () => {
 
   const columns: IDataTableColumns = {
     name: { title: 'Person', type: 'string', index: 1 },
-    date: { title: 'Date', type: 'string', index: 2 },
+    date: { title: 'Date', type: 'Date', index: 2 },
     hours: { title: 'Hours', type: 'number', index: 3 },
-    isSocialDistancing: { title: 'Practicing SD?', type: 'string', index: 4 },
+    isSocialDistancing: { title: 'Practicing SD?', type: 'boolean', index: 4 },
   };
 
   const highlightRowIf = { 

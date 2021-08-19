@@ -22,7 +22,7 @@ import styles from './DataTable.styles';
 export interface IDataTableColumnDefinition {
   title?: string;
   index?: number;
-  type?: 'string' | 'number' | 'boolean';
+  type?: 'string' | 'number' | 'boolean' | 'Date' ;
 };
 
 export interface IDataTableColumns {
@@ -131,6 +131,29 @@ export const DataTable: React.FC<DataTableProps> =
                     <TableRow key={rowKey ? row[rowKey] : index} {...optProps}>
                       {
                         sortedColumns.map((col) => {
+                          if(typeof(editRowIndex) === 'number' && editRowIndex === index && pageMode === PageMode.EDIT) {
+                            let control: React.ReactNode = (<input type="text" className={classes.editTextBox} value={rawDataArray[editRowIndex][col]} />);
+
+                            if(columns[col].type === 'number') {
+                              control = (<input type="number" className={classes.editNumberField} value={rawDataArray[editRowIndex][col]} />);
+                            }
+
+                            if(columns[col].type === 'Date') {
+                              const dateObj = new Date(rawDataArray[editRowIndex][col]);
+                              const yyyy = `${dateObj.getFullYear()}`;
+                              const mm = `${dateObj.getMonth() + 1}`.padStart(2, '0');
+                              const dd = `${dateObj.getDate()}`.padStart(2, '0');
+                              const dateVal = `${yyyy}-${mm}-${dd}`;
+                              control = (<input type="date" className={classes.editDatePicker} value={dateVal} />);
+                            }
+
+                            if(columns[col].type === 'boolean') {
+                              control = (<input type="checkbox" checked={!!rawDataArray[editRowIndex][col]} />);
+                            }
+
+                            return (<TableCell key={col}>{control}</TableCell>); 
+                          }
+
                           return (<TableCell key={col}>{row[col]}</TableCell>); 
                         })
                       }

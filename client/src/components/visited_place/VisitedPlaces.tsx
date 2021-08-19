@@ -77,9 +77,9 @@ export const VisitedPlaces: React.FC = () => {
 
   const columns: IDataTableColumns = {
     place: { title: 'Place', type: 'string', index: 1 },
-    date: { title: 'Date', type: 'string', index: 2 },
+    date: { title: 'Date', type: 'Date', index: 2 },
     hours: { title: 'Hours', type: 'number', index: 3 },
-    isCrowded: { title: 'Crowded?', type: 'string', index: 4 },
+    isCrowded: { title: 'Crowded?', type: 'boolean', index: 4 },
   };
 
   const highlightRowIf = { 

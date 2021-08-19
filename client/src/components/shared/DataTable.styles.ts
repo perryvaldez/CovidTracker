@@ -20,6 +20,15 @@ const styles = {
   actionCell: {
     width: 64,
   },
+  editTextBox: {
+    width: 'calc(100% - 8px)',
+  },
+  editDatePicker: {
+    width: 132,
+  } ,
+  editNumberField: {
+    width: 40,
+  },
 };
 
 export default styles;
