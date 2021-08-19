@@ -25,6 +25,8 @@ export const SocialInteractions: React.FC = () => {
   const pageState = useCustomSelector(state => state.socialInteractions);
   const dispatch = useSocialInteractionsDispatch();
 
+  const [pageDisabled /*, setPageDisabled */] = useState(false);
+
   const [displayLast14, setDisplayLast14] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [offset, setOffset] = useState(0);
@@ -120,7 +122,8 @@ export const SocialInteractions: React.FC = () => {
                       <Checkbox 
                         checked={displayLast14} 
                         onChange={handleChangeDisplayLast14} 
-                        name="last14" 
+                        name="last14"
+                        disabled={pageDisabled}
                       />}
                     label="Display records within last 14 days"
                   />                  
@@ -135,12 +138,13 @@ export const SocialInteractions: React.FC = () => {
                     rowsPerPage={rowsPerPage}
                     page={currentPage}
                     totalRows={totalRows}
+                    disabledPageControls={pageDisabled}
                     onPageChange={handlePageChange}
                   />
                 </Loader>
               </Grid>
               <Grid item xs={12}>
-                  <Button variant="contained" color="primary" onClick={handleOpenDialog}>Add Social Interaction</Button>
+                  <Button variant="contained" color="primary" onClick={handleOpenDialog} disabled={pageDisabled}>Add Social Interaction</Button>
               </Grid>
             </Grid>
         </form>

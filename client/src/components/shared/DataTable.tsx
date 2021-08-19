@@ -29,10 +29,12 @@ export type DataTableProps = {
   totalRows?: number,
   rowsPerPage?: number,
   page?: number,
+  disabledPageControls?: boolean,
   onPageChange?: (e: any, page: number) => void,
 };
 
-export const DataTable: React.FC<DataTableProps> = ({ columns, data, rowKey, highlightRowIf, totalRows, rowsPerPage, page, onPageChange }) => {
+export const DataTable: React.FC<DataTableProps> = 
+({ columns, data, rowKey, highlightRowIf, totalRows, rowsPerPage, page, disabledPageControls, onPageChange }) => {
   const classes = makeStyles(styles)();
 
   const sortedColumns = Object.keys(columns);
@@ -49,7 +51,7 @@ export const DataTable: React.FC<DataTableProps> = ({ columns, data, rowKey, hig
     pageNum = page - 1;
   }
 
-  const pageControls = (props: DataTablePageControlsProps) => (<DataTablePageControls {...props} disabled={false} />);
+  const pageControls = (props: DataTablePageControlsProps) => (<DataTablePageControls {...props} disabled={disabledPageControls} />);
 
   return (
     <TableContainer >

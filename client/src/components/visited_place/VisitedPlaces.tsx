@@ -25,6 +25,8 @@ export const VisitedPlaces: React.FC = () => {
   const pageState = useCustomSelector(state => state.visitedPlaces);
   const dispatch = useVisitedPlacesDispatch();
 
+  const [pageDisabled /*, setPageDisabled */] = useState(false);
+
   const [displayLast14, setDisplayLast14] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [offset, setOffset] = useState(0);
@@ -120,6 +122,7 @@ export const VisitedPlaces: React.FC = () => {
                         checked={displayLast14} 
                         onChange={handleChangeDisplayLast14} 
                         name="last14" 
+                        disabled={pageDisabled}
                       />}
                     label="Display records within last 14 days"
                   />                  
@@ -134,12 +137,13 @@ export const VisitedPlaces: React.FC = () => {
                     rowsPerPage={rowsPerPage}
                     page={currentPage}
                     totalRows={totalRows}
+                    disabledPageControls={pageDisabled}
                     onPageChange={handlePageChange}
                   />
                 </Loader>
               </Grid>
               <Grid item xs={12}>
-                  <Button variant="contained" color="primary" onClick={handleOpenDialog}>Add Visited Place</Button>
+                  <Button variant="contained" color="primary" onClick={handleOpenDialog} disabled={pageDisabled}>Add Visited Place</Button>
               </Grid>
             </Grid>
         </form>
