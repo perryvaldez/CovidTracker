@@ -6,9 +6,10 @@ type DataTableActionButtonProps = {
   title: string,
   icon: (params: any) => React.ReactNode,
   onClick?: (event: any) => void,
+  disabled?: boolean,
 };
 
-export const DataTableActionButton: React.FC<DataTableActionButtonProps> = ({ title, icon, onClick }) => {
+export const DataTableActionButton: React.FC<DataTableActionButtonProps> = ({ title, icon, onClick, disabled }) => {
   const classes = makeStyles(styles)();
 
   return (
@@ -20,6 +21,7 @@ export const DataTableActionButton: React.FC<DataTableActionButtonProps> = ({ ti
         aria-label={title} 
         color="primary" 
         onClick={onClick}
+        disabled={disabled}
       >
         {icon({ fontSize: 'small'})}
       </IconButton>

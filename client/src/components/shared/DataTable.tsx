@@ -10,12 +10,14 @@ import {
   TablePagination, 
   TableRow,
 } from '@material-ui/core';
-import { PageMode } from '../../lib/page';
-import DataTablePageControls, { DataTablePageControlsProps } from './DataTablePageControls';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
-import styles from './DataTable.styles';
+import SaveIcon from '@material-ui/icons/Save';
+import CancelIcon from '@material-ui/icons/Cancel';
+import { PageMode } from '../../lib/page';
+import DataTablePageControls, { DataTablePageControlsProps } from './DataTablePageControls';
 import DataTableActionButton from './DataTableActionButton';
+import styles from './DataTable.styles';
 
 export interface IDataTableColumnDefinition {
   title?: string;
@@ -39,18 +41,41 @@ export type DataTableProps = {
   columns: IDataTableColumns,
   rowKey?: string,
   data: IDataTableRow[],
+  rawDataArray: any[],
   highlightRowIf?: IDataTableRowPredicateFn,
   totalRows?: number,
   rowsPerPage?: number,
   page?: number,
   disabledPageControls?: boolean,
   pageMode?: PageMode,
+  editRowIndex?: number,
   onPageChange?: (e: any, page: number) => void,
+  onUpdateRow?: (e: any, row: any, rowIndex: number) => void,
+  onDeleteRow?: (e: any, row: any, rowIndex: number) => void,
 };
 
 export const DataTable: React.FC<DataTableProps> = 
-({ columns, data, rowKey, highlightRowIf, totalRows, rowsPerPage, page, disabledPageControls, pageMode, onPageChange }) => {
+({ 
+  columns, data, rowKey, highlightRowIf, totalRows, rowsPerPage, page, disabledPageControls, pageMode, 
+  editRowIndex, onPageChange, onUpdateRow, onDeleteRow, rawDataArray,
+ }) => {
   const classes = makeStyles(styles)();
+
+  const handleClickEdit = (index: number, row: any) => (e: any) => { console.log('DataTable: handleClickEdit: ', { e, index, row }); };
+
+  const handleClickUpdate = (index: number, row: any) => (e: any) => {
+    if(onUpdateRow) {
+      onUpdateRow(e, row, index);
+    }
+  };
+
+  const handleClickCancel = (index: number, row: any) => (e: any) => { console.log('DataTable: handleClickCancel: ', { e, index, row }); };
+
+  const handleClickDelete = (index: number, row: any) => (e: any) => {
+    if(onDeleteRow) {
+      onDeleteRow(e, row, index);
+    }
+  };
 
   const sortedColumns = Object.keys(columns);
 
@@ -100,8 +125,21 @@ export const DataTable: React.FC<DataTableProps> =
                         })
                       }
                       <TableCell align="center" className={classes.actionCell}>
-                        <DataTableActionButton title="Edit" icon={(params) => (<EditIcon {...params} />)} />
-                        <DataTableActionButton title="Delete" icon={(params) => (<DeleteIcon {...params} />)} />
+                        {
+                          (typeof(editRowIndex) === 'number' && editRowIndex === index && pageMode === PageMode.EDIT) ? (
+                            <DataTableActionButton title="Update" onClick={handleClickUpdate(index, rawDataArray[index])} icon={(params) => (<SaveIcon {...params} />)} />
+                          ) : (
+                            <DataTableActionButton title="Edit" onClick={handleClickEdit(index, rawDataArray[index])} disabled={pageMode && (pageMode !== PageMode.VIEW)} icon={(params) => (<EditIcon {...params} />)} />
+                          )
+                        }
+                        {
+                          (typeof(editRowIndex) === 'number' && editRowIndex === index && pageMode === PageMode.EDIT) ? (
+                            <DataTableActionButton title="Cancel" onClick={handleClickCancel(index, rawDataArray[index])} icon={(params) => (<CancelIcon {...params} />)} />
+                          ) : (
+                            <DataTableActionButton title="Delete" onClick={handleClickDelete(index, rawDataArray[index])} disabled={pageMode && (pageMode !== PageMode.VIEW)} icon={(params) => (<DeleteIcon {...params} />)} />
+                          )
+                        }
+
                       </TableCell>
                     </TableRow>
                   );

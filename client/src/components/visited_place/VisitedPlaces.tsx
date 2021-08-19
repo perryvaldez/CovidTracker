@@ -133,6 +133,7 @@ export const VisitedPlaces: React.FC = () => {
                   <DataTable 
                     columns={columns} 
                     data={data} 
+                    rawDataArray={pageState.payload.data}
                     rowKey="_id" 
                     highlightRowIf={highlightRowIf}
                     rowsPerPage={rowsPerPage}
