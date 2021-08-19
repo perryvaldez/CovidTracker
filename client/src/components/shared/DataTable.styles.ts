@@ -17,6 +17,9 @@ const styles = {
       padding: 2,
     },
   },
+  actionCell: {
+    width: 64,
+  },
 };
 
 export default styles;

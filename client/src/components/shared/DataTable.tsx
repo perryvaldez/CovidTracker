@@ -1,7 +1,20 @@
 import React from 'react';
-import { makeStyles,Table, TableBody, TableCell, TableContainer, TableFooter, TableHead, TablePagination, TableRow } from '@material-ui/core';
+import { 
+  makeStyles,
+  Table, 
+  TableBody, 
+  TableCell, 
+  TableContainer, 
+  TableFooter, 
+  TableHead, 
+  TablePagination, 
+  TableRow,
+} from '@material-ui/core';
 import DataTablePageControls, { DataTablePageControlsProps } from './DataTablePageControls';
+import EditIcon from '@material-ui/icons/Edit';
+import DeleteIcon from '@material-ui/icons/Delete';
 import styles from './DataTable.styles';
+import DataTableActionButton from './DataTableActionButton';
 
 export interface IDataTableColumnDefinition {
   title?: string;
@@ -61,7 +74,7 @@ export const DataTable: React.FC<DataTableProps> =
             {
               sortedColumns.map((col) => (<TableCell key={col}>{columns[col].title}</TableCell>))
             }
-            <TableCell>Action</TableCell>
+            <TableCell align="center" className={classes.actionCell}>Action</TableCell>
           </TableRow>                       
         </TableHead>
         <TableBody>
@@ -84,7 +97,10 @@ export const DataTable: React.FC<DataTableProps> =
                           return (<TableCell key={col}>{row[col]}</TableCell>); 
                         })
                       }
-                      <TableCell>[Edit] [Delete]</TableCell>
+                      <TableCell align="center" className={classes.actionCell}>
+                        <DataTableActionButton title="Edit" icon={(params) => (<EditIcon {...params} />)} />
+                        <DataTableActionButton title="Delete" icon={(params) => (<DeleteIcon {...params} />)} />
+                      </TableCell>
                     </TableRow>
                   );
                 })
