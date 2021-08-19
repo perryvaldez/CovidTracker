@@ -1,5 +1,6 @@
 import React from 'react';
 import { makeStyles,Table, TableBody, TableCell, TableContainer, TableFooter, TableHead, TablePagination, TableRow } from '@material-ui/core';
+import DataTablePageControls, { DataTablePageControlsProps } from './DataTablePageControls';
 import styles from './DataTable.styles';
 
 export interface IDataTableColumnDefinition {
@@ -47,6 +48,8 @@ export const DataTable: React.FC<DataTableProps> = ({ columns, data, rowKey, hig
   if(typeof(page) === 'number' && page > 1) {
     pageNum = page - 1;
   }
+
+  const pageControls = (props: DataTablePageControlsProps) => (<DataTablePageControls {...props} disabled={false} />);
 
   return (
     <TableContainer >
@@ -96,6 +99,7 @@ export const DataTable: React.FC<DataTableProps> = ({ columns, data, rowKey, hig
                     page={pageNum}
                     onPageChange={(e, page) => { onPageChange && onPageChange(e, page + 1);  }}
                     className={classes.pagination}
+                    ActionsComponent={(props: any) => pageControls(props)}
                   />
                 </TableRow>
               </TableFooter>
