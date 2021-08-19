@@ -50,18 +50,24 @@ export type DataTableProps = {
   pageMode?: PageMode,
   editRowIndex?: number,
   onPageChange?: (e: any, page: number) => void,
+  onEditRow?: (e: any, row: any, rowIndex: number) => void,
   onUpdateRow?: (e: any, row: any, rowIndex: number) => void,
   onDeleteRow?: (e: any, row: any, rowIndex: number) => void,
+  onCancelRow?: (e: any, row: any, rowIndex: number) => void,
 };
 
 export const DataTable: React.FC<DataTableProps> = 
 ({ 
   columns, data, rowKey, highlightRowIf, totalRows, rowsPerPage, page, disabledPageControls, pageMode, 
-  editRowIndex, onPageChange, onUpdateRow, onDeleteRow, rawDataArray,
+  editRowIndex, onPageChange, onEditRow, onUpdateRow, onDeleteRow, onCancelRow, rawDataArray,
  }) => {
   const classes = makeStyles(styles)();
 
-  const handleClickEdit = (index: number, row: any) => (e: any) => { console.log('DataTable: handleClickEdit: ', { e, index, row }); };
+  const handleClickEdit = (index: number, row: any) => (e: any) => { 
+    if(onEditRow) {
+      onEditRow(e, row, index);
+    }
+  };
 
   const handleClickUpdate = (index: number, row: any) => (e: any) => {
     if(onUpdateRow) {
@@ -69,7 +75,11 @@ export const DataTable: React.FC<DataTableProps> =
     }
   };
 
-  const handleClickCancel = (index: number, row: any) => (e: any) => { console.log('DataTable: handleClickCancel: ', { e, index, row }); };
+  const handleClickCancel = (index: number, row: any) => (e: any) => { 
+    if(onCancelRow) {
+      onCancelRow(e, row, index);
+    }
+  };
 
   const handleClickDelete = (index: number, row: any) => (e: any) => {
     if(onDeleteRow) {

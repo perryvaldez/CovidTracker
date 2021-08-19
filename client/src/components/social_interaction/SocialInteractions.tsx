@@ -26,13 +26,14 @@ export const SocialInteractions: React.FC = () => {
   const pageState = useCustomSelector(state => state.socialInteractions);
   const dispatch = useSocialInteractionsDispatch();
 
-  const [pageMode /*, setPageMode */] = useState(PageMode.VIEW);
+  const [pageMode, setPageMode] = useState(PageMode.VIEW);
 
   const [displayLast14, setDisplayLast14] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [offset, setOffset] = useState(0);
 
   const [openDialog, setOpenDialog] = useState(false);
+  const [editRowIndex, setEditRowIndex] = useState(-1);
 
   const rowsPerPage = 10;
 
@@ -63,6 +64,16 @@ export const SocialInteractions: React.FC = () => {
     dispatch(performSocialInteractionsAddData(data));
     setOpenDialog(false);
   };
+
+  const handleEditRow = (e: any, row: any, rowIndex: number) => {
+    console.log('SocialInteractions: handleEditRow: ', { row, rowIndex });
+    setPageMode(PageMode.EDIT);
+    setEditRowIndex(rowIndex);
+  };
+
+  const handleUpdateRow = (e: any, row: any, rowIndex: number) => {};
+  const handleDeleteRow = (e: any, row: any, rowIndex: number) => {};
+  const handleCancelRow = (e: any, row: any, rowIndex: number) => {};
 
   const columns: IDataTableColumns = {
     name: { title: 'Person', type: 'string', index: 1 },
@@ -142,6 +153,11 @@ export const SocialInteractions: React.FC = () => {
                     totalRows={totalRows}
                     pageMode={pageMode}
                     onPageChange={handlePageChange}
+                    onEditRow={handleEditRow}
+                    onUpdateRow={handleUpdateRow}
+                    onDeleteRow={handleDeleteRow}
+                    onCancelRow={handleCancelRow}
+                    editRowIndex={editRowIndex}
                   />
                 </Loader>
               </Grid>
