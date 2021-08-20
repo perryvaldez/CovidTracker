@@ -186,11 +186,7 @@ export const DataTable: React.FC<DataTableProps> =
                             }
 
                             if(columns[col].type === 'Date') {
-                              const dateObj = new Date(colValues[col]);
-                              const yyyy = `${dateObj.getFullYear()}`;
-                              const mm = `${dateObj.getMonth() + 1}`.padStart(2, '0');
-                              const dd = `${dateObj.getDate()}`.padStart(2, '0');
-                              const dateVal = `${yyyy}-${mm}-${dd}`;
+                              const dateVal = utils.toDateStamp(new Date(colValues[col]));
                               control = (<input type="date" className={classes.editDatePicker} value={dateVal} onChange={handleChangeInternalField(col)} />);
                             }
 

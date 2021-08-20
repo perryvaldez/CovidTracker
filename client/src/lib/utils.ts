@@ -22,6 +22,15 @@ const extractDate = (d: Date): Date => new Date(d.getFullYear(), d.getMonth(), d
 const monthsArr = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 const toShortDate = (d: Date) => `${monthsArr[d.getMonth()]} ${d.getDate()}`;
 
+const toDateStamp = (d: Date) => {
+    const yyyy = `${d.getFullYear()}`;
+    const mm = `${d.getMonth() + 1}`.padStart(2, '0');
+    const dd = `${d.getDate()}`.padStart(2, '0');
+
+    const dateVal = `${yyyy}-${mm}-${dd}`;
+    return dateVal;
+};
+
 const minTime = (d: Date) => extractDate(d);
 
 const tomorrowDate = (d: Date) => {
@@ -52,6 +61,7 @@ export default {
   toDateTimeString,
   extractDate,
   toShortDate,
+  toDateStamp,
   currentDate,
   minTime,
   maxTime,
