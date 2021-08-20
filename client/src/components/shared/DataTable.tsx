@@ -54,6 +54,7 @@ export type DataTableProps = {
   disabledPageControls?: boolean,
   pageMode?: PageMode,
   editRowIndex?: number,
+  ariaLabel?: string,
   onPageChange?: (e: any, page: number) => void,
   onEditRow?: (e: any, row: any, rowIndex: number) => void,
   onUpdateRow?: (e: any, row: any, rowIndex: number) => void,
@@ -64,7 +65,7 @@ export type DataTableProps = {
 export const DataTable: React.FC<DataTableProps> = 
 ({ 
   columns, data, rowKey, highlightRowIf, totalRows, rowsPerPage, page, disabledPageControls, pageMode, 
-  editRowIndex, onPageChange, onEditRow, onUpdateRow, onDeleteRow, onCancelRow, columnClassNames,
+  editRowIndex, onPageChange, onEditRow, onUpdateRow, onDeleteRow, onCancelRow, columnClassNames, ariaLabel,
  }) => {
   const emptyDict: {[key: string]: any} = {};
   const [colValues, setColValues] = useState(emptyDict);
@@ -121,6 +122,8 @@ export const DataTable: React.FC<DataTableProps> =
 
   const pageControls = (props: DataTablePageControlsProps) => (<DataTablePageControls {...props} disabled={disabledPageControls || (pageMode && (pageMode !== PageMode.VIEW))} />);
 
+  const isRowInEditMode = (index: number) => (typeof(editRowIndex) === 'number' && editRowIndex === index && pageMode === PageMode.EDIT);
+
   useEffect(() => {
     if(pageMode === PageMode.EDIT && typeof(editRowIndex) === 'number' && editRowIndex > -1) {
       const rowValues: {[key: string]: any} = {};
@@ -135,7 +138,7 @@ export const DataTable: React.FC<DataTableProps> =
 
   return (
     <TableContainer >
-      <Table classes={{ root: classes.table }} size="small" padding="none" aria-label="Visited Places List">
+      <Table classes={{ root: classes.table }} size="small" padding="none" aria-label={ariaLabel}>
         <TableHead>
           <TableRow>
             {
@@ -175,7 +178,7 @@ export const DataTable: React.FC<DataTableProps> =
                             colOptProps['className'] = columnClassNames[col];
                           }
 
-                          if(typeof(editRowIndex) === 'number' && editRowIndex === index && pageMode === PageMode.EDIT) {
+                          if(isRowInEditMode(index)) {
                             let control: React.ReactNode = (<input type="text" className={classes.editTextBox} value={colValues[col] || ''} onChange={handleChangeInternalField(col)} />);
 
                             if(columns[col].type === 'number') {
@@ -214,14 +217,14 @@ export const DataTable: React.FC<DataTableProps> =
                       }
                       <TableCell align="center" className={classes.actionCell}>
                         {
-                          (typeof(editRowIndex) === 'number' && editRowIndex === index && pageMode === PageMode.EDIT) ? (
+                          (isRowInEditMode(index)) ? (
                             <DataTableActionButton title="Update" onClick={handleClickUpdate(index, data[index])} icon={(params) => (<SaveIcon {...params} />)} />
                           ) : (
                             <DataTableActionButton title="Edit" onClick={handleClickEdit(index, data[index])} disabled={pageMode && (pageMode !== PageMode.VIEW)} icon={(params) => (<EditIcon {...params} />)} />
                           )
                         }
                         {
-                          (typeof(editRowIndex) === 'number' && editRowIndex === index && pageMode === PageMode.EDIT) ? (
+                          (isRowInEditMode(index)) ? (
                             <DataTableActionButton title="Cancel" onClick={handleClickCancel(index, data[index])} icon={(params) => (<CancelIcon {...params} />)} />
                           ) : (
                             <DataTableActionButton title="Delete" onClick={handleClickDelete(index, data[index])} disabled={pageMode && (pageMode !== PageMode.VIEW)} icon={(params) => (<DeleteIcon {...params} />)} />
