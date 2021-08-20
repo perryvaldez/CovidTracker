@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { 
   makeStyles,
   Table, 
@@ -67,6 +67,9 @@ export const DataTable: React.FC<DataTableProps> =
   editRowIndex, onPageChange, onEditRow, onUpdateRow, onDeleteRow, onCancelRow, rawDataArray,
   columnClassNames,
  }) => {
+  const emptyDict: {[key: string]: any} = {};
+  const [colValues, setColValues] = useState(emptyDict);
+
   const classes = makeStyles(styles)();
 
   const handleClickEdit = (index: number, row: any) => (e: any) => { 
@@ -93,6 +96,16 @@ export const DataTable: React.FC<DataTableProps> =
     }
   };
 
+  const handleChangeInternalField = (col: string) => (e: any) => {
+    const newColValues = { ...colValues, [col]: e.target.value };
+    setColValues(newColValues);
+  };
+
+  const handleChangeInternalCheckbox = (col: string) => (e: any) => {
+    const newColValues = { ...colValues, [col]: e.target.checked };
+    setColValues(newColValues);
+  };
+
   const sortedColumns = Object.keys(columns);
 
   sortedColumns.sort(
@@ -108,6 +121,18 @@ export const DataTable: React.FC<DataTableProps> =
   }
 
   const pageControls = (props: DataTablePageControlsProps) => (<DataTablePageControls {...props} disabled={disabledPageControls || (pageMode && (pageMode !== PageMode.VIEW))} />);
+
+  useEffect(() => {
+    if(pageMode === PageMode.EDIT && typeof(editRowIndex) === 'number' && editRowIndex > -1) {
+      const rowValues: {[key: string]: any} = {};
+
+      for(let i in sortedColumns) {
+        rowValues[sortedColumns[i]] = rawDataArray[editRowIndex][sortedColumns[i]];
+      }
+
+      setColValues(rowValues);
+    }
+  }, [pageMode, editRowIndex, rawDataArray]); // eslint-disable-line  react-hooks/exhaustive-deps
 
   return (
     <TableContainer >
@@ -152,23 +177,23 @@ export const DataTable: React.FC<DataTableProps> =
                           }
 
                           if(typeof(editRowIndex) === 'number' && editRowIndex === index && pageMode === PageMode.EDIT) {
-                            let control: React.ReactNode = (<input type="text" className={classes.editTextBox} value={rawDataArray[editRowIndex][col]} />);
+                            let control: React.ReactNode = (<input type="text" className={classes.editTextBox} value={colValues[col] || ''} onChange={handleChangeInternalField(col)} />);
 
                             if(columns[col].type === 'number') {
-                              control = (<input type="number" className={classes.editNumberField} value={rawDataArray[editRowIndex][col]} />);
+                              control = (<input type="number" className={classes.editNumberField} value={colValues[col] || '0'} onChange={handleChangeInternalField(col)} />);
                             }
 
                             if(columns[col].type === 'Date') {
-                              const dateObj = new Date(rawDataArray[editRowIndex][col]);
+                              const dateObj = new Date(colValues[col]);
                               const yyyy = `${dateObj.getFullYear()}`;
                               const mm = `${dateObj.getMonth() + 1}`.padStart(2, '0');
                               const dd = `${dateObj.getDate()}`.padStart(2, '0');
                               const dateVal = `${yyyy}-${mm}-${dd}`;
-                              control = (<input type="date" className={classes.editDatePicker} value={dateVal} />);
+                              control = (<input type="date" className={classes.editDatePicker} value={dateVal} onChange={handleChangeInternalField(col)} />);
                             }
 
                             if(columns[col].type === 'boolean') {
-                              control = (<input type="checkbox" checked={!!rawDataArray[editRowIndex][col]} />);
+                              control = (<input type="checkbox" checked={!!colValues[col]} onChange={handleChangeInternalCheckbox(col)} />);
                             }
 
                             return (<TableCell key={col} {...colOptProps}>{control}</TableCell>); 
