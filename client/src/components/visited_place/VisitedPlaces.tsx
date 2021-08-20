@@ -149,6 +149,7 @@ export const VisitedPlaces: React.FC = () => {
               <Grid item xs={12}>
                 <Loader isLoading={pageState.stateName !== visitedPlacesStates.READY} withWrapper>
                   <DataTable 
+                    ariaLabel="Visited Places List"
                     columns={columns} 
                     columnClassNames={columnClassNames}
                     data={data} 

@@ -150,6 +150,7 @@ export const SocialInteractions: React.FC = () => {
               <Grid item xs={12}>
                 <Loader isLoading={pageState.stateName !== socialInteractionsStates.READY} withWrapper>
                   <DataTable 
+                    ariaLabel="Social Interactions List"
                     columns={columns} 
                     columnClassNames={columnClassNames}
                     data={data} 
