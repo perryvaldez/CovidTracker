@@ -71,9 +71,19 @@ export const VisitedPlaces: React.FC = () => {
     setEditRowIndex(rowIndex);
   };
 
-  const handleUpdateRow = (e: any, row: any, rowIndex: number) => {};
+  const handleUpdateRow = (e: any, row: any, rowIndex: number) => {
+    // TODO
+    setPageMode(PageMode.VIEW);
+    setEditRowIndex(-1);
+  };
+
   const handleDeleteRow = (e: any, row: any, rowIndex: number) => {};
-  const handleCancelRow = (e: any, row: any, rowIndex: number) => {};
+
+  const handleCancelRow = (e: any, row: any, rowIndex: number) => {
+    // TODO
+    setPageMode(PageMode.VIEW);
+    setEditRowIndex(-1);
+  };
 
   const columns: IDataTableColumns = {
     place: { title: 'Place', type: 'string', index: 1 },
