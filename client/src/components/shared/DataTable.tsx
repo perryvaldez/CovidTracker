@@ -37,8 +37,13 @@ export interface IDataTableRowPredicateFn {
   [key: string]: (row: IDataTableRow, index: number) => boolean;
 };
 
+export type ColumnClassNames = {
+  [key: string]: string,
+};
+
 export type DataTableProps = {
   columns: IDataTableColumns,
+  columnClassNames?: ColumnClassNames,
   rowKey?: string,
   data: IDataTableRow[],
   rawDataArray: any[],
@@ -60,6 +65,7 @@ export const DataTable: React.FC<DataTableProps> =
 ({ 
   columns, data, rowKey, highlightRowIf, totalRows, rowsPerPage, page, disabledPageControls, pageMode, 
   editRowIndex, onPageChange, onEditRow, onUpdateRow, onDeleteRow, onCancelRow, rawDataArray,
+  columnClassNames,
  }) => {
   const classes = makeStyles(styles)();
 
@@ -109,7 +115,15 @@ export const DataTable: React.FC<DataTableProps> =
         <TableHead>
           <TableRow>
             {
-              sortedColumns.map((col) => (<TableCell key={col}>{columns[col].title}</TableCell>))
+              sortedColumns.map((col) => { 
+                const colOptProps: {[key: string]: any} = {};
+
+                if(columnClassNames && columnClassNames[col]) {
+                  colOptProps['className'] = columnClassNames[col];
+                }
+
+                return (<TableCell key={col} {...colOptProps}>{columns[col].title}</TableCell>); 
+              })
             }
             <TableCell align="center" className={classes.actionCell}>Action</TableCell>
           </TableRow>                       
@@ -131,6 +145,12 @@ export const DataTable: React.FC<DataTableProps> =
                     <TableRow key={rowKey ? row[rowKey] : index} {...optProps}>
                       {
                         sortedColumns.map((col) => {
+                          const colOptProps: {[key: string]: any} = {};
+
+                          if(columnClassNames && columnClassNames[col]) {
+                            colOptProps['className'] = columnClassNames[col];
+                          }
+
                           if(typeof(editRowIndex) === 'number' && editRowIndex === index && pageMode === PageMode.EDIT) {
                             let control: React.ReactNode = (<input type="text" className={classes.editTextBox} value={rawDataArray[editRowIndex][col]} />);
 
@@ -151,10 +171,10 @@ export const DataTable: React.FC<DataTableProps> =
                               control = (<input type="checkbox" checked={!!rawDataArray[editRowIndex][col]} />);
                             }
 
-                            return (<TableCell key={col}>{control}</TableCell>); 
+                            return (<TableCell key={col} {...colOptProps}>{control}</TableCell>); 
                           }
 
-                          return (<TableCell key={col}>{row[col]}</TableCell>); 
+                          return (<TableCell key={col} {...colOptProps}>{row[col]}</TableCell>); 
                         })
                       }
                       <TableCell align="center" className={classes.actionCell}>

@@ -7,7 +7,7 @@ import { ISocialInteractionData } from '../../lib/api';
 import socialInteractionsStates from '../../store/states/socialInteractionsStates';
 import { performSocialInteractionsAddData, performSocialInteractionsChangePage, performSocialInteractionsFetchData, useSocialInteractionsDispatch } from '../../store/actions/socialInteractionsActions';
 import PageHeader from '../shared/PageHeader';
-import DataTable, { IDataTableColumns, IDataTableRow } from '../shared/DataTable';
+import DataTable, { ColumnClassNames, IDataTableColumns, IDataTableRow } from '../shared/DataTable';
 import SocialInteractionDialog from './SocialInteractionDialog';
 import styles from './SocialInteractions.styles';
 import Loader from '../shared/Loader';
@@ -82,6 +82,13 @@ export const SocialInteractions: React.FC = () => {
     isSocialDistancing: { title: 'Practicing SD?', type: 'boolean', index: 4 },
   };
 
+  const columnClassNames: ColumnClassNames = {
+    name: classes.colName,
+    date: classes.colDate,
+    hours: classes.colHours,
+    isSocialDistancing: classes.colIsSocialDistancing,
+  };
+
   const highlightRowIf = { 
     '#ededed': (row: IDataTableRow, index: number) => (index % 2 !== 0),
     '#ffdce1': (row: IDataTableRow) => (row.isSocialDistancing === 'No'),
@@ -144,6 +151,7 @@ export const SocialInteractions: React.FC = () => {
                 <Loader isLoading={pageState.stateName !== socialInteractionsStates.READY} withWrapper>
                   <DataTable 
                     columns={columns} 
+                    columnClassNames={columnClassNames}
                     data={data} 
                     rawDataArray={pageState.payload.data}
                     rowKey="_id" 
