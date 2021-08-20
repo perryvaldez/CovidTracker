@@ -15,6 +15,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import SaveIcon from '@material-ui/icons/Save';
 import CancelIcon from '@material-ui/icons/Cancel';
 import { PageMode } from '../../lib/page';
+import utils from '../../lib/utils';
 import DataTablePageControls, { DataTablePageControlsProps } from './DataTablePageControls';
 import DataTableActionButton from './DataTableActionButton';
 import styles from './DataTable.styles';
@@ -46,7 +47,6 @@ export type DataTableProps = {
   columnClassNames?: ColumnClassNames,
   rowKey?: string,
   data: IDataTableRow[],
-  rawDataArray: any[],
   highlightRowIf?: IDataTableRowPredicateFn,
   totalRows?: number,
   rowsPerPage?: number,
@@ -64,8 +64,7 @@ export type DataTableProps = {
 export const DataTable: React.FC<DataTableProps> = 
 ({ 
   columns, data, rowKey, highlightRowIf, totalRows, rowsPerPage, page, disabledPageControls, pageMode, 
-  editRowIndex, onPageChange, onEditRow, onUpdateRow, onDeleteRow, onCancelRow, rawDataArray,
-  columnClassNames,
+  editRowIndex, onPageChange, onEditRow, onUpdateRow, onDeleteRow, onCancelRow, columnClassNames,
  }) => {
   const emptyDict: {[key: string]: any} = {};
   const [colValues, setColValues] = useState(emptyDict);
@@ -127,12 +126,12 @@ export const DataTable: React.FC<DataTableProps> =
       const rowValues: {[key: string]: any} = {};
 
       for(let i in sortedColumns) {
-        rowValues[sortedColumns[i]] = rawDataArray[editRowIndex][sortedColumns[i]];
+        rowValues[sortedColumns[i]] = data[editRowIndex][sortedColumns[i]];
       }
 
       setColValues(rowValues);
     }
-  }, [pageMode, editRowIndex, rawDataArray]); // eslint-disable-line  react-hooks/exhaustive-deps
+  }, [pageMode, editRowIndex, data]); // eslint-disable-line  react-hooks/exhaustive-deps
 
   return (
     <TableContainer >
@@ -199,22 +198,33 @@ export const DataTable: React.FC<DataTableProps> =
                             return (<TableCell key={col} {...colOptProps}>{control}</TableCell>); 
                           }
 
-                          return (<TableCell key={col} {...colOptProps}>{row[col]}</TableCell>); 
+
+                          let displayVal = row[col];
+
+                          if(columns[col].type === 'Date') {
+                            displayVal = utils.toShortDate(new Date(row[col]));
+                          }
+
+                          if(columns[col].type === 'boolean') {
+                            displayVal = row[col] ? 'Yes' : 'No';
+                          }
+
+                          return (<TableCell key={col} {...colOptProps}>{displayVal}</TableCell>); 
                         })
                       }
                       <TableCell align="center" className={classes.actionCell}>
                         {
                           (typeof(editRowIndex) === 'number' && editRowIndex === index && pageMode === PageMode.EDIT) ? (
-                            <DataTableActionButton title="Update" onClick={handleClickUpdate(index, rawDataArray[index])} icon={(params) => (<SaveIcon {...params} />)} />
+                            <DataTableActionButton title="Update" onClick={handleClickUpdate(index, data[index])} icon={(params) => (<SaveIcon {...params} />)} />
                           ) : (
-                            <DataTableActionButton title="Edit" onClick={handleClickEdit(index, rawDataArray[index])} disabled={pageMode && (pageMode !== PageMode.VIEW)} icon={(params) => (<EditIcon {...params} />)} />
+                            <DataTableActionButton title="Edit" onClick={handleClickEdit(index, data[index])} disabled={pageMode && (pageMode !== PageMode.VIEW)} icon={(params) => (<EditIcon {...params} />)} />
                           )
                         }
                         {
                           (typeof(editRowIndex) === 'number' && editRowIndex === index && pageMode === PageMode.EDIT) ? (
-                            <DataTableActionButton title="Cancel" onClick={handleClickCancel(index, rawDataArray[index])} icon={(params) => (<CancelIcon {...params} />)} />
+                            <DataTableActionButton title="Cancel" onClick={handleClickCancel(index, data[index])} icon={(params) => (<CancelIcon {...params} />)} />
                           ) : (
-                            <DataTableActionButton title="Delete" onClick={handleClickDelete(index, rawDataArray[index])} disabled={pageMode && (pageMode !== PageMode.VIEW)} icon={(params) => (<DeleteIcon {...params} />)} />
+                            <DataTableActionButton title="Delete" onClick={handleClickDelete(index, data[index])} disabled={pageMode && (pageMode !== PageMode.VIEW)} icon={(params) => (<DeleteIcon {...params} />)} />
                           )
                         }
 

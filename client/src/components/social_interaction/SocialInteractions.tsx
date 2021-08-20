@@ -101,7 +101,7 @@ export const SocialInteractions: React.FC = () => {
 
   const highlightRowIf = { 
     '#ededed': (row: IDataTableRow, index: number) => (index % 2 !== 0),
-    '#ffdce1': (row: IDataTableRow) => (row.isSocialDistancing === 'No'),
+    '#ffdce1': (row: IDataTableRow) => (!row.isSocialDistancing),
   };
 
 
@@ -113,17 +113,7 @@ export const SocialInteractions: React.FC = () => {
 
   const totalRows = pageState.payload.totalCount;
 
-  const data = pageState.payload.data.map((item) => {
-    const ret: GridData = {
-      _id: item._id,
-      name: item.name,
-      hours: item.hours,
-      isSocialDistancing: item.isSocialDistancing ? 'Yes' : 'No',
-      date: utils.toShortDate(new Date(item.date)),
-    };
-
-    return ret;
-  });
+  const data = pageState.payload.data;
 
   useEffect(() => {
     const filter: {[key: string]: any} = { to: currentDateMaxTimeString };
@@ -163,7 +153,6 @@ export const SocialInteractions: React.FC = () => {
                     columns={columns} 
                     columnClassNames={columnClassNames}
                     data={data} 
-                    rawDataArray={pageState.payload.data}
                     rowKey="_id" 
                     highlightRowIf={highlightRowIf}
                     rowsPerPage={rowsPerPage}

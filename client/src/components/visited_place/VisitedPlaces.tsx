@@ -101,7 +101,7 @@ export const VisitedPlaces: React.FC = () => {
 
   const highlightRowIf = { 
     '#ededed': (row: IDataTableRow, index: number) => (index % 2 !== 0),
-    '#ffdce1': (row: IDataTableRow) => (row.isCrowded === 'Yes'),
+    '#ffdce1': (row: IDataTableRow) => (row.isCrowded),
   };
 
   const currentDate = utils.currentDate();
@@ -112,17 +112,7 @@ export const VisitedPlaces: React.FC = () => {
 
   const totalRows = pageState.payload.totalCount;
 
-  const data = pageState.payload.data.map((item) => {
-    const ret: GridData = {
-      _id: item._id,
-      place: item.place,
-      hours: item.hours,
-      isCrowded: item.isCrowded ? 'Yes' : 'No',
-      date: utils.toShortDate(new Date(item.date)),
-    };
-
-    return ret;
-  });
+  const data = pageState.payload.data;
 
   useEffect(() => {
     const filter: {[key: string]: any} = { to: currentDateMaxTimeString };
@@ -162,7 +152,6 @@ export const VisitedPlaces: React.FC = () => {
                     columns={columns} 
                     columnClassNames={columnClassNames}
                     data={data} 
-                    rawDataArray={pageState.payload.data}
                     rowKey="_id" 
                     highlightRowIf={highlightRowIf}
                     rowsPerPage={rowsPerPage}
