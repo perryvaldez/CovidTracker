@@ -31,6 +31,23 @@ const toDateStamp = (d: Date) => {
     return dateVal;
 };
 
+const dateStampToISOString = (s: string) => {
+  const match = s.match(/^\s*(\d\d\d\d)-(\d\d)-(\d\d)\s*$/);
+
+  if(match) {
+    const yyyy = +match[1];
+    const mm = +match[2];
+    const dd = +match[3];
+
+    // Turn it into a date in the current timezone.
+    // The month ranges from 0 (Jan) to 11 (Dec).
+    const date = new Date(yyyy, mm - 1, dd);
+    return date.toISOString();
+  }
+
+  return s;
+};
+
 const minTime = (d: Date) => extractDate(d);
 
 const tomorrowDate = (d: Date) => {
@@ -62,6 +79,7 @@ export default {
   extractDate,
   toShortDate,
   toDateStamp,
+  dateStampToISOString,
   currentDate,
   minTime,
   maxTime,

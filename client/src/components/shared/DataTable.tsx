@@ -62,6 +62,41 @@ export type DataTableProps = {
   onCancelRow?: (e: any, row: any, rowIndex: number) => void,
 };
 
+type Dict<T> = {[key: string]: T};
+const convertDataIntoProperTypes = (data: Dict<any>, columnDefs: Dict<IDataTableColumnDefinition>) => {
+  const result: Dict<any> = {};
+
+  for(let col in data) {
+    const type = columnDefs[col].type;
+
+    if(type) {
+      if(type === 'number') {
+        result[col] = +data[col];
+      } else if(type === 'boolean') {
+        result[col] = !!data[col];
+      } else if(type === 'Date') {
+        let date: Date;
+        const match = data[col].match(/^\s*\d\d\d\d-\d\d-\d\d\s*$/);
+
+        if(match) {
+          result[col] = utils.dateStampToISOString(data[col]);
+        } else {
+          // Attempt to let JavaScript parse the date
+          date = new Date(data[col]);
+          result[col] = date.toISOString();
+        }
+      } else {
+        result[col] = data[col];
+      }
+    } else {
+      result[col] = data[col];
+    }
+
+  }
+
+  return result;
+};
+
 export const DataTable: React.FC<DataTableProps> = 
 ({ 
   columns, data, rowKey, highlightRowIf, totalRows, rowsPerPage, page, disabledPageControls, pageMode, 
@@ -214,7 +249,7 @@ export const DataTable: React.FC<DataTableProps> =
                       <TableCell align="center" className={classes.actionCell}>
                         {
                           (isRowInEditMode(index)) ? (
-                            <DataTableActionButton title="Update" onClick={handleClickUpdate(index, data[index])} icon={(params) => (<SaveIcon {...params} />)} />
+                            <DataTableActionButton title="Update" onClick={handleClickUpdate(index, convertDataIntoProperTypes(colValues, columns))} icon={(params) => (<SaveIcon {...params} />)} />
                           ) : (
                             <DataTableActionButton title="Edit" onClick={handleClickEdit(index, data[index])} disabled={pageMode && (pageMode !== PageMode.VIEW)} icon={(params) => (<EditIcon {...params} />)} />
                           )

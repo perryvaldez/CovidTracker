@@ -73,6 +73,7 @@ export const SocialInteractions: React.FC = () => {
 
   const handleUpdateRow = (e: any, row: any, rowIndex: number) => {
     // TODO
+    console.log('SocialInteractions: handleUpdateRow: ', { row, rowIndex });
     setPageMode(PageMode.VIEW);
     setEditRowIndex(-1);
   };

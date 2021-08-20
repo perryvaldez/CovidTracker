@@ -73,6 +73,7 @@ export const VisitedPlaces: React.FC = () => {
 
   const handleUpdateRow = (e: any, row: any, rowIndex: number) => {
     // TODO
+    console.log('VisitedPlaces: handleUpdateRow: ', { row, rowIndex });
     setPageMode(PageMode.VIEW);
     setEditRowIndex(-1);
   };
