@@ -7,10 +7,10 @@ import { ISocialInteractionData } from '../../lib/api';
 import socialInteractionsStates from '../../store/states/socialInteractionsStates';
 import { performSocialInteractionsAddData, performSocialInteractionsChangePage, performSocialInteractionsFetchData, useSocialInteractionsDispatch } from '../../store/actions/socialInteractionsActions';
 import PageHeader from '../shared/PageHeader';
+import Loader from '../shared/Loader';
 import DataTable, { ColumnClassNames, IDataTableColumns, IDataTableRow } from '../shared/DataTable';
 import SocialInteractionDialog from './SocialInteractionDialog';
 import styles from './SocialInteractions.styles';
-import Loader from '../shared/Loader';
 
 type GridData = {
   _id: number,
