@@ -53,8 +53,8 @@ export const performDashboardFetchData = (filter: FilterType = {}) =>
     const result = await Promise.all([
       api.countSocialInteractions({ to: filter.to }),
       api.countVisitedPlaces({ to: filter.to }),
-      api.getSocialInteractions(filter), // TODO: Paginate this, or fetch only 14 days' data
-      api.getVisitedPlaces(filter), // TODO: Paginate this, or fetch only 14 days' data
+      api.getSocialInteractions(filter),
+      api.getVisitedPlaces(filter),
     ]);
 
     const [totalCountSocialInteractions, totalCountVisitedPlaces, socialInteractions, visitedPlaces] = result;
@@ -112,8 +112,8 @@ export const dashboardFetchSocialAction =
 export const performDashboardFetchSocialData = (filter: FilterType = {}) => 
   async (dispatch: DashboardAppDispatch) => {
     const result = await Promise.all([
-      api.countSocialInteractions(filter),
-      api.getSocialInteractions(filter), // TODO: Paginate this, or fetch only 14 days' data
+      api.countSocialInteractions({ to: filter.to }),
+      api.getSocialInteractions(filter),
     ]);
 
     const [count, socialInteractions] = result;
@@ -169,8 +169,8 @@ export const dashboardFetchVisitedAction =
 export const performDashboardFetchVisitedData = (filter: FilterType = {}) => 
   async (dispatch: DashboardAppDispatch) => {
     const result = await Promise.all([
-      api.countVisitedPlaces(filter),
-      api.getVisitedPlaces(filter), // TODO: Paginate this, or fetch only 14 days' data
+      api.countVisitedPlaces({ to: filter.to }),
+      api.getVisitedPlaces(filter),
     ]);
 
     const [count, visitedPlaces] = result;
