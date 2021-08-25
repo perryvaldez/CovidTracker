@@ -10,21 +10,17 @@ const VisitedPlace = require("../../models/VisitedPlace");
 router.get("/", async (req, res) => {
   try {
     const { limit, offset } = utils.getPagination(req.query);
+    const sort = utils.makeSort(req.query);
+    sort._id = -1;
 
     let visitedPlaces = [];
 
     if(limit < 1) {
       visitedPlaces = await VisitedPlace.find(
-        utils.makeFilter(req.query)).sort({ 
-        date: -1,
-        _id: -1, 
-      });
+        utils.makeFilter(req.query)).sort(sort);
     } else {
       visitedPlaces = await VisitedPlace.find(
-        utils.makeFilter(req.query)).sort({ 
-        date: -1,
-        _id: -1, 
-      }).limit(limit).skip(offset);
+        utils.makeFilter(req.query)).sort(sort).limit(limit).skip(offset);
     }
 
     res.json(visitedPlaces);

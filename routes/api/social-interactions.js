@@ -10,21 +10,17 @@ const SocialInteraction = require("../../models/SocialInteraction");
 router.get("/", async (req, res) => {
   try {
     const { limit, offset } = utils.getPagination(req.query);
+    const sort = utils.makeSort(req.query);
+    sort._id = -1;
 
     let socialInteractions = [];
 
     if(limit < 1) {
       socialInteractions = await SocialInteraction.find(
-        utils.makeFilter(req.query)).sort({
-        date: -1,
-        _id: -1,
-      });
+        utils.makeFilter(req.query)).sort(sort);
     } else {
       socialInteractions = await SocialInteraction.find(
-        utils.makeFilter(req.query)).sort({
-        date: -1,
-        _id: -1,
-      }).limit(limit).skip(offset);
+        utils.makeFilter(req.query)).sort(sort).limit(limit).skip(offset);
     }
     
     res.json(socialInteractions);

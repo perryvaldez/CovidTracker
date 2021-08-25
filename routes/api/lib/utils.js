@@ -132,9 +132,35 @@ const makeAggregate = async (model, queryParams) => {
   return model.aggregate(pipeLine).sort({ _id: 1 });
 };
 
+const makeSort = (queryParams) => {
+  const sort = {};
+
+  if(queryParams.sortby) {
+    let sortParams = [];
+
+    if(Array.isArray(queryParams.sortby)) {
+      sortParams = queryParams.sortby;
+    } else {
+      sortParams.push(queryParams.sortby);
+    }
+    
+    for(let i in sortParams) {
+      const sortMatch = sortParams[i].match(/^\s*([^:]+):(.+)\s*$/);
+      if(sortMatch) {
+        let sortColumn = sortMatch[1];
+        let sortDirection = sortMatch[2] === 'desc' ? -1 : 1;
+        sort[sortColumn] = sortDirection;
+      }
+    }
+  }
+
+  return sort;
+};
+
 module.exports = {
   makeFilter,
   getPagination,
   makeAggregate,
+  makeSort,
 };
 
