@@ -17,6 +17,10 @@ export interface IVisitedPlaceData {
   hours: number;
 };
 
+export interface IDeleteResult {
+  msg: string;
+};
+
 axios.defaults.baseURL = config.apiBaseUrl;
 axios.defaults.headers.common['Accept'] = 'application/json';
 axios.defaults.headers.post['Content-Type'] = 'application/json';
@@ -139,6 +143,16 @@ async (id: string, data: ISocialInteractionData): Promise<ISocialInteractionData
     throw new Error('Unable to update social interaction.');
 };
 
+const deleteSocialInteraction = 
+async (id: string): Promise<IDeleteResult> => {
+    const result = await axios.delete(`/social-interactions/${id}`);
+    if(result.status >= 200) {
+        return result.data as IDeleteResult;
+    }
+
+    throw new Error('Unable to delete social interaction.');
+};
+
 const postVisitedPlace = 
 async (data: IVisitedPlaceData): Promise<string> => {
     const result = await axios.post('/visited-places', data);
@@ -159,6 +173,16 @@ async (id: string, data: IVisitedPlaceData): Promise<IVisitedPlaceData> => {
     throw new Error('Unable to update visited place.');
 };
 
+const deleteVisitedPlace = 
+async (id: string): Promise<IDeleteResult> => {
+    const result = await axios.delete(`/visited-places/${id}`);
+    if(result.status >= 200) {
+        return result.data as IDeleteResult;
+    }
+
+    throw new Error('Unable to delete visited place.');
+};
+
 export default {
   getSocialInteractions,
   countSocialInteractions,
@@ -170,5 +194,7 @@ export default {
   postVisitedPlace,
   putVisitedPlace,
   putSocialInteraction,
+  deleteVisitedPlace,
+  deleteSocialInteraction,
 };
 

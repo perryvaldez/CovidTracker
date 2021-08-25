@@ -1,6 +1,6 @@
 import { useDispatch } from 'react-redux';
 import { ThunkDispatch } from 'redux-thunk';
-import api, { FilterType, IVisitedPlaceData } from '../../lib/api';
+import api, { FilterType, IDeleteResult, IVisitedPlaceData } from '../../lib/api';
 import { IVisitedPlacesState } from '../states/visitedPlacesStates';
 
 
@@ -9,6 +9,7 @@ const visitedPlacesActions = {
   CHANGE_PAGE: 'VISITED_PLACES_CHANGE_PAGE',
   ADD_DATA: 'VISITED_PLACES_ADD_DATA',
   EDIT_DATA: 'VISITED_PLACES_EDIT_DATA',
+  DELETE_DATA: 'VISITED_PLACES_DELETE_DATA',
 };
 
 export interface IVisitedPlacesAction {
@@ -121,6 +122,31 @@ export interface IVisitedPlacesEditDataActionPayload {
   
       return(dispatch(visitedPlacesEditDataAction(result)));
     };
+
+/////
+export interface IVisitedPlacesDeleteDataActionPayload {
+    deleteResult: IDeleteResult;
+  };
+  
+  export interface IVisitedPlacesDeleteDataAction extends IVisitedPlacesAction {
+    payload: IVisitedPlacesDeleteDataActionPayload;
+  };
+  
+  export const visitedPlacesDeleteDataAction = 
+  (deleteResult: IDeleteResult) => ({
+    type: visitedPlacesActions.DELETE_DATA,
+    payload: {
+      deleteResult,
+    },
+  });
+  
+  export const performVisitedPlacesDeleteData = (id: string) => 
+    async (dispatch: VisitedPlacesAppDispatch) => {
+      const result = await api.deleteVisitedPlace(id);
+  
+      return(dispatch(visitedPlacesDeleteDataAction(result)));
+    };
+
 
 export default visitedPlacesActions;
 

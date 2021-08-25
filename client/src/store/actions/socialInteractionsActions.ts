@@ -1,6 +1,6 @@
 import { useDispatch } from 'react-redux';
 import { ThunkDispatch } from 'redux-thunk';
-import api, { FilterType, ISocialInteractionData } from '../../lib/api';
+import api, { FilterType, IDeleteResult, ISocialInteractionData } from '../../lib/api';
 import { ISocialInteractionsState } from '../states/socialInteractionsStates';
 
 
@@ -9,6 +9,7 @@ const socialInteractionsActions = {
   CHANGE_PAGE: 'SOCIAL_INTERACTIONS_CHANGE_PAGE',
   ADD_DATA: 'SOCIAL_INTERACTIONS_ADD_DATA',
   EDIT_DATA: 'SOCIAL_INTERACTIONS_EDIT_DATA',
+  DELETE_DATA: 'SOCIAL_INTERACTIONS_DELETE_DATA',
 };
 
 export interface ISocialInteractionsAction {
@@ -123,5 +124,30 @@ export const performSocialInteractionsEditData = (id: string, data: ISocialInter
 
     return(dispatch(socialInteractionsEditDataAction(result)));
   };
+
+/////
+export interface ISocialInteractionsDeleteDataActionPayload {
+    deleteResult: IDeleteResult;
+  };
+  
+  export interface ISocialInteractionsDeleteDataAction extends ISocialInteractionsAction {
+    payload: ISocialInteractionsDeleteDataActionPayload;
+  };
+  
+  export const socialInteractionsDeleteDataAction = 
+  (deleteResult: IDeleteResult) => ({
+    type: socialInteractionsActions.DELETE_DATA,
+    payload: {
+      deleteResult,
+    },
+  });
+  
+  export const performSocialInteractionsDeleteData = (id: string) => 
+    async (dispatch: SocialInteractionsAppDispatch) => {
+      const result = await api.deleteSocialInteraction(id);
+  
+      return(dispatch(socialInteractionsDeleteDataAction(result)));
+    };
+
 
 export default socialInteractionsActions;

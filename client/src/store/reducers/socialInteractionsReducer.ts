@@ -3,6 +3,7 @@ import a, {
   ISocialInteractionsAction, 
   ISocialInteractionsAddDataAction, 
   ISocialInteractionsChangePageAction, 
+  ISocialInteractionsDeleteDataAction, 
   ISocialInteractionsEditDataAction, 
   ISocialInteractionsFetchDataAction,
 } from '../actions/socialInteractionsActions';
@@ -65,6 +66,17 @@ const socialInteractionsReducer: Reducer<ISocialInteractionsState, ISocialIntera
             payload: { ...state.payload, ...fetchAction.payload },
           };
       }
+
+      if (action.type === a.DELETE_DATA) {
+          const fetchAction = action as ISocialInteractionsDeleteDataAction;
+
+          return {
+            ...state,
+            stateName: s.OUTDATED_DATA,
+            payload: { ...state.payload, ...fetchAction.payload },
+          };
+      }
+
       break;
   }
 

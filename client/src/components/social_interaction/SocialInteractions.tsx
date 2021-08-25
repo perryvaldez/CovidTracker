@@ -8,6 +8,7 @@ import socialInteractionsStates from '../../store/states/socialInteractionsState
 import { 
   performSocialInteractionsAddData, 
   performSocialInteractionsChangePage, 
+  performSocialInteractionsDeleteData, 
   performSocialInteractionsEditData, 
   performSocialInteractionsFetchData, 
   useSocialInteractionsDispatch,
@@ -74,7 +75,16 @@ export const SocialInteractions: React.FC = () => {
     setEditRowIndex(-1);
   };
 
-  const handleDeleteRow = (e: any, row: any, rowIndex: number, key: any) => {};
+  const handleDeleteRow = (e: any, row: any, rowIndex: number, key: any) => {
+    // eslint-disable-next-line no-restricted-globals
+    const isOk = confirm(`Are you sure you want to delete this row?\n\n${JSON.stringify(row, null, 2)}`);
+
+    if(isOk) {
+      dispatch(performSocialInteractionsDeleteData(key));
+      setPageMode(PageMode.VIEW);
+      setEditRowIndex(-1);
+    }
+  };
 
   const handleCancelRow = (e: any) => {
     setPageMode(PageMode.VIEW);

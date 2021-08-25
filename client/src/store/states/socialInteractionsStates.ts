@@ -1,3 +1,5 @@
+import { IDeleteResult } from "../../lib/api";
+
 const socialInteractionsStates = {
   START: 'SOCIAL_INTERACTIONS_START',
   READY: 'SOCIAL_INTERACTIONS_READY',
@@ -7,6 +9,7 @@ const socialInteractionsStates = {
 export interface ISocialInteractionsPayload {
   data: any[];
   totalCount: number;
+  deleteResult: IDeleteResult;
 };
 
 export interface ISocialInteractionsState {
@@ -19,6 +22,7 @@ export const SocialInteractionsStartState: ISocialInteractionsState = {
   payload: {
     data: [],
     totalCount: 0,
+    deleteResult: { msg: '' },
   },
 };
 

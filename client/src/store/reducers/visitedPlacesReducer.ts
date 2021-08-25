@@ -3,6 +3,7 @@ import a, {
   IVisitedPlacesAction, 
   IVisitedPlacesAddDataAction, 
   IVisitedPlacesChangePageAction, 
+  IVisitedPlacesDeleteDataAction, 
   IVisitedPlacesEditDataAction, 
   IVisitedPlacesFetchDataAction,
 } from '../actions/visitedPlacesActions';
@@ -65,6 +66,17 @@ const visitedPlacesReducer: Reducer<IVisitedPlacesState, IVisitedPlacesAction> =
           payload: { ...state.payload, ...fetchAction.payload },
         };
       }
+
+      if (action.type === a.DELETE_DATA) {
+        const fetchAction = action as IVisitedPlacesDeleteDataAction;
+
+        return {
+          ...state,
+          stateName: s.OUTDATED_DATA,
+          payload: { ...state.payload, ...fetchAction.payload },
+        };
+      }
+
       break;
   }
 

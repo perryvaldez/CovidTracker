@@ -1,3 +1,5 @@
+import { IDeleteResult } from "../../lib/api";
+
 const visitedPlacesStates = {
   START: 'VISITED_PLACES_START',
   READY: 'VISITED_PLACES_READY',
@@ -7,6 +9,7 @@ const visitedPlacesStates = {
 export interface IVisitedPlacesPayload {
   data: any[];
   totalCount: number;
+  deleteResult: IDeleteResult;
 };
 
 export interface IVisitedPlacesState {
@@ -19,6 +22,7 @@ export const VisitedPlacesStartState: IVisitedPlacesState = {
   payload: {
     data: [],
     totalCount: 0,
+    deleteResult: { msg: '' },
   },
 };
 
