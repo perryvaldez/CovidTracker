@@ -211,7 +211,7 @@ export const DataTable: React.FC<DataTableProps> =
                   <TableCell key={col} {...colOptProps}>
                     <TableSortLabel 
                       active={col === sortColumn} 
-                      direction={sortDirection} 
+                      direction={col === sortColumn ? sortDirection : 'asc'} 
                       onClick={handleClickSort(col)} 
                       disabled={disabledPageControls || pageMode === PageMode.EDIT}
                     >

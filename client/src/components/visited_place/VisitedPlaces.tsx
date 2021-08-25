@@ -101,20 +101,22 @@ export const VisitedPlaces: React.FC = () => {
   };
 
   const handleRequestSort = (e: any, col: string) => {
+    const newSortState: ColumnSortState = {};
+    Object.keys(columnSort).forEach((col) => { newSortState[col] = 'asc'; });
+
     if(col === columnSortActive) {
       const direction = (columnSort[col] === 'asc' ? 'desc' : 'asc');
 
       setColumnSort({
-        ...columnSort,
+        ...newSortState,
         [col]: direction,
       });
     } else {
-      const newSortState: ColumnSortState = {};
-      Object.keys(columnSort).forEach((col) => { newSortState[col] = 'asc'; });
-
       setColumnSort(newSortState);
       setColumnSortActive(col);
     }
+
+    dispatch(performVisitedPlacesChangePage());
   };
 
   const columns: IDataTableColumns = {
@@ -153,13 +155,13 @@ export const VisitedPlaces: React.FC = () => {
     }
 
     if(pageState.stateName === visitedPlacesStates.START) {
-      dispatch(performVisitedPlacesFetchData(filter, rowsPerPage, offset));
+      dispatch(performVisitedPlacesFetchData(filter, rowsPerPage, offset, `${columnSortActive}:${columnSort[columnSortActive]}`));
     }
 
     if(pageState.stateName === visitedPlacesStates.OUTDATED_DATA) {
-      dispatch(performVisitedPlacesFetchData(filter, rowsPerPage, offset));
+      dispatch(performVisitedPlacesFetchData(filter, rowsPerPage, offset, `${columnSortActive}:${columnSort[columnSortActive]}`));
     }
-  }, [pageState, dispatch, currentDateMaxTimeString, last14DaysMinTimeString, displayLast14, rowsPerPage, offset]);
+  }, [pageState, dispatch, currentDateMaxTimeString, last14DaysMinTimeString, displayLast14, rowsPerPage, offset, columnSort, columnSortActive]);
 
   return (
       <Container disableGutters className={classes.container}>

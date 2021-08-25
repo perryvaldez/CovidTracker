@@ -37,7 +37,7 @@ export const visitedPlacesFetchDataAction =
   },
 });
 
-export const performVisitedPlacesFetchData = (filter: FilterType = {}, limit = 0, offset = 0) => 
+export const performVisitedPlacesFetchData = (filter: FilterType = {}, limit = 0, offset = 0, sort = '') => 
   async (dispatch: VisitedPlacesAppDispatch) => {
     const countFilter: {[key: string]: any } = { to: filter.to };
     if(filter.from) {
@@ -45,7 +45,7 @@ export const performVisitedPlacesFetchData = (filter: FilterType = {}, limit = 0
     }
 
     const result = await Promise.all([
-      api.getVisitedPlaces(filter, limit, offset),
+      api.getVisitedPlaces(filter, limit, offset, [sort]),
       api.countVisitedPlaces(countFilter),
     ]);
 

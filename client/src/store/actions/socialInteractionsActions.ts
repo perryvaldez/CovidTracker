@@ -37,7 +37,7 @@ export const socialInteractionsFetchDataAction =
   },
 });
 
-export const performSocialInteractionsFetchData = (filter: FilterType = {}, limit = 0, offset = 0) => 
+export const performSocialInteractionsFetchData = (filter: FilterType = {}, limit = 0, offset = 0, sort = '') => 
   async (dispatch: SocialInteractionsAppDispatch) => {
     const countFilter: {[key: string]: any } = { to: filter.to };
     if(filter.from) {
@@ -45,7 +45,7 @@ export const performSocialInteractionsFetchData = (filter: FilterType = {}, limi
     }
 
     const result = await Promise.all([
-      api.getSocialInteractions(filter, limit, offset),
+      api.getSocialInteractions(filter, limit, offset, [sort]),
       api.countSocialInteractions(countFilter),
     ]);
 
