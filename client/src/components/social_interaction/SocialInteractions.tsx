@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Checkbox, Container, FormControlLabel, Grid, makeStyles } from '@material-ui/core';
 import { useCustomSelector } from '../../lib/hooks';
-import { PageMode } from '../../lib/page';
+import { ColumnSortState, PageMode } from '../../lib/page';
 import utils from '../../lib/utils';
 import { ISocialInteractionData } from '../../lib/api';
 import socialInteractionsStates from '../../store/states/socialInteractionsStates';
@@ -33,6 +33,15 @@ export const SocialInteractions: React.FC = () => {
 
   const [openDialog, setOpenDialog] = useState(false);
   const [editRowIndex, setEditRowIndex] = useState(-1);
+
+  const [columnSort, setColumnSort] = useState<ColumnSortState>({ 
+    name: 'asc',
+    date: 'desc',
+    hours: 'asc',
+    isSocialDistancing: 'asc',
+  });
+
+  const [columnSortActive, setColumnSortActive] = useState('date');
 
   const rowsPerPage = 10;
 
@@ -90,6 +99,24 @@ export const SocialInteractions: React.FC = () => {
     setPageMode(PageMode.VIEW);
     setEditRowIndex(-1);
   };
+
+  const handleRequestSort = (e: any, col: string) => {
+    if(col === columnSortActive) {
+      const direction = (columnSort[col] === 'asc' ? 'desc' : 'asc');
+
+      setColumnSort({
+        ...columnSort,
+        [col]: direction,
+      });
+    } else {
+      const newSortState: ColumnSortState = {};
+      Object.keys(columnSort).forEach((col) => { newSortState[col] = 'asc'; });
+
+      setColumnSort(newSortState);
+      setColumnSortActive(col);
+    }
+  };
+
 
   const columns: IDataTableColumns = {
     name: { title: 'Person', type: 'string', index: 1 },
@@ -158,6 +185,7 @@ export const SocialInteractions: React.FC = () => {
                   <DataTable 
                     ariaLabel="Social Interactions List"
                     columns={columns} 
+                    sortBy={`${columnSortActive}:${columnSort[columnSortActive]}`}
                     columnClassNames={columnClassNames}
                     data={data} 
                     rowKey="_id" 
@@ -171,6 +199,7 @@ export const SocialInteractions: React.FC = () => {
                     onUpdateRow={handleUpdateRow}
                     onDeleteRow={handleDeleteRow}
                     onCancelRow={handleCancelRow}
+                    onRequestSort={handleRequestSort}
                     editRowIndex={editRowIndex}
                   />
                 </Loader>

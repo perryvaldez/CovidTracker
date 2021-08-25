@@ -9,12 +9,13 @@ import {
   TableHead, 
   TablePagination, 
   TableRow,
+  TableSortLabel,
 } from '@material-ui/core';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import SaveIcon from '@material-ui/icons/Save';
 import CancelIcon from '@material-ui/icons/Cancel';
-import { PageMode } from '../../lib/page';
+import { PageMode, SortDirectionType } from '../../lib/page';
 import utils from '../../lib/utils';
 import DataTablePageControls, { DataTablePageControlsProps } from './DataTablePageControls';
 import DataTableActionButton from './DataTableActionButton';
@@ -47,6 +48,7 @@ export type DataTableProps = {
   columnClassNames?: ColumnClassNames,
   rowKey?: string,
   data: IDataTableRow[],
+  sortBy?: string,
   highlightRowIf?: IDataTableRowPredicateFn,
   totalRows?: number,
   rowsPerPage?: number,
@@ -60,6 +62,7 @@ export type DataTableProps = {
   onUpdateRow?: (e: any, row: any, rowIndex: number, key: any) => void,
   onDeleteRow?: (e: any, row: any, rowIndex: number, key: any) => void,
   onCancelRow?: (e: any, row: any, rowIndex: number, key: any) => void,
+  onRequestSort?: (e: any, col: string) => void,
 };
 
 type Dict<T> = {[key: string]: T};
@@ -99,8 +102,8 @@ const convertDataIntoProperTypes = (data: Dict<any>, columnDefs: Dict<IDataTable
 
 export const DataTable: React.FC<DataTableProps> = 
 ({ 
-  columns, data, rowKey, highlightRowIf, totalRows, rowsPerPage, page, disabledPageControls, pageMode, 
-  editRowIndex, onPageChange, onEditRow, onUpdateRow, onDeleteRow, onCancelRow, columnClassNames, ariaLabel,
+  columns, data, sortBy, rowKey, highlightRowIf, totalRows, rowsPerPage, page, disabledPageControls, pageMode, 
+  editRowIndex, onPageChange, onEditRow, onUpdateRow, onDeleteRow, onCancelRow, columnClassNames, ariaLabel, onRequestSort,
  }) => {
   const emptyDict: {[key: string]: any} = {};
   const [colValues, setColValues] = useState(emptyDict);
@@ -141,6 +144,12 @@ export const DataTable: React.FC<DataTableProps> =
     setColValues(newColValues);
   };
 
+  const handleClickSort = (sortColumn: string) => (e: any) => {
+    if(onRequestSort) {
+      onRequestSort(e, sortColumn);
+    }
+  };
+
   const sortedColumns = Object.keys(columns);
 
   sortedColumns.sort(
@@ -158,6 +167,20 @@ export const DataTable: React.FC<DataTableProps> =
   const pageControls = (props: DataTablePageControlsProps) => (<DataTablePageControls {...props} disabled={disabledPageControls || (pageMode && (pageMode !== PageMode.VIEW))} />);
 
   const isRowInEditMode = (index: number) => (typeof(editRowIndex) === 'number' && editRowIndex === index && pageMode === PageMode.EDIT);
+
+  let sortColumn = sortedColumns[0];
+  let sortDirection: SortDirectionType = 'asc';
+
+  if(sortBy) {
+    const sortMatch = sortBy.match(/^\s*([^:]+):(.+)\s*$/);
+    if(sortMatch) {
+      sortColumn = sortMatch[1];
+      
+      if (sortDirection === 'asc' || sortDirection === 'desc') {
+        sortDirection = sortMatch[2] as SortDirectionType;
+      }
+    }
+  }
 
   useEffect(() => {
     if(pageMode === PageMode.EDIT && typeof(editRowIndex) === 'number' && editRowIndex > -1) {
@@ -184,7 +207,18 @@ export const DataTable: React.FC<DataTableProps> =
                   colOptProps['className'] = columnClassNames[col];
                 }
 
-                return (<TableCell key={col} {...colOptProps}>{columns[col].title}</TableCell>); 
+                return (
+                  <TableCell key={col} {...colOptProps}>
+                    <TableSortLabel 
+                      active={col === sortColumn} 
+                      direction={sortDirection} 
+                      onClick={handleClickSort(col)} 
+                      disabled={disabledPageControls || pageMode === PageMode.EDIT}
+                    >
+                      {columns[col].title}
+                    </TableSortLabel>
+                  </TableCell>
+                ); 
               })
             }
             <TableCell align="center" className={classes.actionCell}>Action</TableCell>

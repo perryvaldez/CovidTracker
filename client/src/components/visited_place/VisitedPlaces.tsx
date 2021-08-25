@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Checkbox, Container, FormControlLabel, Grid, makeStyles } from '@material-ui/core';
 import { useCustomSelector } from '../../lib/hooks';
-import { PageMode } from '../../lib/page';
+import { ColumnSortState, PageMode } from '../../lib/page';
 import utils from '../../lib/utils';
 import { IVisitedPlaceData } from '../../lib/api';
 import visitedPlacesStates from '../../store/states/visitedPlacesStates';
@@ -33,6 +33,15 @@ export const VisitedPlaces: React.FC = () => {
 
   const [openDialog, setOpenDialog] = useState(false);
   const [editRowIndex, setEditRowIndex] = useState(-1);
+
+  const [columnSort, setColumnSort] = useState<ColumnSortState>({ 
+    place: 'asc',
+    date: 'desc',
+    hours: 'asc',
+    isCrowded: 'asc',
+  });
+
+  const [columnSortActive, setColumnSortActive] = useState('date');
 
   const rowsPerPage = 10;
 
@@ -89,6 +98,23 @@ export const VisitedPlaces: React.FC = () => {
   const handleCancelRow = (e: any) => {
     setPageMode(PageMode.VIEW);
     setEditRowIndex(-1);
+  };
+
+  const handleRequestSort = (e: any, col: string) => {
+    if(col === columnSortActive) {
+      const direction = (columnSort[col] === 'asc' ? 'desc' : 'asc');
+
+      setColumnSort({
+        ...columnSort,
+        [col]: direction,
+      });
+    } else {
+      const newSortState: ColumnSortState = {};
+      Object.keys(columnSort).forEach((col) => { newSortState[col] = 'asc'; });
+
+      setColumnSort(newSortState);
+      setColumnSortActive(col);
+    }
   };
 
   const columns: IDataTableColumns = {
@@ -157,6 +183,7 @@ export const VisitedPlaces: React.FC = () => {
                   <DataTable 
                     ariaLabel="Visited Places List"
                     columns={columns} 
+                    sortBy={`${columnSortActive}:${columnSort[columnSortActive]}`}
                     columnClassNames={columnClassNames}
                     data={data} 
                     rowKey="_id" 
@@ -170,6 +197,7 @@ export const VisitedPlaces: React.FC = () => {
                     onUpdateRow={handleUpdateRow}
                     onDeleteRow={handleDeleteRow}
                     onCancelRow={handleCancelRow}
+                    onRequestSort={handleRequestSort}
                     editRowIndex={editRowIndex}
                   />
                 </Loader>
