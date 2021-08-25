@@ -13,6 +13,13 @@ const styles = {
     width: 64,
   },
   colIsCrowded: {},
+  homeLink: {
+    display: 'flex',
+    alignItems: 'center',
+  },
+  labelLast14: {
+    marginRight: 0,
+  },
 };
 
 export default styles;

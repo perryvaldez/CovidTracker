@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Checkbox, Container, FormControlLabel, Grid, makeStyles } from '@material-ui/core';
+import { Box, Button, Checkbox, Container, FormControlLabel, Grid, makeStyles } from '@material-ui/core';
 import { useCustomSelector } from '../../lib/hooks';
 import { ColumnSortState, PageMode } from '../../lib/page';
 import utils from '../../lib/utils';
@@ -18,6 +18,8 @@ import Loader from '../shared/Loader';
 import DataTable, { ColumnClassNames, IDataTableColumns, IDataTableRow } from '../shared/DataTable';
 import SocialInteractionDialog from './SocialInteractionDialog';
 import styles from './SocialInteractions.styles';
+import { Link } from 'react-router-dom';
+import P from '../markup/P';
 
 export const SocialInteractions: React.FC = () => {
   const classes = makeStyles(styles)();
@@ -170,6 +172,9 @@ export const SocialInteractions: React.FC = () => {
         <form>
             <Grid container spacing={2}>
               <Grid item xs={12}>
+                <Box display="flex" justifyContent="space-between" alignContent="center">
+                  <P className={classes.homeLink}><Link to="/">Home</Link></P>
+
                   <FormControlLabel
                     control={
                       <Checkbox 
@@ -179,7 +184,9 @@ export const SocialInteractions: React.FC = () => {
                         disabled={pageMode !== PageMode.VIEW}                        
                       />}
                     label="Display records within last 14 days"
+                    className={classes.labelLast14}
                   />                  
+                  </Box>
               </Grid>
               <Grid item xs={12}>
                 <Loader isLoading={pageState.stateName !== socialInteractionsStates.READY} withWrapper>

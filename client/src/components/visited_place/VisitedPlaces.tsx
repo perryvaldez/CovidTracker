@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Checkbox, Container, FormControlLabel, Grid, makeStyles } from '@material-ui/core';
+import { Box, Button, Checkbox, Container, FormControlLabel, Grid, makeStyles } from '@material-ui/core';
 import { useCustomSelector } from '../../lib/hooks';
 import { ColumnSortState, PageMode } from '../../lib/page';
 import utils from '../../lib/utils';
@@ -18,6 +18,8 @@ import PageHeader from '../shared/PageHeader';
 import DataTable, { ColumnClassNames, IDataTableColumns, IDataTableRow } from '../shared/DataTable';
 import VisitedPlaceDialog from './VisitedPlaceDialog';
 import styles from './VisitedPlaces.styles';
+import P from '../markup/P';
+import { Link } from 'react-router-dom';
 
 export const VisitedPlaces: React.FC = () => {
   const classes = makeStyles(styles)();
@@ -169,6 +171,9 @@ export const VisitedPlaces: React.FC = () => {
         <form>
             <Grid container spacing={2}>
               <Grid item xs={12}>
+                <Box display="flex" justifyContent="space-between" alignContent="center">
+                  <P className={classes.homeLink}><Link to="/">Home</Link></P>
+
                   <FormControlLabel
                     control={
                       <Checkbox 
@@ -178,7 +183,9 @@ export const VisitedPlaces: React.FC = () => {
                         disabled={pageMode !== PageMode.VIEW}
                       />}
                     label="Display records within last 14 days"
+                    className={classes.labelLast14}
                   />                  
+                </Box>
               </Grid>
               <Grid item xs={12}>
                 <Loader isLoading={pageState.stateName !== visitedPlacesStates.READY} withWrapper>
