@@ -56,10 +56,10 @@ export type DataTableProps = {
   editRowIndex?: number,
   ariaLabel?: string,
   onPageChange?: (e: any, page: number) => void,
-  onEditRow?: (e: any, row: any, rowIndex: number) => void,
-  onUpdateRow?: (e: any, row: any, rowIndex: number) => void,
-  onDeleteRow?: (e: any, row: any, rowIndex: number) => void,
-  onCancelRow?: (e: any, row: any, rowIndex: number) => void,
+  onEditRow?: (e: any, row: any, rowIndex: number, key: any) => void,
+  onUpdateRow?: (e: any, row: any, rowIndex: number, key: any) => void,
+  onDeleteRow?: (e: any, row: any, rowIndex: number, key: any) => void,
+  onCancelRow?: (e: any, row: any, rowIndex: number, key: any) => void,
 };
 
 type Dict<T> = {[key: string]: T};
@@ -107,27 +107,27 @@ export const DataTable: React.FC<DataTableProps> =
 
   const classes = makeStyles(styles)();
 
-  const handleClickEdit = (index: number, row: any) => (e: any) => { 
+  const handleClickEdit = (index: number, row: any, key: any) => (e: any) => { 
     if(onEditRow) {
-      onEditRow(e, row, index);
+      onEditRow(e, row, index, key);
     }
   };
 
-  const handleClickUpdate = (index: number, row: any) => (e: any) => {
+  const handleClickUpdate = (index: number, row: any, key: any) => (e: any) => {
     if(onUpdateRow) {
-      onUpdateRow(e, row, index);
+      onUpdateRow(e, row, index, key);
     }
   };
 
-  const handleClickCancel = (index: number, row: any) => (e: any) => { 
+  const handleClickCancel = (index: number, row: any, key: any) => (e: any) => { 
     if(onCancelRow) {
-      onCancelRow(e, row, index);
+      onCancelRow(e, row, index, key);
     }
   };
 
-  const handleClickDelete = (index: number, row: any) => (e: any) => {
+  const handleClickDelete = (index: number, row: any, key: any) => (e: any) => {
     if(onDeleteRow) {
-      onDeleteRow(e, row, index);
+      onDeleteRow(e, row, index, key);
     }
   };
 
@@ -249,16 +249,16 @@ export const DataTable: React.FC<DataTableProps> =
                       <TableCell align="center" className={classes.actionCell}>
                         {
                           (isRowInEditMode(index)) ? (
-                            <DataTableActionButton title="Update" onClick={handleClickUpdate(index, convertDataIntoProperTypes(colValues, columns))} icon={(params) => (<SaveIcon {...params} />)} />
+                            <DataTableActionButton title="Update" onClick={handleClickUpdate(index, convertDataIntoProperTypes(colValues, columns), rowKey ? row[rowKey] : undefined)} icon={(params) => (<SaveIcon {...params} />)} />
                           ) : (
-                            <DataTableActionButton title="Edit" onClick={handleClickEdit(index, data[index])} disabled={pageMode && (pageMode !== PageMode.VIEW)} icon={(params) => (<EditIcon {...params} />)} />
+                            <DataTableActionButton title="Edit" onClick={handleClickEdit(index, data[index], rowKey ? row[rowKey] : undefined)} disabled={pageMode && (pageMode !== PageMode.VIEW)} icon={(params) => (<EditIcon {...params} />)} />
                           )
                         }
                         {
                           (isRowInEditMode(index)) ? (
-                            <DataTableActionButton title="Cancel" onClick={handleClickCancel(index, data[index])} icon={(params) => (<CancelIcon {...params} />)} />
+                            <DataTableActionButton title="Cancel" onClick={handleClickCancel(index, data[index], rowKey ? row[rowKey] : undefined)} icon={(params) => (<CancelIcon {...params} />)} />
                           ) : (
-                            <DataTableActionButton title="Delete" onClick={handleClickDelete(index, data[index])} disabled={pageMode && (pageMode !== PageMode.VIEW)} icon={(params) => (<DeleteIcon {...params} />)} />
+                            <DataTableActionButton title="Delete" onClick={handleClickDelete(index, data[index], rowKey ? row[rowKey] : undefined)} disabled={pageMode && (pageMode !== PageMode.VIEW)} icon={(params) => (<DeleteIcon {...params} />)} />
                           )
                         }
 

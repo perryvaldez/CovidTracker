@@ -5,20 +5,18 @@ import { PageMode } from '../../lib/page';
 import utils from '../../lib/utils';
 import { IVisitedPlaceData } from '../../lib/api';
 import visitedPlacesStates from '../../store/states/visitedPlacesStates';
-import { performVisitedPlacesAddData, performVisitedPlacesChangePage, performVisitedPlacesFetchData, useVisitedPlacesDispatch } from '../../store/actions/visitedPlacesActions';
+import { 
+  performVisitedPlacesAddData, 
+  performVisitedPlacesChangePage, 
+  performVisitedPlacesEditData, 
+  performVisitedPlacesFetchData, 
+  useVisitedPlacesDispatch,
+} from '../../store/actions/visitedPlacesActions';
 import Loader from '../shared/Loader';
 import PageHeader from '../shared/PageHeader';
 import DataTable, { ColumnClassNames, IDataTableColumns, IDataTableRow } from '../shared/DataTable';
 import VisitedPlaceDialog from './VisitedPlaceDialog';
 import styles from './VisitedPlaces.styles';
-
-type GridData = {
-  _id: number,
-  place: string,
-  date: string,
-  hours: number,
-  isCrowded: 'Yes' | 'No',
-};
 
 export const VisitedPlaces: React.FC = () => {
   const classes = makeStyles(styles)();
@@ -66,22 +64,19 @@ export const VisitedPlaces: React.FC = () => {
   };
 
   const handleEditRow = (e: any, row: any, rowIndex: number) => {
-    console.log('VisitedPlaces: handleEditRow: ', { row, rowIndex });
     setPageMode(PageMode.EDIT);
     setEditRowIndex(rowIndex);
   };
 
-  const handleUpdateRow = (e: any, row: any, rowIndex: number) => {
-    // TODO
-    console.log('VisitedPlaces: handleUpdateRow: ', { row, rowIndex });
+  const handleUpdateRow = (e: any, row: any, rowIndex: number, key: any) => {
+    dispatch(performVisitedPlacesEditData(key, row));
     setPageMode(PageMode.VIEW);
     setEditRowIndex(-1);
   };
 
-  const handleDeleteRow = (e: any, row: any, rowIndex: number) => {};
+  const handleDeleteRow = (e: any, row: any, rowIndex: number, key: any) => {};
 
-  const handleCancelRow = (e: any, row: any, rowIndex: number) => {
-    // TODO
+  const handleCancelRow = (e: any) => {
     setPageMode(PageMode.VIEW);
     setEditRowIndex(-1);
   };

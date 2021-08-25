@@ -129,6 +129,16 @@ async (data: ISocialInteractionData): Promise<string> => {
     throw new Error('Unable to post social interaction.');
 };
 
+const putSocialInteraction = 
+async (id: string, data: ISocialInteractionData): Promise<ISocialInteractionData> => {
+    const result = await axios.put(`/social-interactions/${id}`, data);
+    if(result.status >= 200) {
+        return result.data as ISocialInteractionData;
+    }
+
+    throw new Error('Unable to update social interaction.');
+};
+
 const postVisitedPlace = 
 async (data: IVisitedPlaceData): Promise<string> => {
     const result = await axios.post('/visited-places', data);
@@ -137,6 +147,16 @@ async (data: IVisitedPlaceData): Promise<string> => {
     }
 
     throw new Error('Unable to post visited place.');
+};
+
+const putVisitedPlace = 
+async (id: string, data: IVisitedPlaceData): Promise<IVisitedPlaceData> => {
+    const result = await axios.put(`/visited-places/${id}`, data);
+    if(result.status >= 200) {
+        return result.data as IVisitedPlaceData;
+    }
+
+    throw new Error('Unable to update visited place.');
 };
 
 export default {
@@ -148,5 +168,7 @@ export default {
   getVisitedPlacesAvailablePlaces,
   postSocialInteraction,
   postVisitedPlace,
+  putVisitedPlace,
+  putSocialInteraction,
 };
 

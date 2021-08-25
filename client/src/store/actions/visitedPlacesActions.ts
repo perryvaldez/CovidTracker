@@ -8,6 +8,7 @@ const visitedPlacesActions = {
   FETCH_DATA: 'VISITED_PLACES_FETCH_DATA',
   CHANGE_PAGE: 'VISITED_PLACES_CHANGE_PAGE',
   ADD_DATA: 'VISITED_PLACES_ADD_DATA',
+  EDIT_DATA: 'VISITED_PLACES_EDIT_DATA',
 };
 
 export interface IVisitedPlacesAction {
@@ -95,6 +96,30 @@ export interface IVisitedPlacesAddDataActionPayload {
       data._id = id;
   
       return(dispatch(visitedPlacesAddDataAction(data)));
+    };
+
+/////
+export interface IVisitedPlacesEditDataActionPayload {
+    visitedPlace: IVisitedPlaceData;
+  };
+  
+  export interface IVisitedPlacesEditDataAction extends IVisitedPlacesAction {
+    payload: IVisitedPlacesEditDataActionPayload;
+  };
+  
+  export const visitedPlacesEditDataAction = 
+  (visitedPlace: IVisitedPlaceData) => ({
+    type: visitedPlacesActions.EDIT_DATA,
+    payload: {
+      visitedPlace,
+    },
+  });
+  
+  export const performVisitedPlacesEditData = (id: string, data: IVisitedPlaceData) => 
+    async (dispatch: VisitedPlacesAppDispatch) => {
+      const result = await api.putVisitedPlace(id, data);
+  
+      return(dispatch(visitedPlacesEditDataAction(result)));
     };
 
 export default visitedPlacesActions;

@@ -8,6 +8,7 @@ const socialInteractionsActions = {
   FETCH_DATA: 'SOCIAL_INTERACTIONS_FETCH_DATA',
   CHANGE_PAGE: 'SOCIAL_INTERACTIONS_CHANGE_PAGE',
   ADD_DATA: 'SOCIAL_INTERACTIONS_ADD_DATA',
+  EDIT_DATA: 'SOCIAL_INTERACTIONS_EDIT_DATA',
 };
 
 export interface ISocialInteractionsAction {
@@ -96,6 +97,31 @@ export const performSocialInteractionsAddData = (data: ISocialInteractionData) =
     data._id = id;
 
     return(dispatch(socialInteractionsAddDataAction(data)));
+  };
+
+///
+
+export interface ISocialInteractionsEditDataActionPayload {
+  socialInteraction: ISocialInteractionData;
+};
+
+export interface ISocialInteractionsEditDataAction extends ISocialInteractionsAction {
+  payload: ISocialInteractionsEditDataActionPayload;
+};
+
+export const socialInteractionsEditDataAction = 
+(socialInteraction: ISocialInteractionData) => ({
+  type: socialInteractionsActions.EDIT_DATA,
+  payload: {
+    socialInteraction,
+  },
+});
+
+export const performSocialInteractionsEditData = (id: string, data: ISocialInteractionData) => 
+  async (dispatch: SocialInteractionsAppDispatch) => {
+    const result = await api.putSocialInteraction(id, data);
+
+    return(dispatch(socialInteractionsEditDataAction(result)));
   };
 
 export default socialInteractionsActions;

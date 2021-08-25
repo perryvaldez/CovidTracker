@@ -5,20 +5,18 @@ import { PageMode } from '../../lib/page';
 import utils from '../../lib/utils';
 import { ISocialInteractionData } from '../../lib/api';
 import socialInteractionsStates from '../../store/states/socialInteractionsStates';
-import { performSocialInteractionsAddData, performSocialInteractionsChangePage, performSocialInteractionsFetchData, useSocialInteractionsDispatch } from '../../store/actions/socialInteractionsActions';
+import { 
+  performSocialInteractionsAddData, 
+  performSocialInteractionsChangePage, 
+  performSocialInteractionsEditData, 
+  performSocialInteractionsFetchData, 
+  useSocialInteractionsDispatch,
+} from '../../store/actions/socialInteractionsActions';
 import PageHeader from '../shared/PageHeader';
 import Loader from '../shared/Loader';
 import DataTable, { ColumnClassNames, IDataTableColumns, IDataTableRow } from '../shared/DataTable';
 import SocialInteractionDialog from './SocialInteractionDialog';
 import styles from './SocialInteractions.styles';
-
-type GridData = {
-  _id: number,
-  name: string,
-  date: string,
-  hours: number,
-  isSocialDistancing: 'Yes' | 'No',
-};
 
 export const SocialInteractions: React.FC = () => {
   const classes = makeStyles(styles)();
@@ -66,22 +64,19 @@ export const SocialInteractions: React.FC = () => {
   };
 
   const handleEditRow = (e: any, row: any, rowIndex: number) => {
-    console.log('SocialInteractions: handleEditRow: ', { row, rowIndex });
     setPageMode(PageMode.EDIT);
     setEditRowIndex(rowIndex);
   };
 
-  const handleUpdateRow = (e: any, row: any, rowIndex: number) => {
-    // TODO
-    console.log('SocialInteractions: handleUpdateRow: ', { row, rowIndex });
+  const handleUpdateRow = (e: any, row: any, rowIndex: number, key: any) => {
+    dispatch(performSocialInteractionsEditData(key, row));
     setPageMode(PageMode.VIEW);
     setEditRowIndex(-1);
   };
 
-  const handleDeleteRow = (e: any, row: any, rowIndex: number) => {};
+  const handleDeleteRow = (e: any, row: any, rowIndex: number, key: any) => {};
 
-  const handleCancelRow = (e: any, row: any, rowIndex: number) => {
-    // TODO
+  const handleCancelRow = (e: any) => {
     setPageMode(PageMode.VIEW);
     setEditRowIndex(-1);
   };

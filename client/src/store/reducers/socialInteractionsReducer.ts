@@ -1,5 +1,11 @@
 import { Reducer } from 'redux';
-import a, { ISocialInteractionsAction, ISocialInteractionsAddDataAction, ISocialInteractionsChangePageAction, ISocialInteractionsFetchDataAction } from '../actions/socialInteractionsActions';
+import a, { 
+  ISocialInteractionsAction, 
+  ISocialInteractionsAddDataAction, 
+  ISocialInteractionsChangePageAction, 
+  ISocialInteractionsEditDataAction, 
+  ISocialInteractionsFetchDataAction,
+} from '../actions/socialInteractionsActions';
 import s, { ISocialInteractionsState, SocialInteractionsStartState as startState } from '../states/socialInteractionsStates';
 
 const socialInteractionsReducer: Reducer<ISocialInteractionsState, ISocialInteractionsAction> =
@@ -42,6 +48,16 @@ const socialInteractionsReducer: Reducer<ISocialInteractionsState, ISocialIntera
 
       if (action.type === a.ADD_DATA) {
           const fetchAction = action as ISocialInteractionsAddDataAction;
+
+          return {
+            ...state,
+            stateName: s.OUTDATED_DATA,
+            payload: { ...state.payload, ...fetchAction.payload },
+          };
+      }
+
+      if (action.type === a.EDIT_DATA) {
+          const fetchAction = action as ISocialInteractionsEditDataAction;
 
           return {
             ...state,
