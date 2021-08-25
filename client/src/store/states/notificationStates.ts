@@ -1,6 +1,7 @@
 const notificationStates = {
   START: 'NOTIFICATION_START',
   READY: 'NOTIFICATION_READY',
+  OUTDATED_DATA: 'NOTIFICATION_OUTDATED_DATA',
 };
 
 export interface INotificationPayload {

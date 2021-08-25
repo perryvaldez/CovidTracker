@@ -6,6 +6,7 @@ import { INotificationState } from '../states/notificationStates';
 
 const notificationActions = {
   FETCH_DATA: 'NOTIFICATION_FETCH_DATA',
+  UPDATE_DATA: 'NOTIFICATION_UPDATE_DATA',
 };
 
 export interface INotificationAction {
@@ -44,5 +45,24 @@ export const performNotificationFetchData = (filter: FilterType = {}) =>
 
     return(dispatch(notificationFetchDataAction(countNoSocialDistance, countCrowded)));
   };
+
+////
+
+export interface INotificationUpdateDataActionPayload {};
+
+export interface INotificationUpdateDataAction extends INotificationAction {
+  payload: INotificationUpdateDataActionPayload;
+};
+
+export const notificationUpdateDataAction = () => ({
+  type: notificationActions.UPDATE_DATA,
+  payload: {},
+});
+
+export const performNotificationUpdateData = () => 
+  async (dispatch: NotificationAppDispatch) => {
+    return(dispatch(notificationUpdateDataAction()));
+  };
+
 
 export default notificationActions;

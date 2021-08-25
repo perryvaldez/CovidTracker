@@ -11,7 +11,7 @@ import {
   performDashboardFetchVisitedData,
   useDashboardDispatch,
 } from '../../store/actions/dashboardActions';
-import { performNotificationFetchData, useNotificationDispatch } from '../../store/actions/notificationActions';
+import { performNotificationFetchData, performNotificationUpdateData, useNotificationDispatch } from '../../store/actions/notificationActions';
 import dashboardStates from '../../store/states/dashboardStates';
 import notificationStates from '../../store/states/notificationStates';
 import DashboardButtons from './DashboardButtons';
@@ -49,11 +49,17 @@ export const Dashboard: React.FC = () => {
       dashboardDispatch(performDashboardFetchData({ to: currentDateMaxTimeString, from: last7DaysMinTimeString }));
     } else if (dashboardState.stateName === dashboardStates.OUTDATED_SOCIAL) {
       dashboardDispatch(performDashboardFetchSocialData({ to: currentDateMaxTimeString, from: last7DaysMinTimeString }));
+      notificationDispatch(performNotificationUpdateData());
     } else if (dashboardState.stateName === dashboardStates.OUTDATED_VISITED) {
       dashboardDispatch(performDashboardFetchVisitedData({ to: currentDateMaxTimeString, from: last7DaysMinTimeString }));
+      notificationDispatch(performNotificationUpdateData());
     }
 
     if(notificationState.stateName === notificationStates.START) {
+      notificationDispatch(performNotificationFetchData({
+        to: currentDateMaxTimeString, from: last14DaysMinTimeString, 
+      }));
+    } else if(notificationState.stateName === notificationStates.OUTDATED_DATA) {
       notificationDispatch(performNotificationFetchData({
         to: currentDateMaxTimeString, from: last14DaysMinTimeString, 
       }));
