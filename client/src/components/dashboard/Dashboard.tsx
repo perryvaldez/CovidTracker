@@ -14,6 +14,8 @@ import {
 import { performNotificationFetchData, performNotificationUpdateData, useNotificationDispatch } from '../../store/actions/notificationActions';
 import dashboardStates from '../../store/states/dashboardStates';
 import notificationStates from '../../store/states/notificationStates';
+import { performVisitedPlacesRefreshData, useVisitedPlacesDispatch } from '../../store/actions/visitedPlacesActions';
+import { performSocialInteractionsRefreshData, useSocialInteractionsDispatch } from '../../store/actions/socialInteractionsActions';
 import DashboardButtons from './DashboardButtons';
 import Header from './Header';
 import Loader from '../shared/Loader';
@@ -29,6 +31,8 @@ export const Dashboard: React.FC = () => {
 
   const dashboardDispatch = useDashboardDispatch();
   const notificationDispatch = useNotificationDispatch();
+  const visitedPlacesDispatch = useVisitedPlacesDispatch();
+  const socialInteractionsDispatch = useSocialInteractionsDispatch();
 
   const [openSocialInteraction, setOpenSocialInteraction] = useState(false);
   const [openVisitedPlace, setOpenVisitedPlace] = useState(false);
@@ -50,9 +54,11 @@ export const Dashboard: React.FC = () => {
     } else if (dashboardState.stateName === dashboardStates.OUTDATED_SOCIAL) {
       dashboardDispatch(performDashboardFetchSocialData({ to: currentDateMaxTimeString, from: last7DaysMinTimeString }));
       notificationDispatch(performNotificationUpdateData());
+      socialInteractionsDispatch(performSocialInteractionsRefreshData());
     } else if (dashboardState.stateName === dashboardStates.OUTDATED_VISITED) {
       dashboardDispatch(performDashboardFetchVisitedData({ to: currentDateMaxTimeString, from: last7DaysMinTimeString }));
       notificationDispatch(performNotificationUpdateData());
+      visitedPlacesDispatch(performVisitedPlacesRefreshData());
     }
 
     if(notificationState.stateName === notificationStates.START) {
@@ -67,7 +73,7 @@ export const Dashboard: React.FC = () => {
 
   }, [
     dashboardDispatch, notificationDispatch, dashboardState, last7DaysMinTimeString, 
-    last14DaysMinTimeString, currentDateMaxTimeString, notificationState,
+    last14DaysMinTimeString, currentDateMaxTimeString, notificationState, visitedPlacesDispatch, socialInteractionsDispatch,
   ]);
 
   const classes = makeStyles(styles)();

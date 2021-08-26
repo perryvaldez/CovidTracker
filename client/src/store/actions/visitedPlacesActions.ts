@@ -10,6 +10,7 @@ const visitedPlacesActions = {
   ADD_DATA: 'VISITED_PLACES_ADD_DATA',
   EDIT_DATA: 'VISITED_PLACES_EDIT_DATA',
   DELETE_DATA: 'VISITED_PLACES_DELETE_DATA',
+  REFRESH_DATA: 'VISITED_PLACES_REFRESH_DATA',
 };
 
 export interface IVisitedPlacesAction {
@@ -145,6 +146,23 @@ export interface IVisitedPlacesDeleteDataActionPayload {
       const result = await api.deleteVisitedPlace(id);
   
       return(dispatch(visitedPlacesDeleteDataAction(result)));
+    };
+
+/////
+  export interface IVisitedPlacesRefreshDataActionPayload {};
+  
+  export interface IVisitedPlacesRefreshDataAction extends IVisitedPlacesAction {
+    payload: IVisitedPlacesRefreshDataActionPayload;
+  };
+  
+  export const visitedPlacesRefreshDataAction = () => ({
+    type: visitedPlacesActions.REFRESH_DATA,
+    payload: {},
+  });
+  
+  export const performVisitedPlacesRefreshData = () => 
+    async (dispatch: VisitedPlacesAppDispatch) => {
+      return(dispatch(visitedPlacesRefreshDataAction()));
     };
 
 

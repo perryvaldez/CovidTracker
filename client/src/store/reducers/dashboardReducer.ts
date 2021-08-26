@@ -1,5 +1,14 @@
 import { Reducer } from 'redux';
-import a, { IDashboardAction, IDashboardAddSocialAction, IDashboardAddVisitedAction, IDashboardFetchDataAction, IDashboardFetchSocialAction, IDashboardFetchVisitedAction } from '../actions/dashboardActions';
+import a, { 
+  IDashboardAction, 
+  IDashboardAddSocialAction, 
+  IDashboardAddVisitedAction, 
+  IDashboardFetchDataAction, 
+  IDashboardFetchSocialAction, 
+  IDashboardFetchVisitedAction, 
+  IDashboardRefreshSocialAction, 
+  IDashboardRefreshVisitedAction,
+} from '../actions/dashboardActions';
 import s, { DashboardStartState as startState, IDashboardState } from '../states/dashboardStates';
 
 const dashboardReducer: Reducer<IDashboardState, IDashboardAction> = 
@@ -35,6 +44,26 @@ const dashboardReducer: Reducer<IDashboardState, IDashboardAction> =
             ...state,
             stateName: s.OUTDATED_VISITED,
             payload: { ...state.payload, ...addVisitedAction.payload },
+          };
+      }
+
+      if (action.type === a.REFRESH_SOCIAL) {
+          const refreshSocialAction = action as IDashboardRefreshSocialAction;
+
+          return {
+            ...state,
+            stateName: s.OUTDATED_SOCIAL,
+            payload: { ...state.payload, ...refreshSocialAction.payload },
+          };
+      }
+
+      if (action.type === a.REFRESH_VISITED) {
+          const refreshVisitedAction = action as IDashboardRefreshVisitedAction;
+
+          return {
+            ...state,
+            stateName: s.OUTDATED_VISITED,
+            payload: { ...state.payload, ...refreshVisitedAction.payload },
           };
       }
       break;

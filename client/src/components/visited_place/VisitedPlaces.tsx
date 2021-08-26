@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Box, Button, Checkbox, Container, FormControlLabel, Grid, makeStyles } from '@material-ui/core';
+import { Link } from 'react-router-dom';
 import { useCustomSelector } from '../../lib/hooks';
 import { ColumnSortState, PageMode } from '../../lib/page';
 import utils from '../../lib/utils';
@@ -13,19 +14,22 @@ import {
   performVisitedPlacesFetchData, 
   useVisitedPlacesDispatch,
 } from '../../store/actions/visitedPlacesActions';
+import { performDashboardRefreshVisitedData, useDashboardDispatch } from '../../store/actions/dashboardActions';
+import { performNotificationUpdateData, useNotificationDispatch } from '../../store/actions/notificationActions';
 import Loader from '../shared/Loader';
 import PageHeader from '../shared/PageHeader';
 import DataTable, { ColumnClassNames, IDataTableColumns, IDataTableRow } from '../shared/DataTable';
 import VisitedPlaceDialog from './VisitedPlaceDialog';
-import styles from './VisitedPlaces.styles';
 import P from '../markup/P';
-import { Link } from 'react-router-dom';
+import styles from './VisitedPlaces.styles';
 
 export const VisitedPlaces: React.FC = () => {
   const classes = makeStyles(styles)();
 
   const pageState = useCustomSelector(state => state.visitedPlaces);
   const dispatch = useVisitedPlacesDispatch();
+  const dashboardDispatch = useDashboardDispatch();
+  const notificationDispatch = useNotificationDispatch();
 
   const [pageMode, setPageMode] = useState(PageMode.VIEW);
 
@@ -72,6 +76,8 @@ export const VisitedPlaces: React.FC = () => {
     setOffset(0);
     setCurrentPage(1)   
     dispatch(performVisitedPlacesAddData(data));
+    dashboardDispatch(performDashboardRefreshVisitedData());
+    notificationDispatch(performNotificationUpdateData());
     setOpenDialog(false);
   };
 
@@ -82,6 +88,8 @@ export const VisitedPlaces: React.FC = () => {
 
   const handleUpdateRow = (e: any, row: any, rowIndex: number, key: any) => {
     dispatch(performVisitedPlacesEditData(key, row));
+    dashboardDispatch(performDashboardRefreshVisitedData());
+    notificationDispatch(performNotificationUpdateData());
     setPageMode(PageMode.VIEW);
     setEditRowIndex(-1);
   };
@@ -92,6 +100,8 @@ export const VisitedPlaces: React.FC = () => {
 
     if(isOk) {
       dispatch(performVisitedPlacesDeleteData(key));
+      dashboardDispatch(performDashboardRefreshVisitedData());
+      notificationDispatch(performNotificationUpdateData());
       setPageMode(PageMode.VIEW);
       setEditRowIndex(-1);
     }

@@ -10,6 +10,7 @@ const socialInteractionsActions = {
   ADD_DATA: 'SOCIAL_INTERACTIONS_ADD_DATA',
   EDIT_DATA: 'SOCIAL_INTERACTIONS_EDIT_DATA',
   DELETE_DATA: 'SOCIAL_INTERACTIONS_DELETE_DATA',
+  REFRESH_DATA: 'SOCIAL_INTERACTIONS_REFRESH_DATA',
 };
 
 export interface ISocialInteractionsAction {
@@ -147,6 +148,23 @@ export interface ISocialInteractionsDeleteDataActionPayload {
       const result = await api.deleteSocialInteraction(id);
   
       return(dispatch(socialInteractionsDeleteDataAction(result)));
+    };
+
+/////
+  export interface ISocialInteractionsRefreshDataActionPayload {};
+  
+  export interface ISocialInteractionsRefreshDataAction extends ISocialInteractionsAction {
+    payload: ISocialInteractionsRefreshDataActionPayload;
+  };
+  
+  export const socialInteractionsRefreshDataAction = () => ({
+    type: socialInteractionsActions.REFRESH_DATA,
+    payload: {},
+  });
+  
+  export const performSocialInteractionsRefreshData = () => 
+    async (dispatch: SocialInteractionsAppDispatch) => {
+      return(dispatch(socialInteractionsRefreshDataAction()));
     };
 
 

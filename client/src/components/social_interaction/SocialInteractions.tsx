@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Box, Button, Checkbox, Container, FormControlLabel, Grid, makeStyles } from '@material-ui/core';
+import { Link } from 'react-router-dom';
 import { useCustomSelector } from '../../lib/hooks';
 import { ColumnSortState, PageMode } from '../../lib/page';
 import utils from '../../lib/utils';
@@ -13,19 +14,22 @@ import {
   performSocialInteractionsFetchData, 
   useSocialInteractionsDispatch,
 } from '../../store/actions/socialInteractionsActions';
+import { performDashboardRefreshSocialData, useDashboardDispatch } from '../../store/actions/dashboardActions';
+import { performNotificationUpdateData, useNotificationDispatch } from '../../store/actions/notificationActions';
 import PageHeader from '../shared/PageHeader';
 import Loader from '../shared/Loader';
 import DataTable, { ColumnClassNames, IDataTableColumns, IDataTableRow } from '../shared/DataTable';
 import SocialInteractionDialog from './SocialInteractionDialog';
-import styles from './SocialInteractions.styles';
-import { Link } from 'react-router-dom';
 import P from '../markup/P';
+import styles from './SocialInteractions.styles';
 
 export const SocialInteractions: React.FC = () => {
   const classes = makeStyles(styles)();
 
   const pageState = useCustomSelector(state => state.socialInteractions);
   const dispatch = useSocialInteractionsDispatch();
+  const dashboardDispatch = useDashboardDispatch();
+  const notificationDispatch = useNotificationDispatch();
 
   const [pageMode, setPageMode] = useState(PageMode.VIEW);
 
@@ -72,6 +76,8 @@ export const SocialInteractions: React.FC = () => {
     setOffset(0);
     setCurrentPage(1)   
     dispatch(performSocialInteractionsAddData(data));
+    dashboardDispatch(performDashboardRefreshSocialData());
+    notificationDispatch(performNotificationUpdateData());
     setOpenDialog(false);
   };
 
@@ -82,6 +88,8 @@ export const SocialInteractions: React.FC = () => {
 
   const handleUpdateRow = (e: any, row: any, rowIndex: number, key: any) => {
     dispatch(performSocialInteractionsEditData(key, row));
+    dashboardDispatch(performDashboardRefreshSocialData());
+    notificationDispatch(performNotificationUpdateData());
     setPageMode(PageMode.VIEW);
     setEditRowIndex(-1);
   };
@@ -92,6 +100,8 @@ export const SocialInteractions: React.FC = () => {
 
     if(isOk) {
       dispatch(performSocialInteractionsDeleteData(key));
+      dashboardDispatch(performDashboardRefreshSocialData());
+      notificationDispatch(performNotificationUpdateData());
       setPageMode(PageMode.VIEW);
       setEditRowIndex(-1);
     }

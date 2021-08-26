@@ -6,6 +6,7 @@ import a, {
   IVisitedPlacesDeleteDataAction, 
   IVisitedPlacesEditDataAction, 
   IVisitedPlacesFetchDataAction,
+  IVisitedPlacesRefreshDataAction,
 } from '../actions/visitedPlacesActions';
 import s, { IVisitedPlacesState, VisitedPlacesStartState as startState } from '../states/visitedPlacesStates';
 
@@ -69,6 +70,16 @@ const visitedPlacesReducer: Reducer<IVisitedPlacesState, IVisitedPlacesAction> =
 
       if (action.type === a.DELETE_DATA) {
         const fetchAction = action as IVisitedPlacesDeleteDataAction;
+
+        return {
+          ...state,
+          stateName: s.OUTDATED_DATA,
+          payload: { ...state.payload, ...fetchAction.payload },
+        };
+      }
+
+      if (action.type === a.REFRESH_DATA) {
+        const fetchAction = action as IVisitedPlacesRefreshDataAction;
 
         return {
           ...state,

@@ -7,8 +7,10 @@ const dashboardActions = {
   FETCH_DATA: 'DASHBOARD_FETCH_DATA',
   ADD_SOCIAL: 'DASHBOARD_ADD_SOCIAL',
   FETCH_SOCIAL: 'DASHBOARD_FETCH_SOCIAL',
+  REFRESH_SOCIAL: 'DASHBOARD_REFRESH_SOCIAL',
   ADD_VISITED: 'DASHBOARD_ADD_VISITED',
   FETCH_VISITED: 'DASHBOARD_FETCH_VISITED',
+  REFRESH_VISITED: 'DASHBOARD_REFRESH_VISITED',
 };
 
 export interface IDashboardAction {
@@ -148,6 +150,7 @@ export const performDashboardAddVisited = (data: IVisitedPlaceData) =>
     return dispatch(dashboardAddVisitedAction(data));
   } 
 
+////
 export interface IDashboardFetchVisitedActionPayload {
   visitedPlaces: IVisitedPlaceData[];
   totalCountVisitedPlaces: number;
@@ -180,5 +183,40 @@ export const performDashboardFetchVisitedData = (filter: FilterType = {}) =>
       visitedPlaces
     ));
   } 
+
+////
+export interface IDashboardRefreshVisitedActionPayload {};
+
+export interface IDashboardRefreshVisitedAction extends IDashboardAction {
+  payload: IDashboardRefreshVisitedActionPayload;
+};
+
+export const dashboardRefreshVisitedAction = () : IDashboardRefreshVisitedAction => ({
+  type: dashboardActions.REFRESH_VISITED,
+  payload: {},
+});
+
+export const performDashboardRefreshVisitedData = () => 
+  async (dispatch: DashboardAppDispatch) => {
+    return dispatch(dashboardRefreshVisitedAction());
+  } 
+  
+////
+export interface IDashboardRefreshSocialActionPayload {};
+
+export interface IDashboardRefreshSocialAction extends IDashboardAction {
+  payload: IDashboardRefreshSocialActionPayload;
+};
+
+export const dashboardRefreshSocialAction = () : IDashboardRefreshSocialAction => ({
+  type: dashboardActions.REFRESH_SOCIAL,
+  payload: {},
+});
+
+export const performDashboardRefreshSocialData = () => 
+  async (dispatch: DashboardAppDispatch) => {
+    return dispatch(dashboardRefreshSocialAction());
+  } 
+
 
 export default dashboardActions;

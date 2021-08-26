@@ -6,6 +6,7 @@ import a, {
   ISocialInteractionsDeleteDataAction, 
   ISocialInteractionsEditDataAction, 
   ISocialInteractionsFetchDataAction,
+  ISocialInteractionsRefreshDataAction,
 } from '../actions/socialInteractionsActions';
 import s, { ISocialInteractionsState, SocialInteractionsStartState as startState } from '../states/socialInteractionsStates';
 
@@ -69,6 +70,16 @@ const socialInteractionsReducer: Reducer<ISocialInteractionsState, ISocialIntera
 
       if (action.type === a.DELETE_DATA) {
           const fetchAction = action as ISocialInteractionsDeleteDataAction;
+
+          return {
+            ...state,
+            stateName: s.OUTDATED_DATA,
+            payload: { ...state.payload, ...fetchAction.payload },
+          };
+      }
+
+      if (action.type === a.REFRESH_DATA) {
+          const fetchAction = action as ISocialInteractionsRefreshDataAction;
 
           return {
             ...state,
