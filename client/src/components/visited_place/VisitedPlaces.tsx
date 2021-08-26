@@ -15,7 +15,7 @@ import {
   useVisitedPlacesDispatch,
 } from '../../store/actions/visitedPlacesActions';
 import { performDashboardRefreshVisitedData, useDashboardDispatch } from '../../store/actions/dashboardActions';
-import { performNotificationUpdateData, useNotificationDispatch } from '../../store/actions/notificationActions';
+import { performNotificationRefreshData, useNotificationDispatch } from '../../store/actions/notificationActions';
 import Loader from '../shared/Loader';
 import PageHeader from '../shared/PageHeader';
 import DataTable, { ColumnClassNames, IDataTableColumns, IDataTableRow } from '../shared/DataTable';
@@ -77,7 +77,7 @@ export const VisitedPlaces: React.FC = () => {
     setCurrentPage(1)   
     dispatch(performVisitedPlacesAddData(data));
     dashboardDispatch(performDashboardRefreshVisitedData());
-    notificationDispatch(performNotificationUpdateData());
+    notificationDispatch(performNotificationRefreshData());
     setOpenDialog(false);
   };
 
@@ -89,7 +89,7 @@ export const VisitedPlaces: React.FC = () => {
   const handleUpdateRow = (e: any, row: any, rowIndex: number, key: any) => {
     dispatch(performVisitedPlacesEditData(key, row));
     dashboardDispatch(performDashboardRefreshVisitedData());
-    notificationDispatch(performNotificationUpdateData());
+    notificationDispatch(performNotificationRefreshData());
     setPageMode(PageMode.VIEW);
     setEditRowIndex(-1);
   };
@@ -101,7 +101,7 @@ export const VisitedPlaces: React.FC = () => {
     if(isOk) {
       dispatch(performVisitedPlacesDeleteData(key));
       dashboardDispatch(performDashboardRefreshVisitedData());
-      notificationDispatch(performNotificationUpdateData());
+      notificationDispatch(performNotificationRefreshData());
       setPageMode(PageMode.VIEW);
       setEditRowIndex(-1);
     }

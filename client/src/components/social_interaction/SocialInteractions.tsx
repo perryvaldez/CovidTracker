@@ -15,7 +15,7 @@ import {
   useSocialInteractionsDispatch,
 } from '../../store/actions/socialInteractionsActions';
 import { performDashboardRefreshSocialData, useDashboardDispatch } from '../../store/actions/dashboardActions';
-import { performNotificationUpdateData, useNotificationDispatch } from '../../store/actions/notificationActions';
+import { performNotificationRefreshData, useNotificationDispatch } from '../../store/actions/notificationActions';
 import PageHeader from '../shared/PageHeader';
 import Loader from '../shared/Loader';
 import DataTable, { ColumnClassNames, IDataTableColumns, IDataTableRow } from '../shared/DataTable';
@@ -77,7 +77,7 @@ export const SocialInteractions: React.FC = () => {
     setCurrentPage(1)   
     dispatch(performSocialInteractionsAddData(data));
     dashboardDispatch(performDashboardRefreshSocialData());
-    notificationDispatch(performNotificationUpdateData());
+    notificationDispatch(performNotificationRefreshData());
     setOpenDialog(false);
   };
 
@@ -89,7 +89,7 @@ export const SocialInteractions: React.FC = () => {
   const handleUpdateRow = (e: any, row: any, rowIndex: number, key: any) => {
     dispatch(performSocialInteractionsEditData(key, row));
     dashboardDispatch(performDashboardRefreshSocialData());
-    notificationDispatch(performNotificationUpdateData());
+    notificationDispatch(performNotificationRefreshData());
     setPageMode(PageMode.VIEW);
     setEditRowIndex(-1);
   };
@@ -101,7 +101,7 @@ export const SocialInteractions: React.FC = () => {
     if(isOk) {
       dispatch(performSocialInteractionsDeleteData(key));
       dashboardDispatch(performDashboardRefreshSocialData());
-      notificationDispatch(performNotificationUpdateData());
+      notificationDispatch(performNotificationRefreshData());
       setPageMode(PageMode.VIEW);
       setEditRowIndex(-1);
     }

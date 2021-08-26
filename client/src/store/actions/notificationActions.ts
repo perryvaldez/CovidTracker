@@ -6,7 +6,7 @@ import { INotificationState } from '../states/notificationStates';
 
 const notificationActions = {
   FETCH_DATA: 'NOTIFICATION_FETCH_DATA',
-  UPDATE_DATA: 'NOTIFICATION_UPDATE_DATA',
+  REFRESH_DATA: 'NOTIFICATION_REFRESH_DATA',
 };
 
 export interface INotificationAction {
@@ -48,20 +48,20 @@ export const performNotificationFetchData = (filter: FilterType = {}) =>
 
 ////
 
-export interface INotificationUpdateDataActionPayload {};
+export interface INotificationRefreshDataActionPayload {};
 
-export interface INotificationUpdateDataAction extends INotificationAction {
-  payload: INotificationUpdateDataActionPayload;
+export interface INotificationRefreshDataAction extends INotificationAction {
+  payload: INotificationRefreshDataActionPayload;
 };
 
-export const notificationUpdateDataAction = () => ({
-  type: notificationActions.UPDATE_DATA,
+export const notificationRefreshDataAction = () => ({
+  type: notificationActions.REFRESH_DATA,
   payload: {},
 });
 
-export const performNotificationUpdateData = () => 
+export const performNotificationRefreshData = () => 
   async (dispatch: NotificationAppDispatch) => {
-    return(dispatch(notificationUpdateDataAction()));
+    return(dispatch(notificationRefreshDataAction()));
   };
 
 

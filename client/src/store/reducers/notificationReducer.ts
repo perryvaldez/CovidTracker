@@ -1,5 +1,5 @@
 import { Reducer } from 'redux';
-import a, { INotificationAction, INotificationFetchDataAction, INotificationUpdateDataAction } from '../actions/notificationActions';
+import a, { INotificationAction, INotificationFetchDataAction, INotificationRefreshDataAction } from '../actions/notificationActions';
 import s, { INotificationState, NotificationStartState as startState } from '../states/notificationStates';
 
 const notificationReducer: Reducer<INotificationState, INotificationAction> =
@@ -19,8 +19,8 @@ const notificationReducer: Reducer<INotificationState, INotificationAction> =
       break;
 
     case s.READY:
-      if (action.type === a.UPDATE_DATA) {
-          const fetchAction = action as INotificationUpdateDataAction;
+      if (action.type === a.REFRESH_DATA) {
+          const fetchAction = action as INotificationRefreshDataAction;
 
           return {
             ...state,
